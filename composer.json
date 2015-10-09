@@ -1,0 +1,21 @@
+{
+  "name": "conpago/conpago-cli",
+  "description": "Conpago Command-line interface",
+  "version": "0.0.1-alpha",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Bartosz Gołek",
+      "email": "bartosz.golek@gmail.com",
+      "homepage": "http://bartosz.golek.biz"
+    }
+  ],
+  "require": {
+    "twig/twig": "1.6.5"
+  },
+  "autoload": {
+    "psr-0": {
+      "Conpago\\Cli\\": "src/"
+    }
+  }
+}
