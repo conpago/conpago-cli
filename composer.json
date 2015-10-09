@@ -2,7 +2,7 @@
 	"name": "conpago/conpago-cli",
 	"description": "Conpago: Command-line interface.",
 	"version": "0.0.1-alpha",
-	"type": "library",
+	"type": "project",
 	"license": "MIT",
 	"authors": [
 		{
