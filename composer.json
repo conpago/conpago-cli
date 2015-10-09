@@ -1,0 +1,32 @@
+{
+	"name": "conpago/conpago-cli",
+	"description": "Conpago: Command-line interface.",
+	"version": "0.0.1-alpha",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Bartosz Gołek",
+			"email": "bartosz.golek@gmail.com",
+			"homepage": "http://bartosz.golek.biz"
+		}
+	],
+	"bin": [
+		"bin/conpago"
+	],
+	"require": {
+		"twig/twig": "1.*"
+	},
+	"require-dev": {
+		"pdepend/pdepend": "*",
+		"phpmd/phpmd": "*",
+		"squizlabs/php_codesniffer": "*",
+		"sebastian/phpcpd": "*",
+		"phpunit/phpunit": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"Conpago\\Cli": "src/"
+		}
+	}
+}

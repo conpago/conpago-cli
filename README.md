@@ -1,2 +1,2 @@
 # conpago-cli
-Conpago Command-line interface
+Conpago: Command-line interface
