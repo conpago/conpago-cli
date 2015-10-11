@@ -9,12 +9,21 @@
 
 	namespace Conpago\Cli;
 
+	use Conpago\Cli\Interactor\CreateInteractor;
+
 	class ApplicationFactory {
 
 		/**
 		 * @return Application
 		 */
 		public function createApplication() {
-			return new Application();
+			return new Application(
+					new StreamOutput(STDIN),
+					new CommandFactory(
+							[
+									'interactor' => new CreateInteractor()
+							]
+					)
+			);
 		}
 	}

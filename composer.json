@@ -15,7 +15,8 @@
 		"bin/conpago"
 	],
 	"require": {
-		"twig/twig": "1.*"
+		"twig/twig": "1.*",
+		"symfony/yaml": "2.*"
 	},
 	"require-dev": {
 		"pdepend/pdepend": "*",
