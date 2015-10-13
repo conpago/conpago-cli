@@ -48,14 +48,16 @@
 	}
 
 	class TemplateFiller {
+		const IS_NOT_VARIABLE = false;
+		const IS_VARIABLE = true;
+
 		protected $in;
 		protected $out;
 		protected $variables;
 		protected $call_stack;
 
-		protected $variable = "";
-		protected $in_variable = false;
-		protected $at_variable_end = false;
+		protected $buffer;
+		protected $old_buffer;
 
 		/**
 		 * @param $content
@@ -70,44 +72,56 @@
 			$this->variables  = $variables;
 		}
 
-		function fill() {
+		function readNextToBuffer()
+		{
+			$char = $this->getNextChar();
+			$this->old_buffer = $this->buffer;
+			$this->buffer .= $char;
+
+
+			return $char;
+		}
+
+		function readToBuffer()
+		{
+			$in_variable = false;
 			while (!feof($this->in)) {
-				$char = $this->getNextChar();
-
-				if ($this->in_variable && $this->isEndChar($char)) {
-					$second_char = $this->getNextChar();
-					$this->variable .= $char . $second_char;
-					if ($this->isEndChar($second_char)) {
-						$this->at_variable_end = true;
-					} else {
-						continue;
-					}
-				}
-				else if (!$this->in_variable && $this->isStartChar($char)) {
-					$second_char = $this->getNextChar();
-					if ($this->isStartChar($second_char)) {
-						$this->in_variable = true;
-						$this->variable .= $char;
-					}
-					else if (!$this->isStartChar($second_char)) {
-						$this->addToOutput($char.$second_char);
-						continue;
-					}
+				$char = $this->readNextToBuffer();
+				if ($this->needDump($char)) {
+					$this->goToVariablePosition();
+					return self::IS_NOT_VARIABLE;
 				}
 
-				if ($this->in_variable && !$this->at_variable_end) {
-					$this->variable .= $char;
-				}
+				if ($this->isStartChar($char)) {
+					$char = $this->readNextToBuffer();
+					if (!$this->isStartChar($char) ) {
+						return self::IS_NOT_VARIABLE;
+					}
 
-				if ($this->in_variable && $this->at_variable_end) {
-					$this->addToOutput($this->getVariableReplacement());
-					$this->resetState();
+					$in_variable = true;
 				}
-				else if (!$this->in_variable) {
-					$this->addToOutput($char);
+				else if ($in_variable && $this->isEndChar($char)) {
+					$char = $this->readNextToBuffer();
+					if ($this->isEndChar($char)) {
+						return self::IS_VARIABLE;
+					}
+					return self::IS_NOT_VARIABLE;
 				}
 			}
-			$this->handleBrokenVariable();
+
+			return self::IS_NOT_VARIABLE;
+		}
+
+		function fill() {
+			while (!feof($this->in)) {
+				$result = $this->readToBuffer();
+				if ( $result == self::IS_NOT_VARIABLE ) {
+					$this->dumpBuffer();
+				} else {
+					$this->addToOutput( $this->getVariableReplacement() );
+				}
+				$this->buffer = "";
+			}
 			return $this->getResult();
 		}
 
@@ -155,34 +169,19 @@
 			return $result;
 		}
 
-		private function resetState() {
-			$this->variable                = "";
-			$this->in_variable             = false;
-			$this->at_variable_end         = false;
-		}
-
 		private function getVariableReplacement() {
-			$cut_variable = substr( $this->variable, 2, -2);
-			$replacement = $this->variable;
-			if ( array_key_exists( $cut_variable, $this->variables ) ) {
-				$recursion          = in_array( $cut_variable, $this->call_stack );
-				$call_stack = array_merge($this->call_stack, [$cut_variable]);
-				if ( $recursion ) {
-					throw new RecursionTemplateException( $call_stack );
-				}
-
-				$replacement = (new TemplateFiller($this->variables[ $cut_variable ], $this->variables, $call_stack))->fill();
-
-				return $replacement;
+			$variable = substr( $this->buffer, 2, -2);
+			if (!array_key_exists($variable, $this->variables ) ) {
+				return $this->buffer;
 			}
 
-			return $replacement;
-		}
-
-		private function handleBrokenVariable() {
-			if ($this->in_variable) {
-				$this->addToOutput( $this->variable );
+			$recursion          = in_array( $variable, $this->call_stack );
+			$call_stack = array_merge($this->call_stack, [$variable]);
+			if ( $recursion ) {
+				throw new RecursionTemplateException( $call_stack );
 			}
+
+			return (new TemplateFiller($this->variables[ $variable ], $this->variables, $call_stack))->fill();
 		}
 
 		/**
@@ -190,5 +189,23 @@
 		 */
 		protected function getNextChar() {
 			return fread( $this->in, 1 );
+		}
+
+		private function dumpBuffer() {
+			$this->addToOutput($this->buffer);
+		}
+
+		private function goToVariablePosition() {
+			fseek( $this->in, ftell( $this->in ) - 1 );
+			$this->buffer = $this->old_buffer;
+		}
+
+		/**
+		 * @param $char
+		 *
+		 * @return bool
+		 */
+		private function needDump($char) {
+			return strlen( $this->old_buffer ) > 0 && $this->isStartChar($char);
 		}
 	}
