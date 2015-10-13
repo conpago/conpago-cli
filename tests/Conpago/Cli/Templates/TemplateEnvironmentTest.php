@@ -11,7 +11,7 @@
 
 	class TemplateTest extends \PHPUnit_Framework_TestCase {
 		/**
-		 * @var Template
+		 * @var TemplateEnvironment
 		 */
 		protected $template;
 
@@ -175,6 +175,6 @@
 		protected function setUp() {
 			$this->loader = $this->getMock( 'Conpago\Cli\Templates\ITemplateLoader' );
 			$this->options = $this->getMock( 'Conpago\Cli\Templates\ITemplateOptions' );
-			$this->template = new Template( $this->loader, $this->options );
+			$this->template = new TemplateEnvironment( $this->loader, $this->options );
 		}
 	}

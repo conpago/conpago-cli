@@ -9,7 +9,7 @@
 	namespace Conpago\Cli\Templates;
 
 
-	class Template {
+	class TemplateEnvironment {
 		const START_CHAR = "{";
 		const END_CHAR = "}";
 
@@ -148,7 +148,7 @@
 		 * @return bool
 		 */
 		private function isStartChar($char) {
-			return $char == Template::START_CHAR;
+			return $char == TemplateEnvironment::START_CHAR;
 		}
 
 		/**
@@ -157,7 +157,7 @@
 		 * @return bool
 		 */
 		private function isEndChar($char) {
-			return $char == Template::END_CHAR;
+			return $char == TemplateEnvironment::END_CHAR;
 		}
 
 		private function getResult() {
