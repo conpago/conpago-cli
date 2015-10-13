@@ -104,6 +104,15 @@
 			$this->assertEquals("{varivalue2", $rendered);
 		}
 
+		function testRenderWillNotReplaceBraceIfIsNotVariableDefinitionAtEnd()
+		{
+			$this->loader->expects($this->any())->method('load')->willReturn("xxx{v");
+			$this->options->expects($this->any())->method('getLineEndings')->willReturn("\n");
+
+			$rendered = $this->template->render('dummy', ['variable' => 'value', 'variable2' => 'value2']);
+			$this->assertEquals("xxx{v", $rendered);
+		}
+
 		function testRenderWillNotReplaceIfEndBracesAreSeparate()
 		{
 			$this->loader->expects($this->any())->method('load')->willReturn("{{variable2}x}");
@@ -111,6 +120,15 @@
 
 			$rendered = $this->template->render('dummy', ['variable' => 'value', 'variable2' => 'value2']);
 			$this->assertEquals("{{variable2}x}", $rendered);
+		}
+
+		function testRenderWillNotReplaceIfEndBracesAreSeparateNotAtEnd()
+		{
+			$this->loader->expects($this->any())->method('load')->willReturn("{{variable2}x}zz");
+			$this->options->expects($this->any())->method('getLineEndings')->willReturn("\n");
+
+			$rendered = $this->template->render('dummy', ['variable' => 'value', 'variable2' => 'value2']);
+			$this->assertEquals("{{variable2}x}zz", $rendered);
 		}
 
 		/**

@@ -51,13 +51,12 @@
 	class TemplateFiller {
 		protected $in;
 		protected $out;
-		protected $variable = "";
-		protected $in_variable = false;
-		protected $possible_variable_start = false;
-		protected $at_variable_end = false;
-		protected $possible_variable_end = false;
 		protected $variables;
 		protected $call_stack;
+
+		protected $variable = "";
+		protected $in_variable = false;
+		protected $at_variable_end = false;
 
 		/**
 		 * @param $content
@@ -68,42 +67,41 @@
 			$this->in  = $this->prepareInStream( $content );
 			$this->out = $this->prepareOutStream();
 
+			$this->initial_call_stack = $call_stack;
 			$this->call_stack = $call_stack;
 			$this->variables  = $variables;
 		}
 
 		function fill() {
-			while ( feof( $this->in ) === false) {
-				$char = fread( $this->in, 1);
+			while (!feof($this->in)) {
+				$char = $this->getNextChar();
 
-				if ($this->possible_variable_end == true && !$this->isEndChar($char)) {
-					$this->possible_variable_end = false;
-				}
-				else if ($this->possible_variable_end == false && $this->in_variable == true && $this->isEndChar($char)) {
-					$this->possible_variable_end = true;
-				}
-				else if ( $this->possible_variable_end == true && $this->at_variable_end == false && $this->isEndChar($char)) {
-					$this->at_variable_end = true;
-					$this->variable .= $char;
-				}
-				else if ( $this->possible_variable_start == true && $this->isStartChar($char)) {
-					$this->in_variable = $this->possible_variable_start;
-				}
-				else if ( $this->possible_variable_start == true && $this->in_variable == false && !$this->isStartChar($char)) {
-					$this->possible_variable_start = false;
-					$this->addToOutput($this->variable);
-					$this->variable = "";
+				if ($this->in_variable && $this->isEndChar($char)) {
+					$second_char = $this->getNextChar();
+					$this->variable .= $char . $second_char;
+					if ($this->isEndChar($second_char)) {
+						$this->at_variable_end = true;
+					} else {
+						continue;
+					}
 				}
 				else if ($this->isStartChar($char)) {
-					$this->possible_variable_start = true;
-					$this->variable .= $char;
+					$second_char = $this->getNextChar();
+					if ($this->isStartChar($second_char)) {
+						$this->in_variable = true;
+						$this->variable .= $char;
+					}
+					else if (!$this->isStartChar($second_char)) {
+						$this->addToOutput($char.$second_char);
+						continue;
+					}
 				}
 				$this->collectVariable( $char );
-				if ($this->in_variable == true && $this->at_variable_end == true) {
+				if ($this->in_variable && $this->at_variable_end) {
 					$this->addToOutput($this->getVariableReplacement());
 					$this->resetState();
 				}
-				else if ($this->possible_variable_start == false) {
+				else if (!$this->in_variable) {
 					$this->addToOutput($char);
 				}
 			}
@@ -148,16 +146,18 @@
 
 		private function getResult() {
 			fseek($this->out, 0);
-			return fread($this->out, 8192);
+			$result = "";
+			while (!feof($this->out)) {
+				$result .= fread($this->out, 8192);
+			}
+			return $result;
 		}
 
 		private function resetState() {
 			$this->variable                = "";
 			$this->in_variable             = false;
-			$this->possible_variable_start = false;
 			$this->at_variable_end         = false;
-			$this->possible_variable_end   = false;
-			$this->call_stack              = [ ];
+			$this->call_stack              = $this->initial_call_stack;
 		}
 
 		private function getVariableReplacement() {
@@ -182,14 +182,21 @@
 		 * @param $char
 		 */
 		private function collectVariable( $char ) {
-			if ( $this->in_variable == true && $this->at_variable_end == false ) {
+			if ($this->in_variable && !$this->at_variable_end) {
 				$this->variable .= $char;
 			}
 		}
 
 		private function handleBrokenVariable() {
-			if ( $this->in_variable ) {
+			if ($this->in_variable) {
 				$this->addToOutput( $this->variable );
 			}
+		}
+
+		/**
+		 * @return string
+		 */
+		protected function getNextChar() {
+			return fread( $this->in, 1 );
 		}
 	}
