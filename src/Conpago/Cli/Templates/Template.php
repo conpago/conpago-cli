@@ -12,8 +12,7 @@
 	class Template {
 		const START_CHAR = "{";
 		const END_CHAR = "}";
-		const START_SEQ = "{{";
-		const END_SEQ = "}}";
+
 		/**
 		 * @var ITemplateLoader
 		 */
@@ -67,7 +66,6 @@
 			$this->in  = $this->prepareInStream( $content );
 			$this->out = $this->prepareOutStream();
 
-			$this->initial_call_stack = $call_stack;
 			$this->call_stack = $call_stack;
 			$this->variables  = $variables;
 		}
@@ -85,7 +83,7 @@
 						continue;
 					}
 				}
-				else if ($this->isStartChar($char)) {
+				else if (!$this->in_variable && $this->isStartChar($char)) {
 					$second_char = $this->getNextChar();
 					if ($this->isStartChar($second_char)) {
 						$this->in_variable = true;
@@ -96,7 +94,11 @@
 						continue;
 					}
 				}
-				$this->collectVariable( $char );
+
+				if ($this->in_variable && !$this->at_variable_end) {
+					$this->variable .= $char;
+				}
+
 				if ($this->in_variable && $this->at_variable_end) {
 					$this->addToOutput($this->getVariableReplacement());
 					$this->resetState();
@@ -157,34 +159,24 @@
 			$this->variable                = "";
 			$this->in_variable             = false;
 			$this->at_variable_end         = false;
-			$this->call_stack              = $this->initial_call_stack;
 		}
 
 		private function getVariableReplacement() {
 			$cut_variable = substr( $this->variable, 2, -2);
-			$replacement = $cut_variable;
+			$replacement = $this->variable;
 			if ( array_key_exists( $cut_variable, $this->variables ) ) {
 				$recursion          = in_array( $cut_variable, $this->call_stack );
-				$this->call_stack[] = $cut_variable;
+				$call_stack = array_merge($this->call_stack, [$cut_variable]);
 				if ( $recursion ) {
-					throw new RecursionTemplateException( $this->call_stack );
+					throw new RecursionTemplateException( $call_stack );
 				}
 
-				$replacement = (new TemplateFiller($this->variables[ $cut_variable ], $this->variables, $this->call_stack))->fill();
+				$replacement = (new TemplateFiller($this->variables[ $cut_variable ], $this->variables, $call_stack))->fill();
 
 				return $replacement;
 			}
 
 			return $replacement;
-		}
-
-		/**
-		 * @param $char
-		 */
-		private function collectVariable( $char ) {
-			if ($this->in_variable && !$this->at_variable_end) {
-				$this->variable .= $char;
-			}
 		}
 
 		private function handleBrokenVariable() {

@@ -59,6 +59,15 @@
 			$this->assertEquals("value", $rendered);
 		}
 
+		function testRenderWillNotReplaceIfVariableNotExists()
+		{
+			$this->loader->expects($this->any())->method('load')->willReturn("{{variable_ne}}");
+			$this->options->expects($this->any())->method('getLineEndings')->willReturn("\n");
+
+			$rendered = $this->template->render('dummy', ['variable' => 'value']);
+			$this->assertEquals("{{variable_ne}}", $rendered);
+		}
+
 		function testRenderWillReplaceVariableInTextWithValue()
 		{
 			$this->loader->expects($this->any())->method('load')->willReturn("xxx{{variable}}zzz");
