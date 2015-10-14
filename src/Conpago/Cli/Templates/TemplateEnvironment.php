@@ -78,7 +78,6 @@
 			$this->old_buffer = $this->buffer;
 			$this->buffer .= $char;
 
-
 			return $char;
 		}
 
@@ -87,12 +86,12 @@
 			$in_variable = false;
 			while (!feof($this->in)) {
 				$char = $this->readNextToBuffer();
-				if ($this->needDump($char)) {
-					$this->goToVariablePosition();
-					return self::IS_NOT_VARIABLE;
-				}
-
 				if ($this->isStartChar($char)) {
+					if ($this->isBufferDirty()) {
+						$this->rewindLastRead();
+						return self::IS_NOT_VARIABLE;
+					}
+
 					$char = $this->readNextToBuffer();
 					if (!$this->isStartChar($char) ) {
 						return self::IS_NOT_VARIABLE;
@@ -118,7 +117,7 @@
 				if ( $result == self::IS_NOT_VARIABLE ) {
 					$this->dumpBuffer();
 				} else {
-					$this->addToOutput( $this->getVariableReplacement() );
+					$this->processVatiableInBuffer();
 				}
 				$this->buffer = "";
 			}
@@ -171,7 +170,7 @@
 
 		private function getVariableReplacement() {
 			$variable = substr( $this->buffer, 2, -2);
-			if (!array_key_exists($variable, $this->variables ) ) {
+			if (!array_key_exists($variable, $this->variables)) {
 				return $this->buffer;
 			}
 
@@ -195,17 +194,19 @@
 			$this->addToOutput($this->buffer);
 		}
 
-		private function goToVariablePosition() {
+		private function rewindLastRead() {
 			fseek( $this->in, ftell( $this->in ) - 1 );
 			$this->buffer = $this->old_buffer;
 		}
 
 		/**
-		 * @param $char
-		 *
 		 * @return bool
 		 */
-		private function needDump($char) {
-			return strlen( $this->old_buffer ) > 0 && $this->isStartChar($char);
+		private function isBufferDirty() {
+			return strlen( $this->old_buffer ) > 0;
+		}
+
+		protected function processVatiableInBuffer() {
+			$this->addToOutput( $this->getVariableReplacement() );
 		}
 	}
