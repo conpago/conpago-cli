@@ -163,4 +163,6 @@
         <exec executable="./vendor/bin/behat" osfamily="unix" failonerror="true" />
     </target>
 
-    <target name="ci" depends="update,test-ci,phpcpd-ci,phpmd-ci,pdepend-ci,phpcs-ci,behat-ci>
+    <target name="ci" depends="update,test-ci,phpcpd-ci,phpmd-ci,pdepend-ci,phpcs-ci,behat-ci">
+    </target>
+</project>
