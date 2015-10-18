@@ -173,8 +173,8 @@
 		}
 
 		protected function setUp() {
-			$this->loader = $this->getMock( 'Conpago\Cli\Templates\ITemplateLoader' );
-			$this->options = $this->getMock( 'Conpago\Cli\Templates\ITemplateOptions' );
+			$this->loader = $this->getMock( 'Conpago\Cli\Templates\Contract\ITemplateLoader' );
+			$this->options = $this->getMock( 'Conpago\Cli\Templates\Contract\ITemplateOptions' );
 			$this->template = new TemplateEnvironment( $this->loader, $this->options );
 		}
 	}

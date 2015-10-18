@@ -1,0 +1,39 @@
+<?php
+	/**
+	 * Created by PhpStorm.
+	 * User: bg
+	 * Date: 17.10.15
+	 * Time: 23:38
+	 */
+
+	namespace Conpago\Cli\Contract;
+
+
+	interface IApplicationPresenter {
+
+		/**
+		 * @param CommandHelp[] Commands help
+		 *
+		 * @return void
+		 */
+		public function printHelp(array $commands_help = null);
+
+		/**
+		 * @return void
+		 */
+		public function printVersion();
+
+		/**
+		 * @param string $command_name
+		 *
+		 * @return void
+		 */
+		public function printCommandNotFound($command_name);
+
+		/**
+		 * @param string $command_help
+		 *
+		 * @return void
+		 */
+		public function printCommandHelp($command_help);
+	}

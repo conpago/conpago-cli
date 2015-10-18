@@ -10,6 +10,7 @@
 	namespace Conpago\Cli;
 
 	use Conpago\Cli\Interactor\CreateInteractor;
+	use Conpago\Cli\Interactor\CreateInteractorPresenter;
 
 	class ApplicationFactory {
 
@@ -18,10 +19,12 @@
 		 */
 		public function createApplication() {
 			return new Application(
-					new StreamOutput(STDIN),
+					new ApplicationPresenter(new StreamOutput(STDOUT)),
 					new CommandFactory(
 							[
-									'interactor' => new CreateInteractor()
+									'interactor' => new CreateInteractor(
+											new CreateInteractorPresenter()
+									)
 							]
 					)
 			);

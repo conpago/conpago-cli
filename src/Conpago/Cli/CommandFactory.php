@@ -9,9 +9,11 @@
 	namespace Conpago\Cli;
 
 
-	use Conpago\Cli\Interactor\CreateInteractor;
+	use Conpago\Cli\Contract\CommandHelp;
+	use Conpago\Cli\Contract\ICommand;
+	use Conpago\Cli\Contract\ICommandFactory;
 
-	class CommandFactory implements  ICommandFactory{
+	class CommandFactory implements ICommandFactory{
 		/**
 		 * @var ICommand[]
 		 */
@@ -26,21 +28,33 @@
 		 */
 		public function getCommand($command_name)
 		{
+			if (!array_key_exists($command_name, $this->command_list))
+				return null;
+
+			return $this->command_list[$command_name];
 		}
 
 		/**
-		 * @return array
+		 * @return CommandHelp[]
 		 */
 		public function getCommandsDesc()
 		{
-			return [];
+			$result = [];
+			foreach ($this->command_list as $name => $command)
+			{
+				$result[] = new CommandHelp($name, $command->getDescription());
+			}
+			return $result;
 		}
 
 		/**
 		 * @return string
 		 */
-		public function getCommandHelp()
+		public function getCommandHelp($command_name)
 		{
-			return "";
+			if (!array_key_exists($command_name, $this->command_list))
+				return null;
+
+			return $this->command_list[$command_name]->getHelp();
 		}
 	}

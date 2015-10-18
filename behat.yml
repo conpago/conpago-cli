@@ -1,0 +1,14 @@
+# behat.yml
+
+default:
+    suites:
+        base_features:
+            paths:    [ %paths.base%/features/Base ]
+            contexts: [ FeatureContext ]
+    formatters:
+        pretty: true
+        junit: true
+    extensions:
+        jarnaiz\JUnitFormatter\JUnitFormatterExtension:
+            filename: report.xml
+            outputDir: %paths.base%/build/behat

@@ -8,17 +8,25 @@
 
 	namespace Conpago\Cli\Interactor;
 
-	use Conpago\Cli\ICommand;
-	use Twig_Environment;
-	use Twig_Loader_Filesystem;
+	use Conpago\Cli\Contract\ICommand;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
 
 	class CreateInteractor implements ICommand {
 
+		/**
+		 * @var ICreateInteractorPresenter
+		 */
+		private $presenter;
+
+		function __construct(ICreateInteractorPresenter $presenter) {
+			$this->presenter = $presenter;
+		}
+
 		function getHelp() {
-			echo "Usage: conpago interactor <InteractorName>".PHP_EOL;
-			echo PHP_EOL;
-			echo $this->getDescription();
-			echo PHP_EOL;
+			return "Usage: conpago interactor <InteractorName>".PHP_EOL.
+				PHP_EOL.
+				$this->getDescription().
+		        PHP_EOL;
 		}
 
 		function run( array $args ) {

@@ -8,7 +8,9 @@
 
 	namespace Conpago\Cli;
 
-	class Streaminput implements IInput
+	use Conpago\Cli\Contract\IInput;
+
+	class StreamInput implements IInput
 	{
 		/**
 		 * @var resource
@@ -27,9 +29,9 @@
 
 		public function readLine()
 		{
-			$fscanf = fscanf($this->inputStream, "%s" . PHP_EOL);
-			if ($fscanf === false)
+			$input = fscanf($this->inputStream, "%s" . PHP_EOL);
+			if ($input === false)
 				return null;
-			return $fscanf[0];
+			return $input[0];
 		}
 	}

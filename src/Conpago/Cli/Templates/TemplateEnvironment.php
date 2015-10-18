@@ -9,6 +9,9 @@
 	namespace Conpago\Cli\Templates;
 
 
+	use Conpago\Cli\Templates\Contract\ITemplateLoader;
+	use Conpago\Cli\Templates\Contract\ITemplateOptions;
+
 	class TemplateEnvironment {
 		const START_CHAR = "{";
 		const END_CHAR = "}";

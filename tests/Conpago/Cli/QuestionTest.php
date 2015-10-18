@@ -32,8 +32,8 @@
 
 		protected function setUp()
 		{
-			$this->input = $this->getMock('Conpago\Cli\IInput');
-			$this->output = $this->getMock('Conpago\Cli\IOutput');
+			$this->input = $this->getMock('Conpago\Cli\Contract\IInput');
+			$this->output = $this->getMock('Conpago\Cli\Contract\IOutput');
 			$this->question = new Question($this->input, $this->output);
 		}
 

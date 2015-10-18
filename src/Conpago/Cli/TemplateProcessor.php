@@ -10,6 +10,7 @@
 
 
 	use Conpago\Cli\CaseConverter\CaseConverter;
+	use Conpago\Cli\Contract\ITemplateContext;
 	use Conpago\Cli\Templates\TemplateEnvironment;
 
 	class TemplateProcessor {

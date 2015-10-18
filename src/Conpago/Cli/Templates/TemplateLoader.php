@@ -9,6 +9,8 @@
 	namespace Conpago\Cli\Templates;
 
 
+	use Conpago\Cli\Templates\Contract\ITemplateLoader;
+
 	class TemplateLoader implements ITemplateLoader {
 		function load($template)
 		{

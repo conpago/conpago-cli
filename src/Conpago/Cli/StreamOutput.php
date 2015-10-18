@@ -9,6 +9,8 @@
 	namespace Conpago\Cli;
 
 
+	use Conpago\Cli\Contract\IOutput;
+
 	class StreamOutput implements IOutput {
 
 		/**

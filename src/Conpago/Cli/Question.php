@@ -9,6 +9,9 @@
 	namespace Conpago\Cli;
 
 
+	use Conpago\Cli\Contract\IInput;
+	use Conpago\Cli\Contract\IOutput;
+
 	class Question
 	{
 		/**
