@@ -11,4 +11,13 @@
 
 	interface ICreateInteractorPresenter {
 
+		/**
+		 * @param $desc
+		 */
+		public function printHelp($desc);
+
+		/**
+		 * @return void
+		 */
+		public function printMissingParameter();
 	}

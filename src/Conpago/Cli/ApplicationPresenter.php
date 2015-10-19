@@ -72,13 +72,4 @@
 			$this->output->writeLine('Could not find command \'%s\'!', $command_name);
 			$this->output->writeLine();
 		}
-
-		/**
-		 * @param string $command_help
-		 *
-		 * @return void
-		 */
-		public function printCommandHelp($command_help) {
-			$this->output->writeLine($command_help);
-		}
 	}

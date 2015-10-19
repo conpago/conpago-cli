@@ -75,8 +75,7 @@
 		public function testRunWithHelpOptionAndCommandName_willPrintCommandHelp()
 		{
 			$this->expectVersion();
-			$this->fac->method("getCommandHelp")->willReturn('command_help');
-			$this->expectCommandHelp('command_help');
+			$this->expectCommandHelp();
 			$this->doTest(['--help', 'command_name']);
 		}
 
@@ -152,10 +151,9 @@
 					->with($this->equalTo($command_name));
 		}
 
-		private function expectCommandHelp($command_help) {
-			$this->application_presenter
-					->expects($this->once())
-					->method("printCommandHelp")
-					->with($this->equalTo($command_help));
+		private function expectCommandHelp() {
+			$command = $this->getMock('Conpago\Cli\Contract\ICommand');
+			$command->expects($this->once())->method("printHelp");
+			$this->fac->method("getCommand")->willReturn($command);
 		}
 	}

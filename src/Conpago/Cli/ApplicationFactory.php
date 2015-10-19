@@ -18,12 +18,14 @@
 		 * @return Application
 		 */
 		public function createApplication() {
+			$output = new StreamOutput( STDOUT );
+
 			return new Application(
-					new ApplicationPresenter(new StreamOutput(STDOUT)),
+					new ApplicationPresenter( $output ),
 					new CommandFactory(
 							[
 									'interactor' => new CreateInteractor(
-											new CreateInteractorPresenter()
+											new CreateInteractorPresenter($output)
 									)
 							]
 					)

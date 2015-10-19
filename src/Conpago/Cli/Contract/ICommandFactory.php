@@ -21,9 +21,4 @@
 		 * @return CommandHelp[]
 		 */
 		public function getCommandsDesc();
-
-		/**
-		 * @return string
-		 */
-		public function getCommandHelp($command_name);
 	}

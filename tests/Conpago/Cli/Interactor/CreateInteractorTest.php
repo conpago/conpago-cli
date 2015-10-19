@@ -12,16 +12,16 @@
 
 	class CreateInteractorTest extends \PHPUnit_Framework_TestCase {
 
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject
+		 */
 		protected $presenter;
 
-		function test_GetHelpWillReturnHelp()
+		function test_PrinHelp_willPrintHelp()
 		{
-			$c = (new CreateInteractor($this->presenter))->getHelp();
-			$expectedHelp = "Usage: conpago interactor <InteractorName>".PHP_EOL.
-				PHP_EOL.
-                $this->expectedDescription().
-                PHP_EOL;
-			$this->assertEquals($expectedHelp, $c);
+			$this->presenter->expects($this->once())
+					->method("printHelp");
+			(new CreateInteractor($this->presenter))->printHelp();
 		}
 
 		private function expectedDescription()
@@ -34,6 +34,15 @@
 		{
 			$description = (new CreateInteractor($this->presenter))->getDescription();
 			$this->assertEquals($this->expectedDescription(), $description);
+		}
+
+		function test_CommandRunWithMissingParameters_willPrintMissingParametersAndHelp()
+		{
+			$this->presenter->expects($this->once())
+			                ->method("printMissingParameter");
+			$this->presenter->expects($this->once())
+			                ->method("printHelp");
+			(new CreateInteractor($this->presenter))->run([]);
 		}
 
 		/**

@@ -62,28 +62,4 @@
 			$desc = $command_factory->getCommandsDesc();
 			$this->assertEquals([new CommandHelp('cmd_name', 'Desc'), new CommandHelp('cmd_name2', 'Desc2')], $desc);
 		}
-
-		function test_GetCommandHelpWillReturnNullForEmptyCommandList()
-		{
-			$command_factory = new CommandFactory([]);
-			$cmd = $command_factory->getCommandHelp('dummy');
-			$this->assertNull($cmd);
-		}
-
-		function test_GetCommandHelpWillReturnCommandHelp()
-		{
-			$cmd_mock = $this->getMock('Conpago\Cli\Contract\ICommand');
-			$cmd_mock->method('getHelp')->willReturn('Help');
-			$command_factory = new CommandFactory(['cmd_name' => $cmd_mock]);
-			$help = $command_factory->getCommandHelp('cmd_name');
-			$this->assertEquals('Help', $help);
-		}
-
-		function test_GetCommandHelpWillReturnNullForNotExistingCommand()
-		{
-			$cmd_mock = $this->getMock('Conpago\Cli\ICommand');
-			$command_factory = new CommandFactory(['cmd_name' => $cmd_mock]);
-			$cmd = $command_factory->getCommandHelp('dummy');
-			$this->assertNull($cmd);
-		}
 	}

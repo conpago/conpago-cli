@@ -50,14 +50,14 @@
 			}
 
 			if (count($args) > 1 && $this->isHelpOption($args[0])) {
-				$command_help = $this->commandFactory->getCommandHelp($args[1]);
-				if ($command_help == null) {
+				$command = $this->commandFactory->getCommand($args[1]);
+				if ($command == null) {
 					$this->applicationPresenter->printCommandNotFound($args[1]);
 					$this->applicationPresenter->printHelp($this->commandFactory->getCommandsDesc());
 					return;
 				}
 
-				$this->applicationPresenter->printCommandHelp($command_help);
+				$command->printHelp();
 				return;
 			}
 

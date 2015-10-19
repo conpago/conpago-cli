@@ -9,8 +9,25 @@
 	namespace Conpago\Cli\Contract;
 
 
+	/**
+	 * Interface ICommand
+	 * @package Conpago\Cli\Contract
+	 */
 	interface ICommand {
-		function getHelp();
+		/**
+		 * @return void
+		 */
+		function printHelp();
+
+		/**
+		 * @return string
+		 */
 		function getDescription();
+
+		/**
+		 * @param string[] $args
+		 *
+		 * @return void
+		 */
 		function run(array $args);
 	}

@@ -46,15 +46,4 @@
 			}
 			return $result;
 		}
-
-		/**
-		 * @return string
-		 */
-		public function getCommandHelp($command_name)
-		{
-			if (!array_key_exists($command_name, $this->command_list))
-				return null;
-
-			return $this->command_list[$command_name]->getHelp();
-		}
 	}

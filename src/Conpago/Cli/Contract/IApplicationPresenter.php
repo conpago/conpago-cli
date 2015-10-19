@@ -29,11 +29,4 @@
 		 * @return void
 		 */
 		public function printCommandNotFound($command_name);
-
-		/**
-		 * @param string $command_help
-		 *
-		 * @return void
-		 */
-		public function printCommandHelp($command_help);
 	}

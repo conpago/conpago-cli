@@ -22,19 +22,15 @@
 			$this->presenter = $presenter;
 		}
 
-		function getHelp() {
-			return "Usage: conpago interactor <InteractorName>".PHP_EOL.
-				PHP_EOL.
-				$this->getDescription().
-		        PHP_EOL;
+		function printHelp() {
+			$this->presenter->printHelp($this->getDescription());
 		}
 
 		function run( array $args ) {
 			if (count($args) < 1)
 			{
-				echo "Missing parameter <InteractorName>.".PHP_EOL;
-				echo PHP_EOL;
-				$this->getHelp();
+				$this->printMissingParameter();
+				$this->printHelp();
 				return;
 			}
 
@@ -84,5 +80,9 @@
 
 		function getDescription() {
 			return "Generate interactor with interfaces and adapters stubs. It also generate tests stubs.".PHP_EOL;
+		}
+
+		protected function printMissingParameter() {
+			$this->presenter->printMissingParameter();
 		}
 	}

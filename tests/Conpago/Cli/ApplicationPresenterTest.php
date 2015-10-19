@@ -46,12 +46,6 @@
 			$this->application_presenter->printCommandNotFound('command');
 		}
 
-		public function test_printCommandHelp_willPrintCommandHelp()
-		{
-			$this->expectCommandHelp('command_help');
-			$this->application_presenter->printCommandHelp('command_help');
-		}
-
 		function expectHelp(){
 			$this->output->expects($this->exactly(11))
 			             ->method('writeLine')
@@ -86,15 +80,6 @@
 			             ->withConsecutive(
 					             ['Could not find command \'%s\'!', $command_name],
 					             [null, null]
-			             );
-		}
-
-		private function expectCommandHelp($command_name)
-		{
-			$this->output->expects($this->exactly(1))
-			             ->method('writeLine')
-			             ->withConsecutive(
-					             ['command_help', null]
 			             );
 		}
 	}
