@@ -25,7 +25,8 @@
 					new CommandFactory(
 							[
 									'interactor' => new CreateInteractor(
-											new CreateInteractorPresenter($output)
+											new CreateInteractorPresenter($output),
+											new Question(new StreamInput(STDIN), $output)
 									)
 							]
 					)

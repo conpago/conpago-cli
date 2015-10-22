@@ -16,12 +16,20 @@
 		 * @var \PHPUnit_Framework_MockObject_MockObject
 		 */
 		protected $presenter;
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject
+		 */
+		protected $question;
+		/**
+		 * @var CreateInteractor
+		 */
+		protected $createInteractor;
 
 		function test_PrinHelp_willPrintHelp()
 		{
 			$this->presenter->expects($this->once())
 					->method("printHelp");
-			(new CreateInteractor($this->presenter))->printHelp();
+			$this->createInteractor->printHelp();
 		}
 
 		private function expectedDescription()
@@ -32,7 +40,7 @@
 
 		function test_GetDescriptionWillReturnDescription()
 		{
-			$description = (new CreateInteractor($this->presenter))->getDescription();
+			$description = $this->createInteractor->getDescription();
 			$this->assertEquals($this->expectedDescription(), $description);
 		}
 
@@ -42,7 +50,20 @@
 			                ->method("printMissingParameter");
 			$this->presenter->expects($this->once())
 			                ->method("printHelp");
-			(new CreateInteractor($this->presenter))->run([]);
+			$this->createInteractor->run([]);
+		}
+
+		function test_WillAskForCreatingAccessRight()
+		{
+			$this->question->expects($this->once())
+			                ->method("ask")
+							->with(
+								$this->equalTo("Create access right for interactor?"),
+								$this->equalTo(["yes", "no"]),
+								$this->equalTo("yes")
+							);
+
+			$this->createInteractor->run(["CreateUser"]);
 		}
 
 		/**
@@ -50,5 +71,7 @@
 		 */
 		function setUp() {
 			$this->presenter = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter');
+			$this->question = $this->getMock('Conpago\Cli\Contract\IQuestion');
+			$this->createInteractor = new CreateInteractor($this->presenter, $this->question);
 		}
 	}

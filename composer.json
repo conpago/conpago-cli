@@ -15,7 +15,8 @@
 		"bin/conpago"
 	],
 	"require": {
-		"symfony/yaml": "2.*"
+		"symfony/yaml": "2.*",
+		"conpago/conpago-utils": "dev-master"
 	},
 	"require-dev": {
 		"behat/behat": "3.0.x",

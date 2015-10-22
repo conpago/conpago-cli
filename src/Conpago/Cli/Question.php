@@ -11,8 +11,9 @@
 
 	use Conpago\Cli\Contract\IInput;
 	use Conpago\Cli\Contract\IOutput;
+	use Conpago\Cli\Contract\IQuestion;
 
-	class Question
+	class Question implements IQuestion
 	{
 		/**
 		 * @var IInput
@@ -29,14 +30,48 @@
 			$this->output = $output;
 		}
 
-		public function ask($question, $acceptableAnswers = null)
+		public function ask($question, array $acceptableAnswers = null, $defaultAnswer = null)
 		{
-			$acceptableAnswers = array_slice(func_get_args(), 1);
+			$this->output->writeLine($this->GetQuestionLine($question, $acceptableAnswers, $defaultAnswer));
+			return $this->readValueFromInput($acceptableAnswers, $defaultAnswer);
+		}
 
-			$this->output->writeLine($question);
+		/**
+		 * @param $question
+		 * @param array $acceptableAnswers
+		 * @param $defaultAnswer
+		 *
+		 * @return string
+		 */
+		private function GetQuestionLine($question, array $acceptableAnswers = null, $defaultAnswer = null) {
+			$line = $question;
+			if ($acceptableAnswers != null) {
+				$line .= " [" . implode("/", $acceptableAnswers) . "]";
+			}
+
+			if ($defaultAnswer != null) {
+				$line .= " (" . $defaultAnswer . ")";
+			}
+
+			$line .= ": ";
+
+			return $line;
+		}
+
+		/**
+		 * @param array $acceptableAnswers
+		 * @param $defaultAnswer
+		 *
+		 * @return null
+		 */
+		private function readValueFromInput(array $acceptableAnswers = null, $defaultAnswer = null) {
 			$value = null;
 			do {
 				$value = $this->input->readLine();
+				if ($value == null) {
+					$value = $defaultAnswer;
+				}
+
 			} while ($acceptableAnswers != null && !in_array($value, $acceptableAnswers));
 
 			return $value;

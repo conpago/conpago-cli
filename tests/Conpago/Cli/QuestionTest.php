@@ -49,7 +49,22 @@
 			$this->input->expects($this->exactly(2))->method("readLine")
 					->willReturnOnConsecutiveCalls("x", "yes");
 
-			$this->question->ask("Prompt", "yes");
+			$this->question->ask("Prompt", ["yes"]);
+		}
+
+		function testAsk_WillAcceptsEmptyAnswerIfDefaultIsNotSet()
+		{
+			$this->input->expects($this->exactly(2))->method("readLine")
+		            ->willReturnOnConsecutiveCalls("", "yes");
+
+			$this->question->ask("Prompt", ["yes"]);
+		}
+
+		function testAsk_WillAcceptsEmptyAnswerIfDefaultIsSet()
+		{
+			$this->input->expects($this->exactly(1))->method("readLine")->willReturn("");
+
+			$this->question->ask("Prompt", ["yes"], "yes");
 		}
 
 		function testAsk_WillCallReadLineTillResponseIsAcceptable()
@@ -57,16 +72,32 @@
 			$this->input->expects($this->exactly(3))->method("readLine")
 					->willReturnOnConsecutiveCalls("x", "y", "yes");
 
-			$this->question->ask("Propmt", "yes");
+			$this->question->ask("Propmt", ["yes"]);
 		}
 
 		function testAsk_WillCallPrintPromptToOuput()
 		{
-			$this->input->expects($this->any())->method("readLine")
-					->willReturnOnConsecutiveCalls("yes");
 			$this->output->expects($this->atLeast(1))->method("writeLine")
-					->willReturnOnConsecutiveCalls("Propmt");
+			             ->with("Propmt: ");
 
-			$this->question->ask("Propmt", "yes");
+			$this->question->ask("Propmt");
+		}
+
+		function testAsk_WillCallPrintPromptAcceptableAnswersToOuput()
+		{
+			$this->input->expects($this->any())->method("readLine")->willReturn("yes");
+
+			$this->output->expects($this->atLeast(1))->method("writeLine")
+			             ->with("Propmt [yes/no/cancel]: ");
+
+			$this->question->ask("Propmt", ["yes", "no", "cancel"]);
+		}
+
+		function testAsk_WillCallPrintPromptAcceptableAnswersAndDefaultToOuput()
+		{
+			$this->output->expects($this->atLeast(1))->method("writeLine")
+			             ->with("Propmt [yes/no/cancel] (yes): ");
+
+			$this->question->ask("Propmt", ["yes", "no", "cancel"], "yes");
 		}
 	}
