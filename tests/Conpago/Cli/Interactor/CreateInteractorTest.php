@@ -19,7 +19,7 @@
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject
 		 */
-		protected $question;
+		protected $createInteractorContextBuilder;
 		/**
 		 * @var CreateInteractor
 		 */
@@ -53,15 +53,10 @@
 			$this->createInteractor->run([]);
 		}
 
-		function test_WillAskForCreatingAccessRight()
+		function test_WillAskForCreatingDifferentThings()
 		{
-			$this->question->expects($this->once())
-			                ->method("ask")
-							->with(
-								$this->equalTo("Create access right for interactor?"),
-								$this->equalTo(["yes", "no"]),
-								$this->equalTo("yes")
-							);
+			$this->createInteractorContextBuilder->expects($this->once())
+					->method("build");
 
 			$this->createInteractor->run(["CreateUser"]);
 		}
@@ -71,7 +66,7 @@
 		 */
 		function setUp() {
 			$this->presenter = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter');
-			$this->question = $this->getMock('Conpago\Cli\Contract\IQuestion');
-			$this->createInteractor = new CreateInteractor($this->presenter, $this->question);
+			$this->createInteractorContextBuilder = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder');
+			$this->createInteractor = new CreateInteractor($this->presenter, $this->createInteractorContextBuilder);
 		}
 	}

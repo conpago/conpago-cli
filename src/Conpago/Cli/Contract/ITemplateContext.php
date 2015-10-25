@@ -11,7 +11,18 @@
 
 	interface ITemplateContext {
 
-		public function getName();
+		/**
+		 * @return string
+		 */
+		public function getTargetPath();
 
-		public function getNamespace();
+		/**
+		 * @return string
+		 */
+		public function getAuthor();
+
+		/**
+		 * @return array
+		 */
+		public function getVariables();
 	}

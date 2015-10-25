@@ -10,6 +10,7 @@
 	namespace Conpago\Cli;
 
 	use Conpago\Cli\Interactor\CreateInteractor;
+	use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\CreateInteractorPresenter;
 
 	class ApplicationFactory {
@@ -26,7 +27,9 @@
 							[
 									'interactor' => new CreateInteractor(
 											new CreateInteractorPresenter($output),
-											new Question(new StreamInput(STDIN), $output)
+											new CreateInteractorContextBuilder(
+												new Question(new StreamInput(STDIN), $output)
+											)
 									)
 							]
 					)

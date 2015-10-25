@@ -9,33 +9,34 @@
 	namespace Conpago\Cli\Interactor;
 
 	use Conpago\Cli\Contract\ICommand;
-	use Conpago\Cli\Contract\IQuestion;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
 
 	class CreateInteractor implements ICommand {
+
 
 		/**
 		 * @var ICreateInteractorPresenter
 		 */
 		private $presenter;
 		/**
-		 * @var IQuestion
+		 * @var ICreateInteractorContextBuilder
 		 */
-		private $question;
+		private $createInteractorContextBuilder;
 
 		/**
 		 * CreateInteractor constructor.
 		 *
 		 * @param ICreateInteractorPresenter $presenter
-		 * @param IQuestion $question
+		 * @param ICreateInteractorContextBuilder $createInteractorContextBuilder
 		 */
 		function __construct(
 			ICreateInteractorPresenter $presenter,
-			IQuestion $question
+			ICreateInteractorContextBuilder $createInteractorContextBuilder
 		)
 		{
 			$this->presenter = $presenter;
-			$this->question = $question;
+			$this->createInteractorContextBuilder = $createInteractorContextBuilder;
 		}
 
 		function printHelp() {
@@ -50,7 +51,7 @@
 				return;
 			}
 
-			$this->question->ask("Create access right for interactor?", ["yes", "no"], "yes");
+			$context = $this->createInteractorContextBuilder->build();
 		}
 
 		function getDescription() {
