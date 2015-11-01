@@ -11,10 +11,14 @@
 	use Conpago\Cli\Contract\ICommand;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
 
 	class CreateInteractor implements ICommand {
 
-
+		/**
+		 * @var ICreateInteractorTemplateFileListBuilder
+		 */
+		private $fileListBuilder;
 		/**
 		 * @var ICreateInteractorPresenter
 		 */
@@ -22,21 +26,24 @@
 		/**
 		 * @var ICreateInteractorContextBuilder
 		 */
-		private $createInteractorContextBuilder;
+		private $contextBuilder;
 
 		/**
 		 * CreateInteractor constructor.
 		 *
 		 * @param ICreateInteractorPresenter $presenter
-		 * @param ICreateInteractorContextBuilder $createInteractorContextBuilder
+		 * @param ICreateInteractorContextBuilder $contextBuilder
+		 * @param ICreateInteractorTemplateFileListBuilder $fileListBuilder
 		 */
 		function __construct(
 			ICreateInteractorPresenter $presenter,
-			ICreateInteractorContextBuilder $createInteractorContextBuilder
+			ICreateInteractorContextBuilder $contextBuilder,
+			ICreateInteractorTemplateFileListBuilder $fileListBuilder
 		)
 		{
-			$this->presenter = $presenter;
-			$this->createInteractorContextBuilder = $createInteractorContextBuilder;
+			$this->presenter      = $presenter;
+			$this->contextBuilder = $contextBuilder;
+			$this->fileListBuilder = $fileListBuilder;
 		}
 
 		function printHelp() {
@@ -51,7 +58,8 @@
 				return;
 			}
 
-			$context = $this->createInteractorContextBuilder->build();
+			$context = $this->contextBuilder->build();
+			$this->fileListBuilder->build($context);
 		}
 
 		function getDescription() {

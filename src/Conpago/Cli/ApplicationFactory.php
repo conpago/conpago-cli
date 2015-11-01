@@ -12,6 +12,7 @@
 	use Conpago\Cli\Interactor\CreateInteractor;
 	use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
+	use Conpago\Cli\Interactor\CreateInteractorTemplateFileListBuilder;
 	use Conpago\Cli\Interactor\CreateInteractorPresenter;
 	use Conpago\Config\YamlConfig;
 	use Conpago\File\FileSystem;
@@ -38,7 +39,8 @@
 														"conpago-cli.yaml"
 													)
 												)
-											)
+											),
+											new CreateInteractorTemplateFileListBuilder()
 									)
 							]
 					)

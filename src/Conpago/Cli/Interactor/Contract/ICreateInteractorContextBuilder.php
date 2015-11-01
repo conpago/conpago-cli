@@ -12,7 +12,7 @@
 	interface ICreateInteractorContextBuilder
 	{
 		/**
-		 * @return CreateinteractorContext
+		 * @return CreateInteractorContext
 		 */
 		public function build();
 	}

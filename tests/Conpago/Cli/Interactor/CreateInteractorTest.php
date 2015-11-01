@@ -10,6 +10,8 @@
 	namespace Conpago\Cli\Interactor;
 
 
+	use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
+
 	class CreateInteractorTest extends \PHPUnit_Framework_TestCase {
 
 		/**
@@ -24,6 +26,10 @@
 		 * @var CreateInteractor
 		 */
 		protected $createInteractor;
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject
+		 */
+		protected $createInteractorTemplateFileListBuilder;
 
 		function test_PrinHelp_willPrintHelp()
 		{
@@ -53,10 +59,28 @@
 			$this->createInteractor->run([]);
 		}
 
-		function test_WillAskForCreatingDifferentThings()
+		function test_WillCallContextBuilder()
 		{
+			$context = new CreateInteractorContext();
 			$this->createInteractorContextBuilder->expects($this->once())
-					->method("build");
+					->method("build")
+					->willReturn($context);
+
+			$this->createInteractor->run(["CreateUser"]);
+		}
+
+		function test_WillPassContextToTemplateFileListBuilder()
+		{
+			$context = new CreateInteractorContext();
+			$this->createInteractorContextBuilder
+				->expects($this->any())
+	            ->method("build")
+				->willReturn($context);
+
+			$this->createInteractorTemplateFileListBuilder
+				->expects($this->once())
+		        ->method("build")
+				->with($context);
 
 			$this->createInteractor->run(["CreateUser"]);
 		}
@@ -67,6 +91,11 @@
 		function setUp() {
 			$this->presenter = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter');
 			$this->createInteractorContextBuilder = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder');
-			$this->createInteractor = new CreateInteractor($this->presenter, $this->createInteractorContextBuilder);
+			$this->createInteractorTemplateFileListBuilder = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder');
+			$this->createInteractor = new CreateInteractor(
+					$this->presenter,
+					$this->createInteractorContextBuilder,
+					$this->createInteractorTemplateFileListBuilder
+			);
 		}
 	}
