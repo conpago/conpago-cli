@@ -13,9 +13,6 @@
 	use Conpago\Cli\Templates\Contract\ITemplateOptions;
 
 	class TemplateEnvironment {
-		const START_CHAR = "{";
-		const END_CHAR = "}";
-
 		/**
 		 * @var ITemplateLoader
 		 */
@@ -51,16 +48,13 @@
 	}
 
 	class TemplateFiller {
-		const IS_NOT_VARIABLE = false;
-		const IS_VARIABLE = true;
-
 		protected $in;
 		protected $out;
 		protected $variables;
 		protected $call_stack;
 
-		protected $buffer;
-		protected $old_buffer;
+		const VARIABLE_BEGIN = "{{";
+		const VARIABLE_END = "}}";
 
 		/**
 		 * @param $content
@@ -75,55 +69,50 @@
 			$this->variables  = $variables;
 		}
 
-		function readNextToBuffer()
-		{
-			$char = $this->getNextChar();
-			$this->old_buffer = $this->buffer;
-			$this->buffer .= $char;
+		function startsWith($haystack, $needle) {
+			return $needle === "" ||
+				strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+		}
 
-			return $char;
+		function endsWith($haystack, $needle) {
+			return $needle === "" ||
+				(
+					($temp = strlen($haystack) - strlen($needle)) >= 0 &&
+					strpos($haystack, $needle, $temp) !== FALSE
+				);
 		}
 
 		function readToBuffer()
 		{
-			$in_variable = false;
 			while (!feof($this->in)) {
-				$char = $this->readNextToBuffer();
-				if ($this->isStartChar($char)) {
-					if ($this->isBufferDirty()) {
-						$this->rewindLastRead();
-						return self::IS_NOT_VARIABLE;
+				$gathered = "";
+				while (!feof($this->in))
+				{
+					$gathered .= $this->getNextChar();
+
+					if (self::VARIABLE_BEGIN == $gathered) {
+						while (!feof($this->in)) {
+							$gathered .= $this->getNextChar();
+
+							if ($this->endsWith($gathered, self::VARIABLE_END)) {
+								$this->processVariable($gathered);
+								$gathered = "";
+								break;
+							}
+						}
+						break;
 					}
 
-					$char = $this->readNextToBuffer();
-					if (!$this->isStartChar($char) ) {
-						return self::IS_NOT_VARIABLE;
+					if(!$this->startsWith(self::VARIABLE_BEGIN, $gathered)) {
+						break;
 					}
-
-					$in_variable = true;
 				}
-				else if ($in_variable && $this->isEndChar($char)) {
-					$char = $this->readNextToBuffer();
-					if ($this->isEndChar($char)) {
-						return self::IS_VARIABLE;
-					}
-					return self::IS_NOT_VARIABLE;
-				}
+				$this->addToOutput($gathered);
 			}
-
-			return self::IS_NOT_VARIABLE;
 		}
 
 		function fill() {
-			while (!feof($this->in)) {
-				$result = $this->readToBuffer();
-				if ( $result == self::IS_NOT_VARIABLE ) {
-					$this->dumpBuffer();
-				} else {
-					$this->processVatiableInBuffer();
-				}
-				$this->buffer = "";
-			}
+			$this->readToBuffer();
 			return $this->getResult();
 		}
 
@@ -144,24 +133,6 @@
 			return fopen('php://memory', 'w');
 		}
 
-		/**
-		 * @param $char
-		 *
-		 * @return bool
-		 */
-		private function isStartChar($char) {
-			return $char == TemplateEnvironment::START_CHAR;
-		}
-
-		/**
-		 * @param $char
-		 *
-		 * @return bool
-		 */
-		private function isEndChar($char) {
-			return $char == TemplateEnvironment::END_CHAR;
-		}
-
 		private function getResult() {
 			fseek($this->out, 0);
 			$result = "";
@@ -171,10 +142,10 @@
 			return $result;
 		}
 
-		private function getVariableReplacement() {
-			$variable = substr( $this->buffer, 2, -2);
+		private function getVariableReplacement($buffer) {
+			$variable = substr( $buffer, 2, -2);
 			if (!array_key_exists($variable, $this->variables)) {
-				return $this->buffer;
+				return $buffer;
 			}
 
 			$recursion          = in_array( $variable, $this->call_stack );
@@ -193,23 +164,7 @@
 			return fread( $this->in, 1 );
 		}
 
-		private function dumpBuffer() {
-			$this->addToOutput($this->buffer);
-		}
-
-		private function rewindLastRead() {
-			fseek( $this->in, ftell( $this->in ) - 1 );
-			$this->buffer = $this->old_buffer;
-		}
-
-		/**
-		 * @return bool
-		 */
-		private function isBufferDirty() {
-			return strlen( $this->old_buffer ) > 0;
-		}
-
-		protected function processVatiableInBuffer() {
-			$this->addToOutput( $this->getVariableReplacement() );
+		protected function processVariable($buffer) {
+			$this->addToOutput( $this->getVariableReplacement($buffer) );
 		}
 	}

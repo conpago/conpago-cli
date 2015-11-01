@@ -32,12 +32,6 @@
 
 		function processTemplate($template, ITemplateContext $context)
 		{
-			$variables = [
-				'name' => $context->getName(),
-				'namespace' => $context->getNamespace(),
-				'NAME' => $this->caseConverter->toMacroCase($context->getName()),
-				'NAMESPACE' => $this->caseConverter->toMacroCase($context->getNamespace())
-			];
-			$this->templateEnvironment->render($template, $variables);
+			$this->templateEnvironment->render($template, $context->getVariables());
 		}
 	}

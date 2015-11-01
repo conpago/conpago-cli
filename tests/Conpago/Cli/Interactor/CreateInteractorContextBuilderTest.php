@@ -19,6 +19,10 @@
 		 * @var \PHPUnit_Framework_MockObject_MockObject
 		 */
 		protected $question;
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject
+		 */
+		protected $config;
 
 		public function test_WillAskForContextData()
 		{
@@ -51,7 +55,7 @@
 			$this->createInteractorContextBuilder->build();
 		}
 
-		public function test_WillbuildContextWithgatheredData()
+		public function test_WillBuildContextWithGatheredData()
 		{
 			$this->question->expects($this->any())
 					->method("ask")
@@ -60,13 +64,13 @@
 			$context = $this->createInteractorContextBuilder->build();
 			$this->assertEquals(
 				[
-					$context->getVariables()["createAccessRight"],
-					$context->getVariables()["createRequestData"],
-					$context->getVariables()["createRequestDataValidator"],
-					$context->getVariables()["createDao"],
-					$context->getVariables()["createLogger"],
-					$context->getVariables()["createPreseterModel"],
-					$context->getVariables()["createConpagoDiModule"],
+					$context->getVariable("createAccessRight"),
+					$context->getVariable("createRequestData"),
+					$context->getVariable("createRequestDataValidator"),
+					$context->getVariable("createDao"),
+					$context->getVariable("createLogger"),
+					$context->getVariable("createPreseterModel"),
+					$context->getVariable("createConpagoDiModule")
 				],
 				[
 					true,
@@ -79,9 +83,65 @@
 				]);
 		}
 
+		public function test_WillSetAuthorFromConfig()
+		{
+			$this->question->expects($this->any())
+					->method("ask")
+					->willReturn("yes");
+			$this->config->expects($this->once())->method("getAuthor")->willReturn("Authorrr");
+
+			$context = $this->createInteractorContextBuilder->build();
+			$this->assertEquals($context->getVariable("author"), "Authorrr");
+		}
+
+		public function test_WillSetCompanyFromConfig()
+		{
+			$this->question->expects($this->any())
+					->method("ask")
+					->willReturn("yes");
+			$this->config->expects($this->once())->method("getCompany")->willReturn("Company");
+
+			$context = $this->createInteractorContextBuilder->build();
+			$this->assertEquals($context->getVariable("company"), "Company");
+		}
+
+		public function test_WillSetProjectFromConfig()
+		{
+			$this->question->expects($this->any())
+					->method("ask")
+					->willReturn("yes");
+			$this->config->expects($this->once())->method("getProject")->willReturn("Project");
+
+			$context = $this->createInteractorContextBuilder->build();
+			$this->assertEquals($context->getVariable("project"), "Project");
+		}
+
+		public function test_WillSetSourcesFromConfig()
+		{
+			$this->question->expects($this->any())
+					->method("ask")
+					->willReturn("yes");
+			$this->config->expects($this->once())->method("getSources")->willReturn("Sources");
+
+			$context = $this->createInteractorContextBuilder->build();
+			$this->assertEquals($context->getVariable("sources"), "Sources");
+		}
+
+		public function test_WillSetTestsAuthorFromConfig()
+		{
+			$this->question->expects($this->any())
+					->method("ask")
+					->willReturn("yes");
+			$this->config->expects($this->once())->method("getTests")->willReturn("Tests");
+
+			$context = $this->createInteractorContextBuilder->build();
+			$this->assertEquals($context->getVariable("tests"), "Tests");
+		}
+
 		protected function setUp()
 		{
 			$this->question = $this->getMock('Conpago\Cli\Contract\IQuestion');
-			$this->createInteractorContextBuilder = new CreateInteractorContextBuilder($this->question);
+			$this->config = $this->getMock('Conpago\Cli\interactor\Contract\ICreateInteractorContextBuilderConfig');
+			$this->createInteractorContextBuilder = new CreateInteractorContextBuilder($this->question, $this->config);
 		}
 	}

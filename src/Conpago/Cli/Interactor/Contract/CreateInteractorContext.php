@@ -74,4 +74,12 @@
 		{
 			$this->variables[$name] = $value;
 		}
+
+		public function getVariable($name)
+		{
+			if (!array_key_exists($name, $this->variables))
+				return null;
+
+			return $this->variables[$name];
+		}
 	}

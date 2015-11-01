@@ -11,7 +11,10 @@
 
 	use Conpago\Cli\Interactor\CreateInteractor;
 	use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
+	use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
 	use Conpago\Cli\Interactor\CreateInteractorPresenter;
+	use Conpago\Config\YamlConfig;
+	use Conpago\File\FileSystem;
 
 	class ApplicationFactory {
 
@@ -28,7 +31,13 @@
 									'interactor' => new CreateInteractor(
 											new CreateInteractorPresenter($output),
 											new CreateInteractorContextBuilder(
-												new Question(new StreamInput(STDIN), $output)
+												new Question(new StreamInput(STDIN), $output),
+												new CreateInteractorContextBuilderConfig(
+													new YamlConfig(
+														new FileSystem(),
+														"conpago-cli.yaml"
+													)
+												)
 											)
 									)
 							]

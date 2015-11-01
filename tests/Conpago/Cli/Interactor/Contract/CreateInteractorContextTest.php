@@ -49,4 +49,17 @@
 			$c->setVariable("path", "xxx");
 			$this->assertEquals("xxx", $c->getVariables()["path"]);
 		}
+
+		function test_getVariableWillReturnValueAfterSet(){
+			$c = new CreateInteractorContext();
+
+			$c->setVariable("path", "xxx");
+			$this->assertEquals("xxx", $c->getVariable("path"));
+		}
+
+		function test_getVariableWillReturnNullWhenNotExists(){
+			$c = new CreateInteractorContext();
+
+			$this->assertNull($c->getVariable("variable"));
+		}
 	}

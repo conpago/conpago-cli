@@ -12,11 +12,16 @@
 	use Conpago\Cli\Contract\IQuestion;
 	use Conpago\Cli\Interactor\Contract\CreateinteractorContext;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
 
 	class CreateInteractorContextBuilder implements ICreateInteractorContextBuilder
 	{
 		const YES_ANSWER = "yes";
 		const NO_ANSWER = "no";
+		/**
+		 * @var ICreateInteractorContextBuilderConfig
+		 */
+		protected $config;
 
 		/**
 		 * @var IQuestion
@@ -29,10 +34,12 @@
 		 * @param IQuestion $question
 		 */
 		function __construct(
-			IQuestion $question
+			IQuestion $question,
+			ICreateInteractorContextBuilderConfig $config
 		)
 		{
 			$this->question = $question;
+			$this->config = $config;
 		}
 		/**
 		 * @return CreateinteractorContext
@@ -40,6 +47,27 @@
 		public function build()
 		{
 			$context = new CreateinteractorContext();
+			$this->gatherDataFromUser($context);
+			$this->readConfig($context);
+
+			return $context;
+		}
+
+		/**
+		 * @param $question
+		 *
+		 * @return string
+		 */
+		protected function askAboutCreating($question)
+		{
+			return $this->question->ask($question, [self::YES_ANSWER, self::NO_ANSWER], self::YES_ANSWER);
+		}
+
+		/**
+		 * @param $context
+		 */
+		protected function gatherDataFromUser($context)
+		{
 			$context->setVariable(
 					"createAccessRight",
 					$this->askAboutCreating("Create access right for interactor?") == self::YES_ANSWER);
@@ -61,17 +89,17 @@
 			$context->setVariable(
 					"createConpagoDiModule",
 					$this->askAboutCreating("Create Conpago/DI module for interactor?") == self::YES_ANSWER);
-
-			return $context;
 		}
 
 		/**
-		 * @param $question
-		 *
-		 * @return string
+		 * @param $context
 		 */
-		protected function askAboutCreating($question)
+		protected function readConfig($context)
 		{
-			return $this->question->ask($question, [self::YES_ANSWER, self::NO_ANSWER], self::YES_ANSWER);
+			$context->setVariable("author", $this->config->getAuthor());
+			$context->setVariable("company", $this->config->getCompany());
+			$context->setVariable("project", $this->config->getProject());
+			$context->setVariable("sources", $this->config->getSources());
+			$context->setVariable("tests", $this->config->getTests());
 		}
 	}
