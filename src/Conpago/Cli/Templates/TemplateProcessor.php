@@ -6,12 +6,12 @@
 	 * Time: 23:25
 	 */
 
-	namespace Conpago\Cli;
+	namespace Conpago\Cli\Templates;
 
 
 	use Conpago\Cli\CaseConverter\CaseConverter;
-	use Conpago\Cli\Contract\ITemplateContext;
-	use Conpago\Cli\Templates\TemplateEnvironment;
+	use Conpago\Cli\Templates\Contract\ITemplateContext;
+	use Conpago\Cli\Templates\Contract\ITemplateProcessor;
 
 	/**
 	 * Class TemplateProcessor
@@ -19,7 +19,7 @@
 	 * @license MIT
 	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
 	 */
-	class TemplateProcessor {
+	class TemplateProcessor implements ITemplateProcessor {
 
 		/**
 		 * @var TemplateEnvironment
@@ -38,6 +38,6 @@
 
 		function processTemplate($template, ITemplateContext $context)
 		{
-			$this->templateEnvironment->render($template, $context->getVariables());
+			return $this->templateEnvironment->render($template, $context->getVariables());
 		}
 	}

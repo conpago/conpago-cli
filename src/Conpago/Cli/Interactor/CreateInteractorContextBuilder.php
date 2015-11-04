@@ -38,6 +38,7 @@
 		 * CreateInteractorContextBuilder constructor.
 		 *
 		 * @param IQuestion $question
+		 * @param ICreateInteractorContextBuilderConfig $config
 		 */
 		function __construct(
 			IQuestion $question,
@@ -72,7 +73,7 @@
 		/**
 		 * @param $context
 		 */
-		protected function gatherDataFromUser($context)
+		protected function gatherDataFromUser(CreateinteractorContext $context)
 		{
 			$context->setVariable(
 					"createAccessRight",
@@ -100,12 +101,12 @@
 		/**
 		 * @param $context
 		 */
-		protected function readConfig($context)
+		protected function readConfig(CreateinteractorContext $context)
 		{
-			$context->setVariable("author", $this->config->getAuthor());
-			$context->setVariable("company", $this->config->getCompany());
-			$context->setVariable("project", $this->config->getProject());
-			$context->setVariable("sources", $this->config->getSources());
-			$context->setVariable("tests", $this->config->getTests());
+			$context->setAuthor($this->config->getAuthor());
+			$context->setCompany($this->config->getCompany());
+			$context->setProject($this->config->getProject());
+			$context->setSources($this->config->getSources());
+			$context->setTests($this->config->getTests());
 		}
 	}

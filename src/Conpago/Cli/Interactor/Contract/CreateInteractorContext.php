@@ -9,7 +9,7 @@
 	namespace Conpago\Cli\Interactor\Contract;
 
 
-	use Conpago\Cli\Contract\ITemplateContext;
+	use Conpago\Cli\Templates\Contract\ITemplateContext;
 
 	/**
 	 * Class CreateInteractorContext
@@ -17,53 +17,12 @@
 	 * @license MIT
 	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
 	 */
-	class CreateInteractorContext implements ITemplateContext
+	class CreateInteractorContext implements ICreateInteractorContext
 	{
-		/**
-		 * @var string
-		 */
-		protected $targetPath;
-		/**
-		 * @var string
-		 */
-		protected $author;
 		/**
 		 * @var array
 		 */
 		protected $variables = [];
-
-		/**
-		 * @return string
-		 */
-		public function getTargetPath()
-		{
-			return $this->targetPath;
-		}
-
-		/**
-		 * @param string $targetPath
-		 */
-		public function setTargetPath($targetPath)
-		{
-			$this->targetPath = $targetPath;
-		}
-
-		/**
-		 * @return string
-		 */
-		public function getAuthor()
-		{
-			return $this->author;
-		}
-
-		/**
-		 * @param string $author
-		 */
-		public function setAuthor($author)
-		{
-			$this->author = $author;
-		}
-
 		/**
 		 * @return array
 		 */
@@ -87,5 +46,53 @@
 				return null;
 
 			return $this->variables[$name];
+		}
+
+		private $author_var_name = "author";
+		/**
+		 * @return string
+		 */
+		public function getAuthor()
+		{
+			return $this->getVariable($this->author_var_name);
+		}
+		/**
+		 * @param string $author
+		 */
+		public function setAuthor($author)
+		{
+			$this->setVariable($this->author_var_name, $author);
+		}
+
+		private $company_var_name = "company";
+		public function setCompany($company) {
+			$this->setVariable($this->company_var_name, $company);
+		}
+		public function getCompany() {
+			return $this->getVariable($this->company_var_name);
+		}
+
+		private $project_var_name = "project";
+		public function setProject($project) {
+			$this->setVariable($this->project_var_name, $project);
+		}
+		public function getProject() {
+			return $this->getVariable($this->project_var_name);
+		}
+
+		private $sources_var_name = "sources";
+		public function setSources($sources) {
+			$this->setVariable($this->sources_var_name, $sources);
+		}
+		public function getSources() {
+			return $this->getVariable($this->sources_var_name);
+		}
+
+		private $tests_var_name = "tests";
+		public function setTests($tests) {
+			$this->setVariable($this->tests_var_name, $tests);
+		}
+		public function getTests() {
+			return $this->getVariable($this->tests_var_name);
 		}
 	}
