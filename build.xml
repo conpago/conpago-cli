@@ -155,6 +155,31 @@
         </exec>
     </target>
 
+    <target name="phpdoc" description="update API documentation">
+        <exec executable=".\vendor\bin\phpdoc.bat" osfamily="windows">
+            <arg value="-d"/>
+            <arg value="src"/>
+            <arg value="--title"/>
+            <arg value="${ant.project.name}"/>
+            <arg value="--defaultpackagename"/>
+            <arg value="Conpago.Cli"/>
+            <arg value="-t"/>
+            <arg value="docs"/>
+        </exec>
+        <exec executable="./vendor/bin/phpdoc" osfamily="unix">
+            <arg value="-d"/>
+            <arg value="src"/>
+            <arg value="--title"/>
+            <arg value="${ant.project.name}"/>
+            <arg value="--defaultpackagename"/>
+            <arg value="Conpago.Cli"/>
+            <arg value="-t"/>
+            <arg value="docs"/>
+            <arg value="--cache-folder"/>
+            <arg value="tmp/phpdoc-cache"/>
+        </exec>
+    </target>
+
     <target name="behat">
         <exec executable=".\vendor\bin\behat.bat" osfamily="windows" failonerror="true" />
         <exec executable="./vendor/bin/behat" osfamily="unix" failonerror="true" />

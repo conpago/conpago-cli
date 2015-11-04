@@ -1,0 +1,49 @@
+<?php
+
+	/**
+	 * Created by PhpStorm.
+	 * User: bgolek
+	 * Date: 2015-10-09
+	 * Time: 14:28
+	 */
+
+	namespace Conpago\Cli;
+
+	use Conpago\Cli\Interactor\CreateInteractor;
+	use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
+	use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
+	use Conpago\Cli\Interactor\CreateInteractorTemplateFileListBuilder;
+	use Conpago\Cli\Interactor\CreateInteractorPresenter;
+	use Conpago\Config\YamlConfig;
+	use Conpago\File\FileSystem;
+
+	class ApplicationFactory {
+
+		/**
+		 * @return Application
+		 */
+		public function createApplication() {
+			$output = new StreamOutput( STDOUT );
+
+			return new Application(
+					new ApplicationPresenter( $output ),
+					new CommandFactory(
+							[
+									'interactor' => new CreateInteractor(
+											new CreateInteractorPresenter($output),
+											new CreateInteractorContextBuilder(
+												new Question(new StreamInput(STDIN), $output),
+												new CreateInteractorContextBuilderConfig(
+													new YamlConfig(
+														new FileSystem(),
+														"conpago-cli.yaml"
+													)
+												)
+											),
+											new CreateInteractorTemplateFileListBuilder()
+									)
+							]
+					)
+			);
+		}
+	}

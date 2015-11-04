@@ -1,0 +1,72 @@
+<?php
+	/**
+	 * Created by PhpStorm.
+	 * User: bg
+	 * Date: 08.10.15
+	 * Time: 22:17
+	 */
+
+	namespace Conpago\Cli\Interactor;
+
+	use Conpago\Cli\Contract\ICommand;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
+	use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
+
+	class CreateInteractor implements ICommand {
+
+		/**
+		 * @var ICreateInteractorTemplateFileListBuilder
+		 */
+		private $fileListBuilder;
+		/**
+		 * @var ICreateInteractorPresenter
+		 */
+		private $presenter;
+		/**
+		 * @var ICreateInteractorContextBuilder
+		 */
+		private $contextBuilder;
+
+		/**
+		 * CreateInteractor constructor.
+		 *
+		 * @param ICreateInteractorPresenter $presenter
+		 * @param ICreateInteractorContextBuilder $contextBuilder
+		 * @param ICreateInteractorTemplateFileListBuilder $fileListBuilder
+		 */
+		function __construct(
+			ICreateInteractorPresenter $presenter,
+			ICreateInteractorContextBuilder $contextBuilder,
+			ICreateInteractorTemplateFileListBuilder $fileListBuilder
+		)
+		{
+			$this->presenter      = $presenter;
+			$this->contextBuilder = $contextBuilder;
+			$this->fileListBuilder = $fileListBuilder;
+		}
+
+		function printHelp() {
+			$this->presenter->printHelp($this->getDescription());
+		}
+
+		function run( array $args ) {
+			if (count($args) < 1)
+			{
+				$this->printMissingParameter();
+				$this->printHelp();
+				return;
+			}
+
+			$context = $this->contextBuilder->build();
+			$this->fileListBuilder->build($context);
+		}
+
+		function getDescription() {
+			return "Generate interactor with interfaces and adapters stubs. It also generate tests stubs.".PHP_EOL;
+		}
+
+		protected function printMissingParameter() {
+			$this->presenter->printMissingParameter();
+		}
+	}
