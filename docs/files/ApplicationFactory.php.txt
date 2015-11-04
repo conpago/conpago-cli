@@ -17,6 +17,12 @@
 	use Conpago\Config\YamlConfig;
 	use Conpago\File\FileSystem;
 
+	/**
+	 * Class ApplicationFactory
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class ApplicationFactory {
 
 		/**

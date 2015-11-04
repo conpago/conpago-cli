@@ -9,6 +9,12 @@
 	namespace Conpago\Cli\Contract;
 
 
+	/**
+	 * Interface ITemplateContext
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ITemplateContext {
 
 		/**

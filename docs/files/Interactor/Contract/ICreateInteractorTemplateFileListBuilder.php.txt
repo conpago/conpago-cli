@@ -9,6 +9,12 @@
 	namespace Conpago\Cli\Interactor\Contract;
 
 
+	/**
+	 * Interface ICreateInteractorTemplateFileListBuilder
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ICreateInteractorTemplateFileListBuilder {
 
 		/**

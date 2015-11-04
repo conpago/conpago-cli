@@ -14,6 +14,12 @@
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
 
+	/**
+	 * Class CreateInteractorContextBuilder
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractorContextBuilder implements ICreateInteractorContextBuilder
 	{
 		const YES_ANSWER = "yes";

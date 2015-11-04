@@ -10,21 +10,29 @@
 
 
 	/**
-	 * Interface ICommand
-	 * @package Conpago\Cli\Contract
+	 * Command definition. Implement it to add new command to Cli.
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
 	 */
 	interface ICommand {
 		/**
+		 * Prints help to presenter.
+		 *
 		 * @return void
 		 */
 		function printHelp();
 
 		/**
+		 * Returns description of command.
+		 *
 		 * @return string
 		 */
 		function getDescription();
 
 		/**
+		 * Runs command.
+		 *
 		 * @param string[] $args
 		 *
 		 * @return void

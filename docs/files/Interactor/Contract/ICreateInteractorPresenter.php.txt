@@ -9,6 +9,12 @@
 	namespace Conpago\Cli\Interactor\Contract;
 
 
+	/**
+	 * Interface ICreateInteractorPresenter
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ICreateInteractorPresenter {
 
 		/**

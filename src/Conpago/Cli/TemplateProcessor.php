@@ -13,6 +13,12 @@
 	use Conpago\Cli\Contract\ITemplateContext;
 	use Conpago\Cli\Templates\TemplateEnvironment;
 
+	/**
+	 * Class TemplateProcessor
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class TemplateProcessor {
 
 		/**

@@ -8,6 +8,12 @@
 
 	namespace Conpago\Cli\Templates\Contract;
 
+	/**
+	 * Interface ITemplateLoader
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ITemplateLoader {
 		function load( $template );
 	}

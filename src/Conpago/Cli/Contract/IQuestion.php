@@ -8,6 +8,12 @@
 
 	namespace Conpago\Cli\Contract;
 
+	/**
+	 * Interface IQuestion
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface IQuestion
 	{
 		public function ask($question, array $acceptableAnswers = null, $defaultAnswer = null);

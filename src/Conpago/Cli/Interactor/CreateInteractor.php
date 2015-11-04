@@ -13,6 +13,12 @@
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
 
+	/**
+	 * Class CreateInteractor
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractor implements ICommand {
 
 		/**

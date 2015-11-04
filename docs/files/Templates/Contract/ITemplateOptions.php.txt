@@ -8,6 +8,12 @@
 
 	namespace Conpago\Cli\Templates\Contract;
 
+	/**
+	 * Interface ITemplateOptions
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ITemplateOptions {
 		function getLineEndings();
 	}

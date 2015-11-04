@@ -12,6 +12,12 @@
 	use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
 
+	/**
+	 * Class CreateInteractorTemplateFileListBuilder
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractorTemplateFileListBuilder implements ICreateInteractorTemplateFileListBuilder {
 
 		/**
