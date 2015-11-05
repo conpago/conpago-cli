@@ -6,16 +6,16 @@
 	 * Time: 23:28
 	 */
 
-	namespace Conpago\Cli\Contract;
+	namespace Conpago\Cli\Templates\Contract;
 
 
+	/**
+	 * Interface ITemplateContext
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ITemplateContext {
-
-		/**
-		 * @return string
-		 */
-		public function getTargetPath();
-
 		/**
 		 * @return string
 		 */

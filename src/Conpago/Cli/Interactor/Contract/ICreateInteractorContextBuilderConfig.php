@@ -9,15 +9,36 @@
 	namespace Conpago\Cli\Interactor\Contract;
 
 
+	/**
+	 * Interface ICreateInteractorContextBuilderConfig
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ICreateInteractorContextBuilderConfig
 	{
+		/**
+		 * @return mixed
+		 */
 		function getCompany();
 
+		/**
+		 * @return mixed
+		 */
 		public function getAuthor();
 
+		/**
+		 * @return mixed
+		 */
 		public function getProject();
 
+		/**
+		 * @return mixed
+		 */
 		public function getSources();
 
+		/**
+		 * @return mixed
+		 */
 		public function getTests();
 	}

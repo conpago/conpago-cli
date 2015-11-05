@@ -11,6 +11,12 @@
 
 	use Conpago\Cli\Contract\ITemplateContext;
 
+	/**
+	 * Class CreateInteractorContext
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractorContext implements ITemplateContext
 	{
 		/**

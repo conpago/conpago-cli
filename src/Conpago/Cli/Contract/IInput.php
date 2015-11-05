@@ -8,7 +8,12 @@
 
 	namespace Conpago\Cli\Contract;
 
-
+	/**
+	 * Interface IInput
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface IInput
 	{
 		public function readLine();

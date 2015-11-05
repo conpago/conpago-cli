@@ -9,8 +9,21 @@
 	namespace Conpago\Cli\CaseConverter;
 
 
+	/**
+	 * Tool class to convert string between different case types.
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CaseConverter {
 
+		/**
+		 * Changes case of given string to "macro case" ie. MACRO_CASE
+		 *
+		 * @param string $string String to convert.
+		 *
+		 * @return string
+		 */
 		public function toMacroCase( $string ) {
 			$in = fopen('php://memory', 'w');
 			fwrite($in, $string);

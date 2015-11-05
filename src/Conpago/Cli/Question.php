@@ -13,6 +13,12 @@
 	use Conpago\Cli\Contract\IOutput;
 	use Conpago\Cli\Contract\IQuestion;
 
+	/**
+	 * Class Question
+	 *
+ 	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class Question implements IQuestion
 	{
 		/**

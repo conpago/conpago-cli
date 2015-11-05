@@ -13,6 +13,12 @@
 	use Conpago\Cli\Contract\ICommand;
 	use Conpago\Cli\Contract\ICommandFactory;
 
+	/**
+	 * Class CommandFactory
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CommandFactory implements ICommandFactory{
 		/**
 		 * @var ICommand[]

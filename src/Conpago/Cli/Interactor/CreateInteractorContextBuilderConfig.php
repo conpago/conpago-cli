@@ -12,6 +12,12 @@
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
 	use Conpago\Config\Contract\IConfig;
 
+	/**
+	 * Class CreateInteractorContextBuilderConfig
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractorContextBuilderConfig implements ICreateInteractorContextBuilderConfig
 	{
 		/**

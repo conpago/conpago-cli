@@ -12,6 +12,12 @@
 	use Conpago\Cli\Contract\IOutput;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
 
+	/**
+	 * Class CreateInteractorPresenter
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CreateInteractorPresenter implements ICreateInteractorPresenter {
 
 		/**

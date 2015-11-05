@@ -10,6 +10,12 @@
 
 	use Conpago\Cli\Contract\IInput;
 
+	/**
+	 * Class StreamInput
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class StreamInput implements IInput
 	{
 		/**

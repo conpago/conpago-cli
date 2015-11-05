@@ -11,7 +11,18 @@
 
 	use Conpago\Cli\Templates\Contract\ITemplateLoader;
 
+	/**
+	 * Class TemplateLoader
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class TemplateLoader implements ITemplateLoader {
+		/**
+		 * @param string $template
+		 *
+		 * @return string
+		 */
 		function load($template)
 		{
 			return file_get_contents($template);

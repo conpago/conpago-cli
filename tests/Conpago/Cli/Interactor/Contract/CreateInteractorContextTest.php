@@ -11,17 +11,17 @@
 
 	class CreateInteractorContextTest extends \PHPUnit_Framework_TestCase
 	{
-		function test_getTargetPathWillReturnNullInNewCreatedContext(){
+		function test_getSourcesWillReturnNullInNewCreatedContext(){
 			$c = new CreateInteractorContext();
 
-			$this->assertNull($c->getTargetPath());
+			$this->assertNull($c->getSources());
 		}
 
-		function test_getCreateAccessRightWillReturnValueAfterSet(){
+		function test_getSourcesWillReturnValueAfterSet(){
 			$c = new CreateInteractorContext();
 
-			$c->setTargetPath("path");
-			$this->assertEquals("path", $c->getTargetPath());
+			$c->setSources("path");
+			$this->assertEquals("path", $c->getSources());
 		}
 
 		function test_getAuthorWillReturnNullInNewCreatedContext(){

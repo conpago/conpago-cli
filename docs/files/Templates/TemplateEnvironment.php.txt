@@ -12,6 +12,12 @@
 	use Conpago\Cli\Templates\Contract\ITemplateLoader;
 	use Conpago\Cli\Templates\Contract\ITemplateOptions;
 
+	/**
+	 * Class TemplateEnvironment
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class TemplateEnvironment {
 		/**
 		 * @var ITemplateLoader

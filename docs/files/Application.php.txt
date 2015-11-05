@@ -13,6 +13,12 @@
 	use Conpago\Cli\Contract\ICommandFactory;
 	use Conpago\Cli\Contract\IOutput;
 
+	/**
+	 * Class Application
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class Application {
 
 		/**

@@ -13,6 +13,12 @@
 	use Conpago\Cli\Contract\IApplicationPresenter;
 	use Conpago\Cli\Contract\IOutput;
 
+	/**
+	 * Class ApplicationPresenter
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class ApplicationPresenter implements IApplicationPresenter {
 
 		private $version = "0.0.1-alpha";

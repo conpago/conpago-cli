@@ -9,6 +9,12 @@
 	namespace Conpago\Cli\Contract;
 
 
+	/**
+	 * Interface IOutput
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface IOutput
 	{
 

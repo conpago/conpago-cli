@@ -9,6 +9,12 @@
 	namespace Conpago\Cli\Interactor\Contract;
 
 
+	/**
+	 * Interface ICreateInteractorContextBuilder
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	interface ICreateInteractorContextBuilder
 	{
 		/**

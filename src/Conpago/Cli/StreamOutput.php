@@ -11,6 +11,12 @@
 
 	use Conpago\Cli\Contract\IOutput;
 
+	/**
+	 * Class StreamOutput
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class StreamOutput implements IOutput {
 
 		/**
