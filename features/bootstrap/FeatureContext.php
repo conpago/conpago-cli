@@ -22,7 +22,8 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 		 */
 		public function __construct()
 		{
-			$this->cli = (new \Conpago\Cli\ApplicationFactory())->createApplication();
+			$this->cli = (new TestApplicationFactory())->createApplication();
+			$this->timeService = new FeatureTimeService();
 		}
 
 		/**
@@ -70,5 +71,37 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 		    throw new Exception(sprintf("File '%s' does not exist!", $file));
 
 	    assertEquals($content->getRaw(), file_get_contents($file));
+    }
+
+    /**
+     * @Given Current date is :arg1
+     */
+    public function currentDateIs($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given Current time is :arg1
+     */
+    public function currentTimeIs($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given Config file exists:
+     */
+    public function configFileExists(PyStringNode $string)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I answer :arg1 to question :arg2
+     */
+    public function iAnswerToQuestion($arg1, $arg2)
+    {
+        throw new PendingException();
     }
 }

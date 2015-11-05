@@ -52,7 +52,7 @@
 						$this->equalTo("yes")]
 				);
 
-			$this->createInteractorContextBuilder->build();
+			$this->createInteractorContextBuilder->build("");
 		}
 
 		public function test_WillBuildContextWithGatheredData()
@@ -61,7 +61,7 @@
 					->method("ask")
 					->willReturn("yes");
 
-			$context = $this->createInteractorContextBuilder->build();
+			$context = $this->createInteractorContextBuilder->build("");
 			$this->assertEquals(
 				[
 					$context->getVariable("createAccessRight"),
@@ -90,8 +90,8 @@
 					->willReturn("yes");
 			$this->config->expects($this->once())->method("getAuthor")->willReturn("Authorrr");
 
-			$context = $this->createInteractorContextBuilder->build();
-			$this->assertEquals($context->getVariable("author"), "Authorrr");
+			$context = $this->createInteractorContextBuilder->build("");
+			$this->assertEquals($context->getAuthor(), "Authorrr");
 		}
 
 		public function test_WillSetCompanyFromConfig()
@@ -101,8 +101,8 @@
 					->willReturn("yes");
 			$this->config->expects($this->once())->method("getCompany")->willReturn("Company");
 
-			$context = $this->createInteractorContextBuilder->build();
-			$this->assertEquals($context->getVariable("company"), "Company");
+			$context = $this->createInteractorContextBuilder->build("");
+			$this->assertEquals($context->getCompany(), "Company");
 		}
 
 		public function test_WillSetProjectFromConfig()
@@ -112,8 +112,8 @@
 					->willReturn("yes");
 			$this->config->expects($this->once())->method("getProject")->willReturn("Project");
 
-			$context = $this->createInteractorContextBuilder->build();
-			$this->assertEquals($context->getVariable("project"), "Project");
+			$context = $this->createInteractorContextBuilder->build("");
+			$this->assertEquals($context->getProject(), "Project");
 		}
 
 		public function test_WillSetSourcesFromConfig()
@@ -123,19 +123,30 @@
 					->willReturn("yes");
 			$this->config->expects($this->once())->method("getSources")->willReturn("Sources");
 
-			$context = $this->createInteractorContextBuilder->build();
-			$this->assertEquals($context->getVariable("sources"), "Sources");
+			$context = $this->createInteractorContextBuilder->build("");
+			$this->assertEquals($context->getSources(), "Sources");
 		}
 
-		public function test_WillSetTestsAuthorFromConfig()
+		public function test_WillSetTestsFromConfig()
 		{
 			$this->question->expects($this->any())
 					->method("ask")
 					->willReturn("yes");
 			$this->config->expects($this->once())->method("getTests")->willReturn("Tests");
 
-			$context = $this->createInteractorContextBuilder->build();
-			$this->assertEquals($context->getVariable("tests"), "Tests");
+			$context = $this->createInteractorContextBuilder->build("");
+			$this->assertEquals($context->getTests(), "Tests");
+		}
+
+		public function test_WillSetInteractorNameFromConfig()
+		{
+			$this->question->expects($this->any())
+			               ->method("ask")
+			               ->willReturn("yes");
+			$this->config->expects($this->once())->method("getTests")->willReturn("Tests");
+
+			$context = $this->createInteractorContextBuilder->build("asd");
+			$this->assertEquals($context->getInteractorName(), "asd");
 		}
 
 		protected function setUp()

@@ -95,4 +95,12 @@
 		public function getTests() {
 			return $this->getVariable($this->tests_var_name);
 		}
+
+		private $interactor_name_var_name = "name";
+		public function setInteractorName($interactor_name) {
+			$this->setVariable($this->interactor_name_var_name, $interactor_name);
+		}
+		public function getInteractorName() {
+			return $this->getVariable($this->interactor_name_var_name);
+		}
 	}

@@ -20,8 +20,10 @@
 	use Conpago\Cli\Templates\TemplateLoader;
 	use Conpago\Cli\Templates\TemplateProcessor;
 	use Conpago\Config\YamlConfig;
+	use Conpago\Contract\ITimeService;
 	use Conpago\File\FileSystem;
 	use Conpago\File\Path;
+	use Conpago\TimeService;
 
 	/**
 	 * Class ApplicationFactory
@@ -30,42 +32,122 @@
 	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
 	 */
 	class ApplicationFactory {
+		protected $output;
+		protected $fileSystem;
+		protected $timeService;
 
 		/**
 		 * @return Application
 		 */
 		public function createApplication() {
-			$output = new StreamOutput( STDOUT );
-			$fileSystem = new FileSystem();
+			$this->createStreamOutput();
+			$this->fileSystem = new FileSystem();
 
 			return new Application(
-				new ApplicationPresenter( $output ),
+				new ApplicationPresenter($this->output),
 				new CommandFactory(
 					[
-						'interactor' => new CreateInteractor(
-							new CreateInteractorPresenter($output),
-							new CreateInteractorContextBuilder(
-								new Question(new StreamInput(STDIN), $output),
-								new CreateInteractorContextBuilderConfig(
-									new YamlConfig(
-										$fileSystem,
-										"conpago-cli.yaml"
-									)
-								)
-							),
-							new CreateInteractorTemplateFileListBuilder(),
-							$fileSystem,
-							new TemplateProcessor(
-								new TemplateEnvironment(
-									new TemplateLoader(),
-									new TemplateOptions()
-								),
-								new CaseConverter()
-							),
-							new Path()
-						)
+						'interactor' => $this->createCommandCreateInteractor()
 					]
 				)
+			);
+		}
+
+		/**
+		 * @return Path
+		 */
+		protected function createPath() {
+			return new Path();
+		}
+
+		/**
+		 * @return CaseConverter
+		 */
+		protected function createCaseConverter() {
+			return new CaseConverter();
+		}
+
+		/**
+		 * @return TemplateLoader
+		 */
+		protected function createTemplateLoader() {
+			return new TemplateLoader();
+		}
+
+		/**
+		 * @return TemplateOptions
+		 */
+		protected function createTemplateOptions() {
+			return new TemplateOptions();
+		}
+
+		/**
+		 * @return TemplateEnvironment
+		 */
+		protected function createTemplateEnvironment() {
+			return new TemplateEnvironment(
+					$this->createTemplateLoader(),
+					$this->createTemplateOptions()
+			);
+		}
+
+		/**
+		 * @return TemplateProcessor
+		 */
+		protected function createTemplateProcessor() {
+			return new TemplateProcessor(
+					$this->createTemplateEnvironment(),
+					$this->createCaseConverter()
+			);
+		}
+
+		/**
+		 * @return ITimeService
+		 */
+		protected function createTimeService() {
+			if ($this->timeService == null)
+				$this->timeService = new TimeService();
+
+			return $this->timeService;
+		}
+
+		/**
+		 * @return StreamOutput
+		 */
+		protected function createStreamOutput() {
+			if ($this->output == null)
+				$this->output = new StreamOutput(STDOUT);
+
+			return $this->output;
+		}
+
+		/**
+		 * @return YamlConfig
+		 */
+		protected function createConfig() {
+			return new YamlConfig(
+					$this->fileSystem,
+					"conpago-cli.yaml"
+			);
+		}
+
+		/**
+		 * @return CreateInteractor
+		 */
+		protected function createCommandCreateInteractor() {
+			return new CreateInteractor(
+					new CreateInteractorPresenter($this->output),
+					new CreateInteractorContextBuilder(
+							new Question(new StreamInput(STDIN), $this->output),
+							new CreateInteractorContextBuilderConfig(
+								$this->createConfig()
+							),
+							$this->createTimeService()
+					),
+					new CreateInteractorTemplateFileListBuilder(),
+					$this->fileSystem,
+					$this->createTemplateProcessor(),
+					$this->createPath()
 			);
 		}
 	}

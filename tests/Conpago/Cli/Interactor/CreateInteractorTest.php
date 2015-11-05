@@ -196,6 +196,43 @@
 			$this->createInteractor->run(["CreateUser"]);
 		}
 
+		function test_WillReplaceNameVariableInFile()
+		{
+			$context = new CreateInteractorContext();
+			$context->setSources("src");
+			$context->setCompany("Company");
+			$context->setProject("Project");
+
+			$this->contextBuilder
+					->expects($this->any())
+					->method("build")
+					->willReturn($context);
+
+			$this->fileListBuilder
+					->expects($this->any())
+					->method("build")
+					->willReturn(["{{name}}File1"]);
+
+			$this->fileSystem
+					->expects($this->any())
+					->method("getFileContent")
+					->willReturn("x");
+
+			$this->templateProcessor
+					->expects($this->any())
+					->method("processTemplate")
+					->willReturn("");
+
+			$this->fileSystem->expects($this->once(0))
+                 ->method("setFileContent")
+                 ->with(
+	                 $this->equalTo((new Path())->createPath("src", "Company", "Project", "CreateUserFile1")),
+		             $this->anything()
+                 );
+
+			$this->createInteractor->run(["CreateUser"]);
+		}
+
 		/**
 		 * @return \PHPUnit_Framework_MockObject_MockObject
 		 */

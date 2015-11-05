@@ -13,6 +13,7 @@
 	use Conpago\Cli\Interactor\Contract\CreateinteractorContext;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
 	use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
+	use Conpago\Contract\ITimeService;
 
 	/**
 	 * Class CreateInteractorContextBuilder
@@ -33,29 +34,40 @@
 		 * @var IQuestion
 		 */
 		private $question;
+		/**
+		 * @var ITimeService
+		 */
+		private $timeService;
 
 		/**
 		 * CreateInteractorContextBuilder constructor.
 		 *
 		 * @param IQuestion $question
 		 * @param ICreateInteractorContextBuilderConfig $config
+		 * @param ITimeService $timeService
 		 */
 		function __construct(
 			IQuestion $question,
-			ICreateInteractorContextBuilderConfig $config
+			ICreateInteractorContextBuilderConfig $config,
+			ITimeService $timeService
 		)
 		{
 			$this->question = $question;
 			$this->config = $config;
+			$this->timeService = $timeService;
 		}
+
 		/**
-		 * @return CreateinteractorContext
+		 * @param string $interactor_name
+		 *
+		 * @return CreateInteractorContext
 		 */
-		public function build()
+		public function build($interactor_name)
 		{
-			$context = new CreateinteractorContext();
+			$context = new CreateInteractorContext();
 			$this->gatherDataFromUser($context);
 			$this->readConfig($context);
+			$context->setInteractorName($interactor_name);
 
 			return $context;
 		}

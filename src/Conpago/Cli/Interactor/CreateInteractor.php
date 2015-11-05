@@ -88,12 +88,20 @@
 				return;
 			}
 
-			$context = $this->contextBuilder->build();
+			$interactor_name = $args[0];
+
+			$context = $this->contextBuilder->build($interactor_name);
 			$file_list = $this->fileListBuilder->build($context);
 			foreach ($file_list as $file) {
 				$template = $this->fileSystem->getFileContent($file);
 				$output = $this->templateProcessor->processTemplate($template, $context);
-				$fullOutputFileName = $this->path->createPath($context->getSources(), $context->getCompany(), $context->getProject(), $file);
+				$fullOutputFileName =
+					$this->path->createPath(
+						$context->getSources(),
+						$context->getCompany(),
+						$context->getProject(),
+						str_replace("{{name}}", $interactor_name, $file)
+					);
 				$this->fileSystem->setFileContent($fullOutputFileName, $output);
 			}
 		}

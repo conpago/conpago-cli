@@ -18,7 +18,9 @@
 	interface ICreateInteractorContextBuilder
 	{
 		/**
+		 * @param string $interactor_name
+		 *
 		 * @return CreateInteractorContext
 		 */
-		public function build();
+		public function build($interactor_name);
 	}
