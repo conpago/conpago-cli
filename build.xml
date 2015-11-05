@@ -165,6 +165,8 @@
             <arg value="Conpago.Cli"/>
             <arg value="-t"/>
             <arg value="docs"/>
+            <arg value="--cache-folder"/>
+            <arg value="tmp/phpdoc-cache"/>
         </exec>
         <exec executable="./vendor/bin/phpdoc" osfamily="unix">
             <arg value="-d"/>

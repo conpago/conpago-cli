@@ -9,21 +9,27 @@
 	namespace Conpago\Cli\Contract;
 
 
+	/**
+	 * Data structure containing Name and Help text of command.
+	 *
+	 * @license MIT
+	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
+	 */
 	class CommandHelp {
 		/**
-		 * @var string
+		 * @var string Command name.
 		 */
 		protected $name;
 		/**
-		 * @var string
+		 * @var string Command Help text.
 		 */
 		protected $help_text;
 
 		/**
 		 * CommandHelp constructor.
 		 *
-		 * @param $name
-		 * @param $help_text
+		 * @param string $name Command name.
+		 * @param string $help_text Command Help text.
 		 */
 		public function __construct($name, $help_text) {
 
@@ -32,6 +38,8 @@
 		}
 
 		/**
+		 * Gets command name.
+		 *
 		 * @return string
 		 */
 		public function getName() {
@@ -39,6 +47,8 @@
 		}
 
 		/**
+		 * Gets command help text.
+		 *
 		 * @return string
 		 */
 		public function getHelpText() {
