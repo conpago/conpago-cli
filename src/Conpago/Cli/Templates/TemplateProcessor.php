@@ -1,43 +1,43 @@
 <?php
-	/**
-	 * Created by PhpStorm.
-	 * User: bg
-	 * Date: 13.10.15
-	 * Time: 23:25
-	 */
+    /**
+     * Created by PhpStorm.
+     * User: bg
+     * Date: 13.10.15
+     * Time: 23:25
+     */
 
-	namespace Conpago\Cli\Templates;
+    namespace Conpago\Cli\Templates;
 
+use Conpago\Cli\CaseConverter\CaseConverter;
+    use Conpago\Cli\Templates\Contract\ITemplateContext;
+    use Conpago\Cli\Templates\Contract\ITemplateProcessor;
 
-	use Conpago\Cli\CaseConverter\CaseConverter;
-	use Conpago\Cli\Templates\Contract\ITemplateContext;
-	use Conpago\Cli\Templates\Contract\ITemplateProcessor;
+    /**
+     * Class TemplateProcessor
+     *
+     * @license MIT
+     * @author Bartosz Gołek <bartosz.golek@gmail.com>
+     */
+    class TemplateProcessor implements ITemplateProcessor
+    {
 
-	/**
-	 * Class TemplateProcessor
-	 *
-	 * @license MIT
-	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
-	 */
-	class TemplateProcessor implements ITemplateProcessor {
+        /**
+         * @var TemplateEnvironment
+         */
+        private $templateEnvironment;
+        /**
+         * @var CaseConverter
+         */
+        private $caseConverter;
 
-		/**
-		 * @var TemplateEnvironment
-		 */
-		private $templateEnvironment;
-		/**
-		 * @var CaseConverter
-		 */
-		private $caseConverter;
+        public function __construct(TemplateEnvironment $templateEnvironment, CaseConverter $caseConverter)
+        {
+            $this->templateEnvironment = $templateEnvironment;
+            $this->caseConverter = $caseConverter;
+        }
 
-		function __construct(TemplateEnvironment $templateEnvironment, CaseConverter $caseConverter) {
-
-			$this->templateEnvironment = $templateEnvironment;
-			$this->caseConverter = $caseConverter;
-		}
-
-		function processTemplate($template, ITemplateContext $context)
-		{
-			return $this->templateEnvironment->render($template, $context->getVariables());
-		}
-	}
+        public function processTemplate($template, ITemplateContext $context)
+        {
+            return $this->templateEnvironment->render($template, $context->getVariables());
+        }
+    }

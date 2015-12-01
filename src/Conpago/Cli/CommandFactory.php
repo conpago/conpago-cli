@@ -1,55 +1,56 @@
 <?php
-	/**
-	 * Created by PhpStorm.
-	 * User: bg
-	 * Date: 08.10.15
-	 * Time: 22:10
-	 */
+    /**
+     * Created by PhpStorm.
+     * User: bg
+     * Date: 08.10.15
+     * Time: 22:10
+     */
 
-	namespace Conpago\Cli;
+    namespace Conpago\Cli;
 
+use Conpago\Cli\Contract\CommandHelp;
+    use Conpago\Cli\Contract\ICommand;
+    use Conpago\Cli\Contract\ICommandFactory;
 
-	use Conpago\Cli\Contract\CommandHelp;
-	use Conpago\Cli\Contract\ICommand;
-	use Conpago\Cli\Contract\ICommandFactory;
+    /**
+     * Class CommandFactory
+     *
+     * @license MIT
+     * @author Bartosz Gołek <bartosz.golek@gmail.com>
+     */
+    class CommandFactory implements ICommandFactory
+    {
+        /**
+         * @var ICommand[]
+         */
+        private $command_list = [];
 
-	/**
-	 * Class CommandFactory
-	 *
-	 * @license MIT
-	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
-	 */
-	class CommandFactory implements ICommandFactory{
-		/**
-		 * @var ICommand[]
-		 */
-		private $command_list = [];
+        public function __construct(array $command_list)
+        {
+            $this->command_list = $command_list;
+        }
 
-		function __construct(array $command_list) {
-			$this->command_list = $command_list;
-		}
+        /**
+         * @return ICommand
+         */
+        public function getCommand($command_name)
+        {
+            if (!array_key_exists($command_name, $this->command_list)) {
+                return null;
+            }
 
-		/**
-		 * @return ICommand
-		 */
-		public function getCommand($command_name)
-		{
-			if (!array_key_exists($command_name, $this->command_list))
-				return null;
+            return $this->command_list[$command_name];
+        }
 
-			return $this->command_list[$command_name];
-		}
-
-		/**
-		 * @return CommandHelp[]
-		 */
-		public function getCommandsDesc()
-		{
-			$result = [];
-			foreach ($this->command_list as $name => $command)
-			{
-				$result[] = new CommandHelp($name, $command->getDescription());
-			}
-			return $result;
-		}
-	}
+        /**
+         * @return CommandHelp[]
+         */
+        public function getCommandsDesc()
+        {
+            $result = [];
+            foreach ($this->command_list as $name => $command) {
+                $result[] = new CommandHelp($name, $command->getDescription());
+            }
+            return $result;
+        }
+    }

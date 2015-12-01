@@ -1,30 +1,30 @@
 <?php
-	/**
-	 * Created by PhpStorm.
-	 * User: bgolek
-	 * Date: 2015-10-12
-	 * Time: 13:42
-	 */
+    /**
+     * Created by PhpStorm.
+     * User: bgolek
+     * Date: 2015-10-12
+     * Time: 13:42
+     */
 
-	namespace Conpago\Cli\Templates;
+    namespace Conpago\Cli\Templates;
 
+use Conpago\Cli\Templates\Contract\ITemplateLoader;
 
-	use Conpago\Cli\Templates\Contract\ITemplateLoader;
-
-	/**
-	 * Class TemplateLoader
-	 *
-	 * @license MIT
-	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
-	 */
-	class TemplateLoader implements ITemplateLoader {
-		/**
-		 * @param string $template
-		 *
-		 * @return string
-		 */
-		function load($template)
-		{
-			return file_get_contents($template);
-		}
-	}
+    /**
+     * Class TemplateLoader
+     *
+     * @license MIT
+     * @author Bartosz Gołek <bartosz.golek@gmail.com>
+     */
+    class TemplateLoader implements ITemplateLoader
+    {
+        /**
+         * @param string $template
+         *
+         * @return string
+         */
+        public function load($template)
+        {
+            return file_get_contents($template);
+        }
+    }

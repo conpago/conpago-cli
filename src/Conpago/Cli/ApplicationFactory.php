@@ -9,7 +9,7 @@
 
     namespace Conpago\Cli;
 
-    use Conpago\Cli\CaseConverter\CaseConverter;
+use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\Cli\Interactor\CreateInteractor;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
