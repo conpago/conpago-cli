@@ -4,7 +4,7 @@ Feature: interactor
   I need to be able to run cli command 'interactor'
 
   Scenario: Create simple interactor
-    Given Current date is '29.10.13'
+    Given Current date is '2013-10-29'
     Given Current time is '08:43'
     Given Config file exists:
       """

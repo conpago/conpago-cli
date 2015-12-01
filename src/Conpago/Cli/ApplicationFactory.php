@@ -1,153 +1,170 @@
 <?php
 
-	/**
-	 * Created by PhpStorm.
-	 * User: bgolek
-	 * Date: 2015-10-09
-	 * Time: 14:28
-	 */
+    /**
+     * Created by PhpStorm.
+     * User: bgolek
+     * Date: 2015-10-09
+     * Time: 14:28
+     */
 
-	namespace Conpago\Cli;
+    namespace Conpago\Cli;
 
-	use Conpago\Cli\CaseConverter\CaseConverter;
-	use Conpago\Cli\Interactor\CreateInteractor;
-	use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
-	use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
-	use Conpago\Cli\Interactor\CreateInteractorTemplateFileListBuilder;
-	use Conpago\Cli\Interactor\CreateInteractorPresenter;
-	use Conpago\Cli\Templates\Contract\TemplateOptions;
-	use Conpago\Cli\Templates\TemplateEnvironment;
-	use Conpago\Cli\Templates\TemplateLoader;
-	use Conpago\Cli\Templates\TemplateProcessor;
-	use Conpago\Config\YamlConfig;
-	use Conpago\Contract\ITimeService;
-	use Conpago\File\FileSystem;
-	use Conpago\File\Path;
-	use Conpago\TimeService;
+    use Conpago\Cli\CaseConverter\CaseConverter;
+    use Conpago\Cli\Interactor\CreateInteractor;
+    use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
+    use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
+    use Conpago\Cli\Interactor\CreateInteractorTemplateFileListBuilder;
+    use Conpago\Cli\Interactor\CreateInteractorPresenter;
+    use Conpago\Cli\Templates\Contract\TemplateOptions;
+    use Conpago\Cli\Templates\TemplateEnvironment;
+    use Conpago\Cli\Templates\TemplateLoader;
+    use Conpago\Cli\Templates\TemplateProcessor;
+    use Conpago\Config\ArrayConfig;
+    use Conpago\Config\Contract\IConfig;
+    use Conpago\Config\YamlConfig;
+    use Conpago\Config\YamlConfigBuilder;
+    use Conpago\Contract\ITimeService;
+    use Conpago\File\FileSystem;
+    use Conpago\File\Path;
+    use Conpago\TimeService;
 
-	/**
-	 * Class ApplicationFactory
-	 *
-	 * @license MIT
-	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
-	 */
-	class ApplicationFactory {
-		protected $output;
-		protected $fileSystem;
-		protected $timeService;
+    /**
+     * Class ApplicationFactory
+     *
+     * @license MIT
+     * @author Bartosz Gołek <bartosz.golek@gmail.com>
+     */
+    class ApplicationFactory
+    {
+        protected $output;
+        protected $fileSystem;
+        protected $timeService;
 
-		/**
-		 * @return Application
-		 */
-		public function createApplication() {
-			$this->createStreamOutput();
-			$this->fileSystem = new FileSystem();
+        /**
+         * @return Application
+         */
+        public function createApplication()
+        {
+            $this->createStreamOutput();
+            $this->fileSystem = new FileSystem();
 
-			return new Application(
-				new ApplicationPresenter($this->output),
-				new CommandFactory(
-					[
-						'interactor' => $this->createCommandCreateInteractor()
-					]
-				)
-			);
-		}
+            return new Application(
+                new ApplicationPresenter($this->output),
+                new CommandFactory(
+                    [
+                        'interactor' => $this->createCommandCreateInteractor()
+                    ]
+                )
+            );
+        }
 
-		/**
-		 * @return Path
-		 */
-		protected function createPath() {
-			return new Path();
-		}
+        /**
+         * @return Path
+         */
+        protected function createPath()
+        {
+            return new Path();
+        }
 
-		/**
-		 * @return CaseConverter
-		 */
-		protected function createCaseConverter() {
-			return new CaseConverter();
-		}
+        /**
+         * @return CaseConverter
+         */
+        protected function createCaseConverter()
+        {
+            return new CaseConverter();
+        }
 
-		/**
-		 * @return TemplateLoader
-		 */
-		protected function createTemplateLoader() {
-			return new TemplateLoader();
-		}
+        /**
+         * @return TemplateLoader
+         */
+        protected function createTemplateLoader()
+        {
+            return new TemplateLoader();
+        }
 
-		/**
-		 * @return TemplateOptions
-		 */
-		protected function createTemplateOptions() {
-			return new TemplateOptions();
-		}
+        /**
+         * @return TemplateOptions
+         */
+        protected function createTemplateOptions()
+        {
+            return new TemplateOptions();
+        }
 
-		/**
-		 * @return TemplateEnvironment
-		 */
-		protected function createTemplateEnvironment() {
-			return new TemplateEnvironment(
-					$this->createTemplateLoader(),
-					$this->createTemplateOptions()
-			);
-		}
+        /**
+         * @return TemplateEnvironment
+         */
+        protected function createTemplateEnvironment()
+        {
+            return new TemplateEnvironment(
+                $this->createTemplateLoader(),
+                $this->createTemplateOptions()
+            );
+        }
 
-		/**
-		 * @return TemplateProcessor
-		 */
-		protected function createTemplateProcessor() {
-			return new TemplateProcessor(
-					$this->createTemplateEnvironment(),
-					$this->createCaseConverter()
-			);
-		}
+        /**
+         * @return TemplateProcessor
+         */
+        protected function createTemplateProcessor()
+        {
+            return new TemplateProcessor(
+                $this->createTemplateEnvironment(),
+                $this->createCaseConverter()
+            );
+        }
 
-		/**
-		 * @return ITimeService
-		 */
-		protected function createTimeService() {
-			if ($this->timeService == null)
-				$this->timeService = new TimeService();
+        /**
+         * @return ITimeService
+         */
+        protected function createTimeService()
+        {
+            if ($this->timeService == null) {
+                $this->timeService = new TimeService();
+            }
 
-			return $this->timeService;
-		}
+            return $this->timeService;
+        }
 
-		/**
-		 * @return StreamOutput
-		 */
-		protected function createStreamOutput() {
-			if ($this->output == null)
-				$this->output = new StreamOutput(STDOUT);
+        /**
+         * @return StreamOutput
+         */
+        protected function createStreamOutput()
+        {
+            if ($this->output == null) {
+                $this->output = new StreamOutput(STDOUT);
+            }
 
-			return $this->output;
-		}
+            return $this->output;
+        }
 
-		/**
-		 * @return YamlConfig
-		 */
-		protected function createConfig() {
-			return new YamlConfig(
-					$this->fileSystem,
-					"conpago-cli.yaml"
-			);
-		}
+        /**
+         * @return IConfig
+         */
+        protected function createConfig()
+        {
+            return new ArrayConfig((new YamlConfigBuilder(
+                $this->fileSystem,
+                "conpago-cli.yaml"
+            ))->build());
+        }
 
-		/**
-		 * @return CreateInteractor
-		 */
-		protected function createCommandCreateInteractor() {
-			return new CreateInteractor(
-					new CreateInteractorPresenter($this->output),
-					new CreateInteractorContextBuilder(
-							new Question(new StreamInput(STDIN), $this->output),
-							new CreateInteractorContextBuilderConfig(
-								$this->createConfig()
-							),
-							$this->createTimeService()
-					),
-					new CreateInteractorTemplateFileListBuilder(),
-					$this->fileSystem,
-					$this->createTemplateProcessor(),
-					$this->createPath()
-			);
-		}
-	}
+        /**
+         * @return CreateInteractor
+         */
+        protected function createCommandCreateInteractor()
+        {
+            return new CreateInteractor(
+                new CreateInteractorPresenter($this->output),
+                new CreateInteractorContextBuilder(
+                    new Question(new StreamInput(STDIN), $this->output),
+                    new CreateInteractorContextBuilderConfig(
+                        $this->createConfig()
+                    ),
+                    $this->createTimeService()
+                ),
+                new CreateInteractorTemplateFileListBuilder(),
+                $this->fileSystem,
+                $this->createTemplateProcessor(),
+                $this->createPath()
+            );
+        }
+    }

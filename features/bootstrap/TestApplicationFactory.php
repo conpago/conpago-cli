@@ -11,11 +11,14 @@
 	 * @license MIT
 	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
 	 **/
-	class TestApplicationFactory {
+	class TestApplicationFactory extends \Conpago\Cli\ApplicationFactory{
 
 		/**
 		 * TestApplicationFactory constructor.
+		 *
+		 * @param $timeService
 		 */
-		public function __construct() {
+		public function __construct($timeService) {
+			$this->timeService = $timeService;
 		}
 	}

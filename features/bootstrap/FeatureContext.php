@@ -22,8 +22,9 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 		 */
 		public function __construct()
 		{
-			$this->cli = (new TestApplicationFactory())->createApplication();
-			$this->timeService = new FeatureTimeService();
+			$this->timeService      = new FeatureTimeService();
+			$testApplicationFactory = new TestApplicationFactory($this->timeService);
+			$this->cli              = $testApplicationFactory->createApplication();
 		}
 
 		/**
@@ -73,20 +74,22 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 	    assertEquals($content->getRaw(), file_get_contents($file));
     }
 
-    /**
-     * @Given Current date is :arg1
-     */
-    public function currentDateIs($arg1)
+		/**
+		 * @Given Current date is :time
+		 *
+		 * @param $time
+		 */
+    public function currentDateIs($date)
     {
-        throw new PendingException();
+        $this->timeService->setDate($date);
     }
 
     /**
-     * @Given Current time is :arg1
+     * @Given Current time is :time
      */
-    public function currentTimeIs($arg1)
+    public function currentTimeIs($time)
     {
-        throw new PendingException();
+	    $this->timeService->setTime($time);
     }
 
     /**
