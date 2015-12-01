@@ -5,6 +5,7 @@
      * Date: 05.11.15
      * Time: 23:51
      */
+    use Conpago\Config\ArrayConfig;
 
     /**
      *
@@ -17,10 +18,5 @@
         public function __construct(\Conpago\Contract\ITimeService $timeService)
         {
             $this->timeService = $timeService;
-        }
-
-        public function createConfig()
-        {
-            return new FeatureYamlConfig();
         }
     }

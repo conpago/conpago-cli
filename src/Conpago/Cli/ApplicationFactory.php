@@ -21,7 +21,6 @@ use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\Cli\Templates\TemplateProcessor;
     use Conpago\Config\ArrayConfig;
     use Conpago\Config\Contract\IConfig;
-    use Conpago\Config\YamlConfig;
     use Conpago\Config\YamlConfigBuilder;
     use Conpago\Contract\ITimeService;
     use Conpago\File\FileSystem;
