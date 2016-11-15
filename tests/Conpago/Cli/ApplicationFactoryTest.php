@@ -18,6 +18,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase
         public function testCreateApplication_willReturnApplication()
         {
             $fac = new ApplicationFactory();
-            $this->assertEquals('Conpago\Cli\Application', get_class($fac->createApplication()));
+            $this->assertEquals(Conpago\Cli\Application::class, get_class($fac->createApplication()));
         }
 }

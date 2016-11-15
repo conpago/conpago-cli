@@ -1,6 +1,6 @@
-nbproject/
-tmp/
-vendor/
 .idea/
+vendor/
 build/
+tmp/
 composer.lock
+
