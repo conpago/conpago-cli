@@ -8,20 +8,29 @@
 
     namespace Conpago\Cli\Interactor;
 
-class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
+    use Conpago\Cli\Contract\IQuestion;
+    use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
+    use Conpago\Time\Contract\ITimeService;
+
+    class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-         * @var CreateInteractorContextBuilder
-         */
-        protected $createInteractorContextBuilder;
-        /**
-         * @var \PHPUnit_Framework_MockObject_MockObject
-         */
-        protected $question;
-        /**
-         * @var \PHPUnit_Framework_MockObject_MockObject
-         */
-        protected $config;
+     * @var CreateInteractorContextBuilder
+     */
+    protected $createInteractorContextBuilder;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $question;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $config;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $timeService;
 
     public function test_WillAskForContextData()
     {
@@ -43,7 +52,7 @@ class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
                     [$this->equalTo("Create logger for interactor?"),
                         $this->equalTo(["yes", "no"]),
                         $this->equalTo("yes")],
-                    [$this->equalTo("Create preseter model for interactor?"),
+                    [$this->equalTo("Create presenter model for interactor?"),
                         $this->equalTo(["yes", "no"]),
                         $this->equalTo("yes")],
                     [$this->equalTo("Create Conpago/DI module for interactor?"),
@@ -68,7 +77,7 @@ class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
                     $context->getVariable("createRequestDataValidator"),
                     $context->getVariable("createDao"),
                     $context->getVariable("createLogger"),
-                    $context->getVariable("createPreseterModel"),
+                    $context->getVariable("createPresenterModel"),
                     $context->getVariable("createConpagoDiModule")
                 ],
                 [
@@ -150,8 +159,9 @@ class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->question = $this->getMock('Conpago\Cli\Contract\IQuestion');
-        $this->config = $this->getMock('Conpago\Cli\interactor\Contract\ICreateInteractorContextBuilderConfig');
-        $this->createInteractorContextBuilder = new CreateInteractorContextBuilder($this->question, $this->config);
+        $this->question = $this->createMock(IQuestion::class);
+        $this->config = $this->createMock(ICreateInteractorContextBuilderConfig::class);
+        $this->timeService = $this->createMock(ITimeService::class);
+        $this->createInteractorContextBuilder = new CreateInteractorContextBuilder($this->question, $this->config, $this->timeService);
     }
 }

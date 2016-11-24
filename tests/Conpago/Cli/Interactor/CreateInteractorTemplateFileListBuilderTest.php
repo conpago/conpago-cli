@@ -18,7 +18,7 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
         protected $templateFileListBuilder;
 
         /**
-         * @expectedException \PHPUnit_Framework_Error
+         * @expectedException \TypeError
          * @expectedExceptionMessageRegExp /Argument 1 passed to Conpago\\Cli\\Interactor\\CreateInteractorTemplateFileListBuilder::build\(\) must be an instance of Conpago\\Cli\\Interactor\\Contract\\CreateInteractorContext, null given, called in .+ on line \d+ and defined/
          */
         public function test_WillThrowWhenGotNullContext()

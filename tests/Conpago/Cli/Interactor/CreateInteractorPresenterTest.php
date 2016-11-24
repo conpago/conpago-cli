@@ -8,6 +8,8 @@
 
     namespace Conpago\Cli\Interactor;
 
+use Conpago\Cli\Contract\IOutput;
+
 class CreateInteractorPresenterTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -22,7 +24,7 @@ class CreateInteractorPresenterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->output                    = $this->getMock('Conpago\Cli\Contract\IOutput');
+        $this->output                    = $this->createMock(IOutput::class);
         $this->createInteractorPresenter = new CreateInteractorPresenter($this->output);
     }
 

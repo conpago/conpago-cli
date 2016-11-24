@@ -8,11 +8,11 @@
 
     namespace Conpago\Cli\Interactor;
 
-use Conpago\Cli\Contract\IQuestion;
+    use Conpago\Cli\Contract\IQuestion;
     use Conpago\Cli\Interactor\Contract\CreateinteractorContext;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
-    use Conpago\Contract\ITimeService;
+    use Conpago\Time\Contract\ITimeService;
 
     /**
      * Class CreateInteractorContextBuilder
@@ -101,8 +101,8 @@ use Conpago\Cli\Contract\IQuestion;
                     "createLogger",
                     $this->askAboutCreating("Create logger for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createPreseterModel",
-                    $this->askAboutCreating("Create preseter model for interactor?") == self::YES_ANSWER);
+                    "createPresenterModel",
+                    $this->askAboutCreating("Create presenter model for interactor?") == self::YES_ANSWER);
             $context->setVariable(
                     "createConpagoDiModule",
                     $this->askAboutCreating("Create Conpago/DI module for interactor?") == self::YES_ANSWER);

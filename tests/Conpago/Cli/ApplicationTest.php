@@ -8,6 +8,9 @@
 
     namespace Conpago\Cli;
 
+use Conpago\Cli\Contract\IApplicationPresenter;
+use Conpago\Cli\Contract\ICommand;
+use Conpago\Cli\Contract\ICommandFactory;
 use PHPUnit_Framework_MockObject_MockObject;
 
     class ApplicationTest extends \PHPUnit_Framework_TestCase
@@ -28,8 +31,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 
         protected function setUp()
         {
-            $this->fac = $this->getMock('Conpago\Cli\Contract\ICommandFactory');
-            $this->application_presenter = $this->getMock('Conpago\Cli\Contract\IApplicationPresenter');
+            $this->fac = $this->createMock(ICommandFactory::class);
+            $this->application_presenter = $this->createMock(IApplicationPresenter::class);
             $this->app = new Application($this->application_presenter, $this->fac);
         }
 
@@ -79,14 +82,6 @@ use PHPUnit_Framework_MockObject_MockObject;
             $this->doTest(['--help', 'command_name']);
         }
 
-        public function testRunWithHOptionAndCommandName_willPrintCommandHelp()
-        {
-            $this->expectVersion();
-            $this->fac->method("getCommandHelp")->willReturn('command_help');
-            $this->expectCommandHelp('command_help');
-            $this->doTest(['--help', 'command_name']);
-        }
-
         public function testRunWithVersionOption_willPrintHelp()
         {
             $this->expectVersion();
@@ -121,14 +116,14 @@ use PHPUnit_Framework_MockObject_MockObject;
 
         private function expectCommandRun($command_name)
         {
-            $command = $this->getMock('Conpago\Cli\Contract\ICommand');
+            $command = $this->createMock(ICommand::class);
             $command->expects($this->once())->method('run');
             $this->fac->method('getCommand')->willReturn($command);
         }
 
         private function expectCommandRunWithArgs($string, $args)
         {
-            $command = $this->getMock('Conpago\Cli\Contract\ICommand');
+            $command = $this->createMock(ICommand::class);
             $command->expects($this->once())->method('run')->with($this->equalTo($args));
             $this->fac->method('getCommand')->willReturn($command);
         }
@@ -157,7 +152,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 
         private function expectCommandHelp()
         {
-            $command = $this->getMock('Conpago\Cli\Contract\ICommand');
+            $command = $this->createMock(ICommand::class);
             $command->expects($this->once())->method("printHelp");
             $this->fac->method("getCommand")->willReturn($command);
         }

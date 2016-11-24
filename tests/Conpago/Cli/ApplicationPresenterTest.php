@@ -9,7 +9,8 @@
     namespace Conpago\Cli;
 
 use Conpago\Cli\Contract\CommandHelp;
-    use Symfony\Component\Finder\Shell\Command;
+use Conpago\Cli\Contract\IOutput;
+use Symfony\Component\Finder\Shell\Command;
 
     class ApplicationPresenterTest extends \PHPUnit_Framework_TestCase
     {
@@ -24,7 +25,7 @@ use Conpago\Cli\Contract\CommandHelp;
 
         protected function setUp()
         {
-            $this->output                = $this->getMock('Conpago\Cli\Contract\IOutput');
+            $this->output                = $this->createMock(IOutput::class);
             $this->application_presenter = new ApplicationPresenter($this->output);
         }
 

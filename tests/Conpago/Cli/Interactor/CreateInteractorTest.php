@@ -10,9 +10,14 @@
     namespace Conpago\Cli\Interactor;
 
 use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
-    use Conpago\File\Path;
+use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
+use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
+use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
+use Conpago\Cli\Templates\Contract\ITemplateProcessor;
+use Conpago\File\Contract\IFileSystem;
+use Conpago\File\Path;
 
-    class CreateInteractorTest extends \PHPUnit_Framework_TestCase
+class CreateInteractorTest extends \PHPUnit_Framework_TestCase
     {
 
         /**
@@ -39,8 +44,12 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
          * @var \PHPUnit_Framework_MockObject_MockObject
          */
         protected $templateProcessor;
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject
+         */
+        protected $pathBuilder;
 
-        public function test_PrinHelp_willPrintHelp()
+        public function test_PrintHelp_willPrintHelp()
         {
             $this->presenter->expects($this->once())
                     ->method("printHelp");
@@ -185,11 +194,11 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
                 ->method("setFileContent")
                 ->withConsecutive(
                     [
-                        $this->equalTo((new Path())->createPath("src", "Company", "Project", "File1")),
+                        $this->equalTo($this->pathBuilder->createPath("src", "Company", "Project", "File1")),
                         $this->equalTo("Content1")
                     ],
                     [
-                        $this->equalTo((new Path())->createPath("src", "Company", "Project", "File2")),
+                        $this->equalTo($this->pathBuilder->createPath("src", "Company", "Project", "File2")),
                         $this->equalTo("Content2")
                     ]);
 
@@ -226,7 +235,7 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
             $this->fileSystem->expects($this->once(0))
                  ->method("setFileContent")
                  ->with(
-                     $this->equalTo((new Path())->createPath("src", "Company", "Project", "CreateUserFile1")),
+                     $this->equalTo("src\\Company\\Project\\CreateUserFile1"),
                      $this->anything()
                  );
 
@@ -238,18 +247,21 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
          */
         public function setUp()
         {
-            $this->presenter         = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter');
-            $this->fileSystem        = $this->getMock('Conpago\File\Contract\IFileSystem');
-            $this->contextBuilder    = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder');
-            $this->fileListBuilder   = $this->getMock('Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder');
-            $this->templateProcessor = $this->getMock('Conpago\Cli\Templates\Contract\ITemplateProcessor');
+            $this->presenter         = $this->createMock(ICreateInteractorPresenter::class);
+            $this->fileSystem        = $this->createMock(IFileSystem::class);
+            $this->contextBuilder    = $this->createMock(ICreateInteractorContextBuilder::class);
+            $this->fileListBuilder   = $this->createMock(ICreateInteractorTemplateFileListBuilder::class);
+            $this->templateProcessor = $this->createMock(ITemplateProcessor::class);
+            $this->pathBuilder       = new \Conpago\Cli\PathBuilderMock();
+
             $this->createInteractor  = new CreateInteractor(
-                    $this->presenter,
-                    $this->contextBuilder,
-                    $this->fileListBuilder,
-                    $this->fileSystem,
-                    $this->templateProcessor,
-                    new Path()
+                $this->presenter,
+                $this->contextBuilder,
+                $this->fileListBuilder,
+                $this->fileSystem,
+                $this->templateProcessor,
+                new Path(".", "."),
+                $this->pathBuilder
             );
         }
     }

@@ -9,7 +9,7 @@
 
     namespace Conpago\Cli;
 
-use Conpago\Cli\CaseConverter\CaseConverter;
+    use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\Cli\Interactor\CreateInteractor;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
@@ -22,9 +22,10 @@ use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\Config\ArrayConfig;
     use Conpago\Config\Contract\IConfig;
     use Conpago\Config\YamlConfigBuilder;
-    use Conpago\Contract\ITimeService;
     use Conpago\File\FileSystem;
     use Conpago\File\Path;
+    use Conpago\File\PathBuilder;
+    use Conpago\Time\Contract\ITimeService;
     use Conpago\TimeService;
 
     /**
@@ -62,7 +63,7 @@ use Conpago\Cli\CaseConverter\CaseConverter;
          */
         protected function createPath()
         {
-            return new Path();
+            return new Path(".", realpath("."));
         }
 
         /**
@@ -163,7 +164,8 @@ use Conpago\Cli\CaseConverter\CaseConverter;
                 new CreateInteractorTemplateFileListBuilder(),
                 $this->fileSystem,
                 $this->createTemplateProcessor(),
-                $this->createPath()
+                $this->createPath(),
+                new PathBuilder()
             );
         }
     }

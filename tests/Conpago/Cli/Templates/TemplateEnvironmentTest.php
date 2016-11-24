@@ -8,6 +8,9 @@
 
     namespace Conpago\Cli\Templates;
 
+use Conpago\Cli\Templates\Contract\ITemplateLoader;
+use Conpago\Cli\Templates\Contract\ITemplateOptions;
+
 class TemplateEnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -174,8 +177,8 @@ class TemplateEnvironmentTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->loader = $this->getMock('Conpago\Cli\Templates\Contract\ITemplateLoader');
-        $this->options = $this->getMock('Conpago\Cli\Templates\Contract\ITemplateOptions');
+        $this->loader = $this->createMock(ITemplateLoader::class);
+        $this->options = $this->createMock(ITemplateOptions::class);
         $this->template = new TemplateEnvironment($this->loader, $this->options);
     }
 }

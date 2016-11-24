@@ -8,6 +8,8 @@
 
     namespace Conpago\Cli\Interactor;
 
+use Conpago\Config\Contract\IConfig;
+
 class CreateInteractorContextBuilderConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -66,7 +68,7 @@ class CreateInteractorContextBuilderConfigTest extends \PHPUnit_Framework_TestCa
 
     public function setUp()
     {
-        $this->config = $this->getMock('Conpago\Config\Contract\IConfig');
+        $this->config = $this->createMock(IConfig::class);
         $this->subject = new CreateInteractorContextBuilderConfig($this->config);
     }
 }

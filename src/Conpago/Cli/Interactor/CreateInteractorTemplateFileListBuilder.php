@@ -25,7 +25,7 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
          *
          * @return string[]
          */
-        public function build(CreateInteractorContext $context)
+        public function build(CreateInteractorContext $context = null)
         {
             return [
                     'Modules/{{name}}Module.php',

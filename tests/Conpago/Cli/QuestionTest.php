@@ -8,6 +8,8 @@
 
     namespace Conpago\Cli;
 
+use Conpago\Cli\Contract\IInput;
+use Conpago\Cli\Contract\IOutput;
 use PHPUnit_Framework_MockObject_MockObject;
 
     class QuestionTest extends \PHPUnit_Framework_TestCase
@@ -31,8 +33,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 
         protected function setUp()
         {
-            $this->input = $this->getMock('Conpago\Cli\Contract\IInput');
-            $this->output = $this->getMock('Conpago\Cli\Contract\IOutput');
+            $this->input = $this->createMock(IInput::class);
+            $this->output = $this->createMock(IOutput::class);
             $this->question = new Question($this->input, $this->output);
         }
 

@@ -9,6 +9,8 @@
 
     namespace Conpago\Cli;
 
+use Conpago\Cli\Application;
+
 class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -18,6 +20,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase
         public function testCreateApplication_willReturnApplication()
         {
             $fac = new ApplicationFactory();
-            $this->assertEquals(Conpago\Cli\Application::class, get_class($fac->createApplication()));
+            $this->assertEquals(Application::class, get_class($fac->createApplication()));
         }
 }

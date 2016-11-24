@@ -8,13 +8,14 @@
 
     namespace Conpago\Cli\Interactor;
 
-use Conpago\Cli\Contract\ICommand;
+    use Conpago\Cli\Contract\ICommand;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
     use Conpago\Cli\Templates\Contract\ITemplateProcessor;
     use Conpago\File\Contract\IFileSystem;
     use Conpago\File\Contract\IPath;
+    use Conpago\File\Contract\IPathBuilder;
 
     /**
      * Class CreateInteractor
@@ -32,6 +33,10 @@ use Conpago\Cli\Contract\ICommand;
          * @var IPath
          */
         protected $path;
+        /**
+         * @var IPathBuilder
+         */
+        protected $pathBuilder;
 
         /**
          * @var ICreateInteractorTemplateFileListBuilder
@@ -59,6 +64,7 @@ use Conpago\Cli\Contract\ICommand;
          * @param IFileSystem $fileSystem
          * @param ITemplateProcessor $templateProcessor
          * @param IPath $path
+         * @param IPathBuilder $pathBuilder
          */
         public function __construct(
             ICreateInteractorPresenter $presenter,
@@ -66,7 +72,8 @@ use Conpago\Cli\Contract\ICommand;
             ICreateInteractorTemplateFileListBuilder $fileListBuilder,
             IFileSystem $fileSystem,
             ITemplateProcessor $templateProcessor,
-            IPath $path
+            IPath $path,
+            IPathBuilder $pathBuilder
         ) {
             $this->presenter      = $presenter;
             $this->contextBuilder = $contextBuilder;
@@ -74,6 +81,7 @@ use Conpago\Cli\Contract\ICommand;
             $this->fileSystem = $fileSystem;
             $this->templateProcessor = $templateProcessor;
             $this->path = $path;
+            $this->pathBuilder = $pathBuilder;
         }
 
         public function printHelp()
@@ -97,12 +105,12 @@ use Conpago\Cli\Contract\ICommand;
                 $template = $this->fileSystem->getFileContent($file);
                 $output = $this->templateProcessor->processTemplate($template, $context);
                 $fullOutputFileName =
-                    $this->path->createPath(
+                    $this->pathBuilder->createPath([
                         $context->getSources(),
                         $context->getCompany(),
                         $context->getProject(),
                         str_replace("{{name}}", $interactor_name, $file)
-                    );
+                    ]);
                 $this->fileSystem->setFileContent($fullOutputFileName, $output);
             }
         }
