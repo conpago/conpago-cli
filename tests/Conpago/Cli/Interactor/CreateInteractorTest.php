@@ -9,15 +9,17 @@
 
     namespace Conpago\Cli\Interactor;
 
-use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
-use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
-use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
-use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
-use Conpago\Cli\Templates\Contract\ITemplateProcessor;
-use Conpago\File\Contract\IFileSystem;
-use Conpago\File\Path;
+    require_once realpath(__DIR__."/../PathBuilderMock.php");
 
-class CreateInteractorTest extends \PHPUnit_Framework_TestCase
+    use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
+    use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
+    use Conpago\Cli\Interactor\Contract\ICreateInteractorPresenter;
+    use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
+    use Conpago\Cli\Templates\Contract\ITemplateProcessor;
+    use Conpago\File\Contract\IFileSystem;
+    use Conpago\File\Path;
+
+    class CreateInteractorTest extends \PHPUnit_Framework_TestCase
     {
 
         /**
@@ -194,11 +196,11 @@ class CreateInteractorTest extends \PHPUnit_Framework_TestCase
                 ->method("setFileContent")
                 ->withConsecutive(
                     [
-                        $this->equalTo($this->pathBuilder->createPath("src", "Company", "Project", "File1")),
+                        $this->equalTo($this->pathBuilder->createPath(["src", "Company", "Project", "File1"])),
                         $this->equalTo("Content1")
                     ],
                     [
-                        $this->equalTo($this->pathBuilder->createPath("src", "Company", "Project", "File2")),
+                        $this->equalTo($this->pathBuilder->createPath(["src", "Company", "Project", "File2"])),
                         $this->equalTo("Content2")
                     ]);
 
@@ -235,7 +237,7 @@ class CreateInteractorTest extends \PHPUnit_Framework_TestCase
             $this->fileSystem->expects($this->once(0))
                  ->method("setFileContent")
                  ->with(
-                     $this->equalTo("src\\Company\\Project\\CreateUserFile1"),
+                     $this->equalTo("src/Company/Project/CreateUserFile1"),
                      $this->anything()
                  );
 

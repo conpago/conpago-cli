@@ -6,12 +6,14 @@
      * Time: 23:49
      */
 
-    /**
+    use Conpago\Time\Contract\ITimeService;
+
+/**
      *
      * @license MIT
      * @author Bartosz Gołek <bartosz.golek@gmail.com>
      **/
-    class FeatureTimeService implements \Conpago\Contract\ITimeService
+    class FeatureTimeService implements ITimeService
     {
         /**
          * @var DateTime
