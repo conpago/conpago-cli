@@ -55,7 +55,7 @@ use Conpago\Cli\Contract\CommandHelp;
                 /** @var CommandHelp $command_help */
                 foreach ($commands_help as $command_help) {
                     $padded_name = str_pad($command_help->getName(), 25, " ", STR_PAD_RIGHT);
-                    $this->output->writeLine("  %s %s.", $padded_name, $command_help->getHelpText());
+                    $this->output->writeLine("  %s %s.", [$padded_name, $command_help->getHelpText()]);
                 }
             }
             $this->output->writeLine();
@@ -68,7 +68,7 @@ use Conpago\Cli\Contract\CommandHelp;
 
         public function printVersion()
         {
-            $this->output->writeLine("Conpago %s by %s", $this->version, $this->author);
+            $this->output->writeLine("Conpago %s by %s", [$this->version, $this->author]);
             $this->output->writeLine();
         }
 
@@ -79,7 +79,7 @@ use Conpago\Cli\Contract\CommandHelp;
          */
         public function printCommandNotFound($command_name)
         {
-            $this->output->writeLine('Could not find command \'%s\'!', $command_name);
+            $this->output->writeLine('Could not find command \'%s\'!', [$command_name]);
             $this->output->writeLine();
         }
     }

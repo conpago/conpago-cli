@@ -1,53 +1,55 @@
 <?php
-	/**
-	 * Created by PhpStorm.
-	 * User: bg
-	 * Date: 01.11.15
-	 * Time: 23:04
-	 */
+    /**
+     * Created by PhpStorm.
+     * User: bg
+     * Date: 01.11.15
+     * Time: 23:04
+     */
 
-	namespace Conpago\Cli\Interactor;
+    namespace Conpago\Cli\Interactor;
 
+use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
+    use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
 
-	use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
-	use Conpago\Cli\Interactor\Contract\ICreateInteractorTemplateFileListBuilder;
+    /**
+     * Class CreateInteractorTemplateFileListBuilder
+     *
+     * @license MIT
+     * @author Bartosz Gołek <bartosz.golek@gmail.com>
+     */
+    class CreateInteractorTemplateFileListBuilder implements ICreateInteractorTemplateFileListBuilder
+    {
 
-	/**
-	 * Class CreateInteractorTemplateFileListBuilder
-	 *
-	 * @license MIT
-	 * @author Bartosz Gołek <bartosz.golek@gmail.com>
-	 */
-	class CreateInteractorTemplateFileListBuilder implements ICreateInteractorTemplateFileListBuilder {
+        /**
+         * @param CreateInteractorContext $context
+         *
+         * @return string[]
+         */
+        public function build(CreateInteractorContext $context)
+        {
+            return [
+                    'Modules/{{name}}Module.php',
+                    'Presentation/Contract/Controller/I{{name}}Controller.php',
+                    'Presentation/Controller/{{name}}Controller.php',
+                    'Business/Contract/Presenter/I{{name}}Presenter.php',
+                    'Presentation/Presenter/{{name}}Presenter.php',
+                    'Business/Contract/Interactor/I{{name}}.php',
+                    'Business/Interactor/{{name}}.php',
+                    'Business/Contract/RequestData/I{{name}}RequestData.php',
+                    'Presentation/RequestData/{{name}}RequestData.php',
+                    'Business/Contract/PresenterModel/I{{name}}PresenterModel.php',
+                    'Business/PresenterModel/{{name}}PresenterModel.php',
+                    'Business/Contract/PresenterModel/I{{name}}ValidationResult.php',
+                    'Business/PresenterModel/{{name}}ValidationResult.php',
+                    'Business/Contract/Logger/I{{name}}Logger.php',
+                    'Business/Logger/{{name}}Logger.php',
+                    'Business/Contract/Validators/I{{name}}RequestDataValidator.php',
+                    'Business/Validators/{{name}}RequestDataValidator.php',
+                    'Business/Contract/Logger/I{{name}}AccessRightLogger.php',
+                    'Business/Interactor/{{name}}AccessRight.php',
+                    'Business/Contract/Logger/I{{name}}AccessRightLogger.php',
+                    'Business/Logger/{{name}}AccessRightLogger.php'
+            ];
+        }
+    }
 
-		/**
-		 * @param CreateInteractorContext $context
-		 *
-		 * @return string[]
-		 */
-		public function build(CreateInteractorContext $context) {
-			return [
-					'Modules/{{name}}Module.php',
-					'Presentation/Contract/Controller/I{{name}}Controller.php',
-					'Presentation/Controller/{{name}}Controller.php',
-					'Business/Contract/Presenter/I{{name}}Presenter.php',
-					'Presentation/Presenter/{{name}}Presenter.php',
-					'Business/Contract/Interactor/I{{name}}.php',
-					'Business/Interactor/{{name}}.php',
-					'Business/Contract/RequestData/I{{name}}RequestData.php',
-					'Presentation/RequestData/{{name}}RequestData.php',
-					'Business/Contract/PresenterModel/I{{name}}PresenterModel.php',
-					'Business/PresenterModel/{{name}}PresenterModel.php',
-					'Business/Contract/PresenterModel/I{{name}}ValidationResult.php',
-					'Business/PresenterModel/{{name}}ValidationResult.php',
-					'Business/Contract/Logger/I{{name}}Logger.php',
-					'Business/Logger/{{name}}Logger.php',
-					'Business/Contract/Validators/I{{name}}RequestDataValidator.php',
-					'Business/Validators/{{name}}RequestDataValidator.php',
-					'Business/Contract/Logger/I{{name}}AccessRightLogger.php',
-					'Business/Interactor/{{name}}AccessRight.php',
-					'Business/Contract/Logger/I{{name}}AccessRightLogger.php',
-					'Business/Logger/{{name}}AccessRightLogger.php'
-			];
-		}
-	}

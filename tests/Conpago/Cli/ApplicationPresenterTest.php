@@ -56,7 +56,7 @@ use Symfony\Component\Finder\Shell\Command;
                                  [null, null],
                                  ["Commands:", null],
                                  [null, null],
-                                 ["  %s %s.", "command1                 ", "command1 desc"],
+                                 ["  %s %s.", ["command1                 ", "command1 desc"]],
                                  [null, null],
                                  ["Miscellaneous Options:", null],
                                  [null, null],
@@ -71,7 +71,7 @@ use Symfony\Component\Finder\Shell\Command;
             $this->output->expects($this->exactly(2))
                          ->method('writeLine')
                          ->withConsecutive(
-                                 ['Conpago %s by %s', '0.0.1-alpha', 'Bartosz Gołek'],
+                                 ['Conpago %s by %s', ['0.0.1-alpha', 'Bartosz Gołek']],
                                  [null, null]
                          );
         }
@@ -81,7 +81,7 @@ use Symfony\Component\Finder\Shell\Command;
             $this->output->expects($this->exactly(2))
                          ->method('writeLine')
                          ->withConsecutive(
-                                 ['Could not find command \'%s\'!', $command_name],
+                                 ['Could not find command \'%s\'!', [$command_name]],
                                  [null, null]
                          );
         }

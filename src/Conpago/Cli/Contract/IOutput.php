@@ -17,7 +17,7 @@
     interface IOutput
     {
 
-        public function write($format = null, $args = null);
+        public function write($format = null, array $args = null);
 
-        public function writeLine($format = null, $args = null);
+        public function writeLine($format = null, array $args = null);
     }

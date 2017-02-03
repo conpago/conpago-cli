@@ -9,7 +9,7 @@
     namespace Conpago\Cli\Interactor;
 
     use Conpago\Cli\Contract\IQuestion;
-    use Conpago\Cli\Interactor\Contract\CreateinteractorContext;
+    use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
     use Conpago\Time\Contract\ITimeService;
@@ -83,7 +83,7 @@
         /**
          * @param $context
          */
-        protected function gatherDataFromUser(CreateinteractorContext $context)
+        protected function gatherDataFromUser(CreateInteractorContext $context)
         {
             $context->setVariable(
                     "createAccessRight",
@@ -111,7 +111,7 @@
         /**
          * @param $context
          */
-        protected function readConfig(CreateinteractorContext $context)
+        protected function readConfig(CreateInteractorContext $context)
         {
             $context->setAuthor($this->config->getAuthor());
             $context->setCompany($this->config->getCompany());

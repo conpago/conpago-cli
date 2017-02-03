@@ -23,7 +23,7 @@ class StreamOutputTest extends \PHPUnit_Framework_TestCase
     {
         $o = fopen('php://memory', 'w');
         $out = new StreamOutput($o);
-        $out->write("echo data %s", "abc");
+        $out->write("echo data %s", ["abc"]);
         $this->assertStreamEquals("echo data abc", $o);
     }
 
@@ -47,7 +47,7 @@ class StreamOutputTest extends \PHPUnit_Framework_TestCase
     {
         $o = fopen('php://memory', 'w');
         $out = new StreamOutput($o);
-        $out->writeLine("echo data %s", "abc");
+        $out->writeLine("echo data %s", ["abc"]);
         $this->assertStreamEquals("echo data abc".PHP_EOL, $o);
     }
 

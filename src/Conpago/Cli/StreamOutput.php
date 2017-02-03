@@ -1,7 +1,7 @@
 <?php
     /**
      * Created by PhpStorm.
-     * User: bgolek
+     * User: Bartosz Gołek
      * Date: 2015-10-09
      * Time: 14:51
      */
@@ -29,37 +29,37 @@ use Conpago\Cli\Contract\IOutput;
             $this->outputStream = $outputStream;
         }
 
-        public function write($format = null, $args = null)
+        public function write($format = null, array $args = null)
         {
             $args = func_get_args();
             $this->doWrite($format, $args);
         }
 
-        public function writeLine($format = null, $args = null)
+        public function writeLine($format = null, array $args = null)
         {
             $args = func_get_args();
             $this->doWrite($format, $args);
-            $this->writeTooutput(PHP_EOL);
+            $this->writeToOutput(PHP_EOL);
         }
 
         /**
          * @param $format
          * @param $args
          */
-        protected function doWrite($format, $args)
+        protected function doWrite($format, array $args)
         {
             if ($format == null) {
                 return;
             }
 
-            if (count($args) == 1) {
-                $this->writeTooutput($format);
+            if (!isset($args[1]) || count($args[1]) == 0) {
+                $this->writeToOutput($format);
             } else {
-                $this->writeTooutput(vsprintf($format, array_slice($args, 1)));
+                $this->writeToOutput(vsprintf($format, $args[1]));
             }
         }
 
-        protected function writeTooutput($string)
+        protected function writeToOutput($string)
         {
             fwrite($this->outputStream, $string);
         }

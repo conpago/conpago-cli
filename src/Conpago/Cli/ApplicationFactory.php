@@ -10,6 +10,8 @@
     namespace Conpago\Cli;
 
     use Conpago\Cli\CaseConverter\CaseConverter;
+    use Conpago\Cli\Contract\IInput;
+    use Conpago\Cli\Contract\IOutput;
     use Conpago\Cli\Interactor\CreateInteractor;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilder;
     use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
@@ -22,6 +24,7 @@
     use Conpago\Config\ArrayConfig;
     use Conpago\Config\Contract\IConfig;
     use Conpago\Config\YamlConfigBuilder;
+    use Conpago\File\Contract\IFileSystem;
     use Conpago\File\FileSystem;
     use Conpago\File\Path;
     use Conpago\File\PathBuilder;
@@ -36,8 +39,16 @@
      */
     class ApplicationFactory
     {
+        /** @var  IOutput */
         protected $output;
+
+        /** @var  IInput */
+        protected $input;
+
+        /** @var  IFileSystem */
         protected $fileSystem;
+
+        /** @var  ITimeService */
         protected $timeService;
 
         /**
@@ -45,6 +56,7 @@
          */
         public function createApplication()
         {
+            $this->createStreamInput();
             $this->createStreamOutput();
             $this->fileSystem = new FileSystem();
 
@@ -137,6 +149,18 @@
         }
 
         /**
+         * @return StreamInput
+         */
+        protected function createStreamInput()
+        {
+            if ($this->input == null) {
+                $this->input = new StreamInput(STDIN);
+            }
+
+            return $this->input;
+        }
+
+        /**
          * @return IConfig
          */
         protected function createConfig()
@@ -155,7 +179,7 @@
             return new CreateInteractor(
                 new CreateInteractorPresenter($this->output),
                 new CreateInteractorContextBuilder(
-                    new Question(new StreamInput(STDIN), $this->output),
+                    new Question($this->input, $this->output),
                     new CreateInteractorContextBuilderConfig(
                         $this->createConfig()
                     ),

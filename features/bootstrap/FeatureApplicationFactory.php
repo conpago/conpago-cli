@@ -6,6 +6,8 @@
      * Time: 23:51
      */
 
+    use Conpago\Cli\Contract\IInput;
+    use Conpago\Cli\Contract\IOutput;
     use Conpago\Time\Contract\ITimeService;
 
 /**
@@ -16,8 +18,10 @@
     class FeatureApplicationFactory extends \Conpago\Cli\ApplicationFactory
     {
 
-        public function __construct(ITimeService $timeService)
+        public function __construct(ITimeService $timeService, IInput $input, IOutput $output)
         {
             $this->timeService = $timeService;
+            $this->output = $output;
+            $this->input = $input;
         }
     }

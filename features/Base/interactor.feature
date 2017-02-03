@@ -40,15 +40,14 @@ Feature: interactor
       ./tmp/src/TestCompany/TestApp/Business/Contract/Logger/ITestInteractorAccessRightLogger.php
       ./tmp/src/TestCompany/TestApp/Business/Logger/TestInteractorAccessRightLogger.php
       """
-
-    When I run 'interactor' cli command
-    When I answer 'y' to question 'Create access right?'
-    When I answer 'y' to question 'Create request data?'
-    When I answer 'y' to question 'Create validator?'
-    When I answer 'y' to question 'Create dao?'
-    When I answer 'y' to question 'Create logger?'
-    When I answer 'y' to question 'Create presenter model?'
-    When I answer 'y' to question 'Create Conpago/DI modules?'
+    Given I will answer 'yes' to question 'Create access right for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create request data object for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create request data validator? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create dao for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create logger for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create presenter model for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create Conpago/DI module for interactor? [yes/no] (yes):'
+    When I run 'interactor' cli command with 'Test'
     Then File './tmp/src/TestCompany/TestApp/Modules/TestInteractorModule.php' exists with following content:
     """
 <?php

@@ -19,8 +19,10 @@
          *
          * @param $timeService
          */
-        public function __construct($timeService)
+        public function __construct($timeService, $questionResponseHandler)
         {
-            $this->timeService = $timeService;
+            $this->timeService       = $timeService;
+            $this->output            = $questionResponseHandler;
+            $this->input             = $questionResponseHandler;
         }
     }

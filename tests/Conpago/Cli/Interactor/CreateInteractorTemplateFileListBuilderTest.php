@@ -17,15 +17,6 @@ use Conpago\Cli\Interactor\Contract\CreateInteractorContext;
          */
         protected $templateFileListBuilder;
 
-        /**
-         * @expectedException \TypeError
-         * @expectedExceptionMessageRegExp /Argument 1 passed to Conpago\\Cli\\Interactor\\CreateInteractorTemplateFileListBuilder::build\(\) must be an instance of Conpago\\Cli\\Interactor\\Contract\\CreateInteractorContext, null given, called in .+ on line \d+ and defined/
-         */
-        public function test_WillThrowWhenGotNullContext()
-        {
-            $this->templateFileListBuilder->build(null);
-        }
-
         public function test_WillReturnAllTemplateFiles()
         {
             $this->assertEquals(

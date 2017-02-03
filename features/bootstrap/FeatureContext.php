@@ -1,9 +1,8 @@
 <?php
 
-    use Behat\Behat\Tester\Exception\PendingException;
-    use Behat\Behat\Context\SnippetAcceptingContext;
+    use Behat\Behat\Context\Context;
     use Behat\Gherkin\Node\PyStringNode;
-    use Behat\Gherkin\Node\TableNode;
+    use Conpago\Cli\Application;
 
     // Require 3rd-party libraries here:
     require_once "vendor/autoload.php";
@@ -12,9 +11,16 @@
     /**
      * Features context.
      */
-    class FeatureContext implements SnippetAcceptingContext
+    class FeatureContext implements Context
     {
+        /** @var Application  */
         protected $cli;
+
+        /** @var FeatureTimeService */
+        protected $timeService;
+
+        /** @var QuestionResponseHandler  */
+        protected $questionResponseHandler;
 
         /**
          * Initializes context.
@@ -23,24 +29,17 @@
         public function __construct()
         {
             $this->timeService      = new FeatureTimeService();
-            $testApplicationFactory = new FeatureApplicationFactory($this->timeService);
+            $this->questionResponseHandler = new QuestionResponseHandler([]);
+
+            $testApplicationFactory = new FeatureApplicationFactory(
+                $this->timeService,
+                $this->questionResponseHandler,
+                $this->questionResponseHandler
+            );
+
             $this->cli              = $testApplicationFactory->createApplication();
         }
 
-        /**
-         * @BeforeScenario
-         */
-        public function createSchema()
-        {
-        }
-
-        /**
-         * @AfterScenario
-         */
-        public function dropSchema()
-        {
-        }
-    
         /**
          * @Given The files are not exists:
          */
@@ -106,10 +105,10 @@
         }
 
         /**
-         * @When I answer :arg1 to question :arg2
+         * @Given I will answer :answer to question :question
          */
-        public function iAnswerToQuestion($arg1, $arg2)
+        public function iAnswerToQuestion($answer, $question)
         {
-            throw new PendingException();
+            $this->questionResponseHandler->addAnswer($question, $answer);
         }
     }
