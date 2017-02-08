@@ -1,0 +1,16 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.13
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Contract\RequestData;
+
+    interface ITestRequestData
+    {
+        //TODO: create getters as bellow
+        /** @return string */
+        //function getField();
+    }

@@ -1,0 +1,102 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.13
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Interactor;
+
+    use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
+    use Conpago\Exceptions\Exception;
+    use Conpago\Helpers\Contract\IPasswordHasher;
+    use TestCompany\TestApp\Business\Contract\Dao\ITestDao;
+    use TestCompany\TestApp\Business\Contract\Interactor\ITest;
+    use TestCompany\TestApp\Business\Contract\Logger\ITestLogger;
+    use TestCompany\TestApp\Business\Contract\Model\IUser;
+    use TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter;
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
+    use TestCompany\TestApp\Business\Contract\Validators\ITestRequestDataValidator;
+    use TestCompany\TestApp\Business\PresenterModel\TestPresenterModel;
+
+    class Test implements ITest
+    {
+        /** @var ITestDao */
+        private $dao;
+
+        /** @var ITestRequestDataValidator */
+        private $userValidator;
+
+        /** @var ITestPresenter */
+        private $presenter;
+
+        /** @var ITestLogger */
+        private $logger;
+
+        function __construct(
+            ITestDao $dao,
+            ITestPresenter $presenter,
+            ITestRequestDataValidator $userValidator,
+            ITestLogger $logger)
+        {
+            $this->dao = $dao;
+            $this->presenter = $presenter;
+            $this->userValidator = $userValidator;
+            $this->logger = $logger;
+        }
+
+        /**
+        * @param ITestRequestData $data
+        */
+        public function run(ITestRequestData $data)
+        {
+            $validationResult = $this->validate($data);
+
+            if (!$validationResult->isValidationPassed()) {
+                $this->presenter->showValidationFailed($validationResult);
+            } else {
+                $this->doTest($data);
+            }
+        }
+
+        /**
+        * @param ColumnUniqueConstraintException $exception
+        *
+        * @return string
+        * @throws Exception
+        */
+        protected function getMessageFromUniqueException(ColumnUniqueConstraintException $exception)
+        {
+            switch ($exception->columnName)
+            {
+                //TODO: handle columns with propper messages as below
+                //case '?field_name?':
+                //    return self::?FIELD_??_HAVE_TO_BE_UNIQUE?;
+                default :
+                    throw new Exception(self::CANNOT_HANDLE_UNIQUE_EXCEPTION_FOR_COLUMN . $exception->columnName);
+            }
+        }
+
+        private function validate($data)
+        {
+            return $this->userValidator->validate($data);
+        }
+
+        /**
+        * @param ITestRequestData $data
+        */
+        private function trySaveUser(ITestRequestData $data)
+        {
+            try
+            {
+                //TODO: do things and create request model
+                $this->presenter->showTestSucceed(?entity?);
+            }
+            catch (ColumnUniqueConstraintException $e)
+            {
+                $this->presenter->showFailed($this->getMessageFromUniqueException($e));
+            }
+        }
+    }

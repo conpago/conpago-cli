@@ -86,25 +86,25 @@
         protected function gatherDataFromUser(CreateInteractorContext $context)
         {
             $context->setVariable(
-                    "createAccessRight",
+                InteractorParts::ACCESS_RIGHT,
                     $this->askAboutCreating("Create access right for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createRequestData",
+                    InteractorParts::REQUEST_DATA,
                     $this->askAboutCreating("Create request data object for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createRequestDataValidator",
+                InteractorParts::REQUEST_DATA_VALIDATOR,
                     $this->askAboutCreating("Create request data validator?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createDao",
+                InteractorParts::DAO,
                     $this->askAboutCreating("Create dao for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createLogger",
+                InteractorParts::LOGGER,
                     $this->askAboutCreating("Create logger for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createPresenterModel",
+                InteractorParts::PRESENTER_MODEL,
                     $this->askAboutCreating("Create presenter model for interactor?") == self::YES_ANSWER);
             $context->setVariable(
-                    "createConpagoDiModule",
+                InteractorParts::DI_MODULE,
                     $this->askAboutCreating("Create Conpago/DI module for interactor?") == self::YES_ANSWER);
         }
 

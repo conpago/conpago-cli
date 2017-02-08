@@ -72,13 +72,13 @@
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals(
                 [
-                    $context->getVariable("createAccessRight"),
-                    $context->getVariable("createRequestData"),
-                    $context->getVariable("createRequestDataValidator"),
-                    $context->getVariable("createDao"),
-                    $context->getVariable("createLogger"),
-                    $context->getVariable("createPresenterModel"),
-                    $context->getVariable("createConpagoDiModule")
+                    $context->getVariable(InteractorParts::ACCESS_RIGHT),
+                    $context->getVariable(InteractorParts::REQUEST_DATA),
+                    $context->getVariable(InteractorParts::REQUEST_DATA_VALIDATOR),
+                    $context->getVariable(InteractorParts::DAO),
+                    $context->getVariable(InteractorParts::LOGGER),
+                    $context->getVariable(InteractorParts::PRESENTER_MODEL),
+                    $context->getVariable(InteractorParts::DI_MODULE)
                 ],
                 [
                     true,

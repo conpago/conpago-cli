@@ -2,7 +2,7 @@
 
     /**
      * Created by PhpStorm.
-     * User: bgolek
+     * User: Bartosz Gołek
      * Date: 2015-10-09
      * Time: 14:28
      */
@@ -17,10 +17,8 @@
     use Conpago\Cli\Interactor\CreateInteractorContextBuilderConfig;
     use Conpago\Cli\Interactor\CreateInteractorTemplateFileListBuilder;
     use Conpago\Cli\Interactor\CreateInteractorPresenter;
-    use Conpago\Cli\Templates\Contract\TemplateOptions;
-    use Conpago\Cli\Templates\TemplateEnvironment;
-    use Conpago\Cli\Templates\TemplateLoader;
     use Conpago\Cli\Templates\TemplateProcessor;
+    use Conpago\Cli\Templates\Twig\TwigFactory;
     use Conpago\Config\ArrayConfig;
     use Conpago\Config\Contract\IConfig;
     use Conpago\Config\YamlConfigBuilder;
@@ -39,6 +37,8 @@
      */
     class ApplicationFactory
     {
+        const TEMPLATE_DIRECTORY = "resources";
+
         /** @var  IOutput */
         protected $output;
 
@@ -87,40 +87,12 @@
         }
 
         /**
-         * @return TemplateLoader
-         */
-        protected function createTemplateLoader()
-        {
-            return new TemplateLoader();
-        }
-
-        /**
-         * @return TemplateOptions
-         */
-        protected function createTemplateOptions()
-        {
-            return new TemplateOptions();
-        }
-
-        /**
-         * @return TemplateEnvironment
-         */
-        protected function createTemplateEnvironment()
-        {
-            return new TemplateEnvironment(
-                $this->createTemplateLoader(),
-                $this->createTemplateOptions()
-            );
-        }
-
-        /**
          * @return TemplateProcessor
          */
         protected function createTemplateProcessor()
         {
             return new TemplateProcessor(
-                $this->createTemplateEnvironment(),
-                $this->createCaseConverter()
+                new TwigFactory(new PathBuilder(), 'resources', 'tmp/twig-cache')
             );
         }
 

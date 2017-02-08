@@ -11,8 +11,11 @@
 use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\Cli\Templates\Contract\ITemplateContext;
     use Conpago\Cli\Templates\Contract\ITemplateProcessor;
+use Conpago\Cli\Templates\Twig\TwigFactory;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
-    /**
+/**
      * Class TemplateProcessor
      *
      * @license MIT
@@ -20,24 +23,30 @@ use Conpago\Cli\CaseConverter\CaseConverter;
      */
     class TemplateProcessor implements ITemplateProcessor
     {
+        /**
+         * @var TwigFactory
+         */
+        private $twigFactory;
 
         /**
-         * @var TemplateEnvironment
+         * TemplateProcessor constructor.
          */
-        private $templateEnvironment;
-        /**
-         * @var CaseConverter
-         */
-        private $caseConverter;
-
-        public function __construct(TemplateEnvironment $templateEnvironment, CaseConverter $caseConverter)
+        public function __construct(TwigFactory $twigFactory)
         {
-            $this->templateEnvironment = $templateEnvironment;
-            $this->caseConverter = $caseConverter;
+            $this->twigFactory = $twigFactory;
         }
 
-        public function processTemplate($template, ITemplateContext $context)
+
+        /**
+
+         * @param string $templateFile
+         * @param ITemplateContext $context
+         *
+         * @return string
+         */
+        public function processTemplate($namespace, $templateFile, ITemplateContext $context)
         {
-            return $this->templateEnvironment->render($template, $context->getVariables());
+            $twigEnv = $this->twigFactory->create($namespace);
+            return $twigEnv->render($templateFile . '.tpl', $context->getVariables());
         }
     }

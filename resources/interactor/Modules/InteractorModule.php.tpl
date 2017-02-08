@@ -1,0 +1,60 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.13
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Modules;
+
+    use Conpago\DI\IContainerBuilder;
+    use Conpago\DI\Parameter;
+    use Conpago\DI\IModule;
+
+    class TestModule implements IModule
+    {
+
+        /**
+         * @param IContainerBuilder $builder
+         *
+         * @SuppressWarnings(PHPMD.StaticAccess)
+         */
+        public function build(IContainerBuilder $builder)
+        {
+            $builder->registerType('TestCompany\TestApp\Presentation\Controller\TestController')
+                    ->asA('Conpago\IController')
+                    ->asA('TestCompany\TestApp\Presentation\Contract\Controller\ITestController')
+                    ->keyed('TestController')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Business\Interactor\Test')
+                    ->asA('TestCompany\TestApp\Business\Contract\Interactor\ITest')
+                    ->named('Test')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Business\Interactor\TestAccessRight')
+                    ->withParams(Parameter::def(), Parameter::def(), Parameter::named('Test'))
+                    ->asA('TestCompany\TestApp\Business\Contract\Interactor\ITest')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Presentation\Presenter\TestPresenter')
+                    ->asA('TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Dao\Business\TestDao')
+                    ->asA('TestCompany\TestApp\Business\Contract\Dao\ITestDao')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Business\Validators\TestRequestDataValidator')
+                    ->asA('TestCompany\TestApp\Business\Contract\Validators\ITestRequestDataValidator');
+
+            $builder->registerType('TestCompany\TestApp\Business\Logger\TestLogger')
+                    ->asA('TestCompany\TestApp\Business\Contract\Logger\ITestLogger')
+                    ->singleInstance();
+
+            $builder->registerType('TestCompany\TestApp\Business\Logger\TestAccessRightLogger')
+                    ->asA('TestCompany\TestApp\Business\Contract\Logger\ITestAccessRightLogger')
+                    ->singleInstance();
+        }
+    }

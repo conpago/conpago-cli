@@ -25,6 +25,7 @@
      */
     class CreateInteractor implements ICommand
     {
+        const NAMESPACE = 'interactor';
         /**
          * @var IFileSystem
          */
@@ -102,16 +103,19 @@
             $context = $this->contextBuilder->build($interactor_name);
             $file_list = $this->fileListBuilder->build($context);
             foreach ($file_list as $file) {
-                $template = $this->fileSystem->getFileContent($file);
-                $output = $this->templateProcessor->processTemplate($template, $context);
-                $fullOutputFileName =
+                $templateName       = str_replace("{{name}}", "Interactor", $file);
+                $output             = $this->templateProcessor->processTemplate(self::NAMESPACE, $templateName, $context);
+                $outputFileName =
                     $this->pathBuilder->createPath([
                         $context->getSources(),
                         $context->getCompany(),
                         $context->getProject(),
                         str_replace("{{name}}", $interactor_name, $file)
                     ]);
-                $this->fileSystem->setFileContent($fullOutputFileName, $output);
+                if ($this->fileSystem->fileExists(dirname($outputFileName)) != true) {
+                    $this->fileSystem->createDirectory(dirname($outputFileName), true);
+                }
+                $this->fileSystem->setFileContent($outputFileName, $output);
             }
         }
 

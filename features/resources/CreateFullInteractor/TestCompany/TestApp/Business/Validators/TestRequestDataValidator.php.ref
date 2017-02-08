@@ -1,0 +1,41 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.13
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Validators;
+
+
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
+    use TestCompany\TestApp\Business\Contract\Validators\ITestRequestDataValidator;
+    use TestCompany\TestApp\Business\PresenterModel\TestValidationResult;
+
+    class TestRequestDataValidator implements ITestRequestDataValidator
+    {
+        //TODO: create validation result messages as below
+        //const ??_FIELD_IS_REQUIRED = "?? field is required";
+
+        function validate(ITestRequestData $requestData)
+        {
+            return new TestValidationResult(
+                //TODO: add result messages as below
+                //$this->checkFieldRequired($requestData->getField()),
+            );
+        }
+
+        //TODO: create cecking methods as below
+        //private function checkFieldRequired($password)
+        //{
+        //    return !$this->isNotEmpty($password)
+        //        ? self::??_FIELD_IS_REQUIRED
+        //        : "";
+        //}
+
+        private function isNotEmpty($string)
+        {
+            return $string != null && $string != "";
+        }
+    }

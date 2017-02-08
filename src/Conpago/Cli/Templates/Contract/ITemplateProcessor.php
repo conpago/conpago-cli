@@ -10,6 +10,12 @@
 
 interface ITemplateProcessor
 {
-
-    public function processTemplate($template, ITemplateContext $context);
+    /**
+     * @param string $namespace
+     * @param string $templateFile
+     * @param ITemplateContext $context
+     *
+     * @return string
+     */
+    public function processTemplate($namespace, $templateFile, ITemplateContext $context);
 }

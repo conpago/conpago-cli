@@ -1,0 +1,66 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.13
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Interactor;
+
+
+    use Conpago\AccessRight\Contract\IAccessRightDao;
+    use Conpago\AccessRight\Contract\IAccessRightPresenter;
+    use TestCompany\TestApp\Business\Contract\Interactor\ITest;
+    use TestCompany\TestApp\Business\Contract\Logger\ITestAccessRightLogger;
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
+
+    class TestAccessRight implements ITest
+    {
+        const TEST_ACCESS_RIGHT = "TestAccessRight";
+
+        /**
+         * @var IAccessRightDao
+         */
+        private $dao;
+        /**
+         * @var IAccessRightPresenter
+         */
+        private $presenter;
+        /**
+         * @var \TestCompany\TestApp\Business\Contract\Interactor\ITest
+         */
+        private $interactor;
+        /**
+         * @var ITestAccessRightLogger
+         */
+        private $logger;
+
+        function __construct(
+            IAccessRightDao $dao,
+            IAccessRightPresenter $presenter,
+            ITest $interactor,
+            ITestAccessRightLogger $logger
+        )
+        {
+            $this->dao = $dao;
+            $this->presenter = $presenter;
+            $this->interactor = $interactor;
+            $this->logger = $logger;
+        }
+
+        function run(ITestRequestData $data)
+        {
+            $hasAccessRight = $this->dao->hasAccessRight(self::TEST_ACCESS_RIGHT);
+            if (!$hasAccessRight) {
+                $this->showAccessDenied();
+            } else {
+                $this->interactor->run($data);
+            }
+        }
+
+        protected function showAccessDenied() {
+            $this->logger->logAccessDenied();
+            $this->presenter->showAccessDenied();
+        }
+    }
