@@ -11,25 +11,21 @@
     use Conpago\Cli\Contract\IQuestion;
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
     use Conpago\Time\Contract\ITimeService;
+    use DateTime;
+    use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
     class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var CreateInteractorContextBuilder
-     */
+    /** @var CreateInteractorContextBuilder */
     protected $createInteractorContextBuilder;
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+
+    /** @var IQuestion | MockObject */
     protected $question;
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+
+    /** @var ICreateInteractorContextBuilderConfig | MockObject */
     protected $config;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ITimeService | MockObject */
     protected $timeService;
 
     public function test_WillAskForContextData()
@@ -60,6 +56,7 @@
                         $this->equalTo("yes")]
                 );
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $this->createInteractorContextBuilder->build("");
     }
 
@@ -69,6 +66,7 @@
                     ->method("ask")
                     ->willReturn("yes");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals(
                 [
@@ -98,6 +96,7 @@
                     ->willReturn("yes");
         $this->config->expects($this->once())->method("getAuthor")->willReturn("Authorrr");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getAuthor(), "Authorrr");
     }
@@ -109,6 +108,7 @@
                     ->willReturn("yes");
         $this->config->expects($this->once())->method("getCompany")->willReturn("Company");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getCompany(), "Company");
     }
@@ -120,6 +120,7 @@
                     ->willReturn("yes");
         $this->config->expects($this->once())->method("getProject")->willReturn("Project");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getProject(), "Project");
     }
@@ -131,6 +132,7 @@
                     ->willReturn("yes");
         $this->config->expects($this->once())->method("getSources")->willReturn("Sources");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getSources(), "Sources");
     }
@@ -142,6 +144,7 @@
                     ->willReturn("yes");
         $this->config->expects($this->once())->method("getTests")->willReturn("Tests");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getTests(), "Tests");
     }
@@ -153,8 +156,18 @@
                            ->willReturn("yes");
         $this->config->expects($this->once())->method("getTests")->willReturn("Tests");
 
+        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("asd");
         $this->assertEquals($context->getInteractorName(), "asd");
+    }
+
+    public function test_WillSetDateFromTimeService()
+    {
+        $dateTime = new DateTime();
+        $this->timeService->method('getCurrentTime')->willReturn($dateTime);
+
+        $context = $this->createInteractorContextBuilder->build("asd");
+        $this->assertEquals($dateTime, $context->getDateTime());
     }
 
     protected function setUp()

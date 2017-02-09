@@ -9,8 +9,9 @@
     namespace Conpago\Cli\Interactor\Contract;
 
 use Conpago\Cli\Templates\Contract\ITemplateContext;
+use DateTime;
 
-    /**
+/**
      * Class CreateInteractorContext
      *
      * @license MIT
@@ -18,27 +19,37 @@ use Conpago\Cli\Templates\Contract\ITemplateContext;
      */
     class CreateInteractorContext implements ICreateInteractorContext
     {
-        /**
-         * @var array
-         */
+        const DATETIME_VAR_NAME = 'datetime';
+        const AUTHOR_VAR_NAME = "author";
+        const COMPANY_VAR_NAME = "company";
+        const PROJECT_VAR_NAME = "project";
+        const SOURCES_VAR_NAME = "sources";
+        const TESTS_VAR_NAME = "tests";
+        const INTERACTOR_NAME_VAR_NAME = "name";
+
+        /** @var array */
         protected $variables = [];
-        /**
-         * @return array
-         */
+
+        /** @return array */
         public function getVariables()
         {
             return $this->variables;
         }
 
         /**
-         * @param $name
-         * @param $value
+         * @param string $name
+         * @param mixed $value
          */
         public function setVariable($name, $value)
         {
             $this->variables[$name] = $value;
         }
 
+        /**
+         * @param string $name
+         *
+         * @return mixed|null
+         */
         public function getVariable($name)
         {
             if (!array_key_exists($name, $this->variables)) {
@@ -48,69 +59,115 @@ use Conpago\Cli\Templates\Contract\ITemplateContext;
             return $this->variables[$name];
         }
 
-        private $author_var_name = "author";
         /**
          * @return string
          */
         public function getAuthor()
         {
-            return $this->getVariable($this->author_var_name);
+            return $this->getVariable(self::AUTHOR_VAR_NAME);
         }
+
         /**
          * @param string $author
          */
         public function setAuthor($author)
         {
-            $this->setVariable($this->author_var_name, $author);
+            $this->setVariable(self::AUTHOR_VAR_NAME, $author);
         }
 
-        private $company_var_name = "company";
+        /**
+         * @param string $company
+         */
         public function setCompany($company)
         {
-            $this->setVariable($this->company_var_name, $company);
+            $this->setVariable(self::COMPANY_VAR_NAME, $company);
         }
+
+        /**
+         * @return mixed|null
+         */
         public function getCompany()
         {
-            return $this->getVariable($this->company_var_name);
+            return $this->getVariable(self::COMPANY_VAR_NAME);
         }
 
-        private $project_var_name = "project";
+        /**
+         * @param string $project
+         */
         public function setProject($project)
         {
-            $this->setVariable($this->project_var_name, $project);
+            $this->setVariable(self::PROJECT_VAR_NAME, $project);
         }
+
+        /**
+         * @return string|null
+         */
         public function getProject()
         {
-            return $this->getVariable($this->project_var_name);
+            return $this->getVariable(self::PROJECT_VAR_NAME);
         }
 
-        private $sources_var_name = "sources";
+        /**
+         * @param string $sources
+         */
         public function setSources($sources)
         {
-            $this->setVariable($this->sources_var_name, $sources);
+            $this->setVariable(self::SOURCES_VAR_NAME, $sources);
         }
+
+        /**
+         * @return string|null
+         */
         public function getSources()
         {
-            return $this->getVariable($this->sources_var_name);
+            return $this->getVariable(self::SOURCES_VAR_NAME);
         }
 
-        private $tests_var_name = "tests";
+        /**
+         * @param string $tests
+         */
         public function setTests($tests)
         {
-            $this->setVariable($this->tests_var_name, $tests);
-        }
-        public function getTests()
-        {
-            return $this->getVariable($this->tests_var_name);
+            $this->setVariable(self::TESTS_VAR_NAME, $tests);
         }
 
-        private $interactor_name_var_name = "name";
-        public function setInteractorName($interactor_name)
+        /**
+         * @return string|null
+         */
+        public function getTests()
         {
-            $this->setVariable($this->interactor_name_var_name, $interactor_name);
+            return $this->getVariable(self::TESTS_VAR_NAME);
         }
+
+        /**
+         * @param string $interactorName
+         */
+        public function setInteractorName($interactorName)
+        {
+            $this->setVariable(self::INTERACTOR_NAME_VAR_NAME, $interactorName);
+        }
+
+        /**
+         * @return mixed|null
+         */
         public function getInteractorName()
         {
-            return $this->getVariable($this->interactor_name_var_name);
+            return $this->getVariable(self::INTERACTOR_NAME_VAR_NAME);
+        }
+
+        /**
+         * @param DateTime $dateTime
+         */
+        public function setDateTime(DateTime $dateTime)
+        {
+            return $this->setVariable(self::DATETIME_VAR_NAME, $dateTime);
+        }
+
+        /**
+         * @return DateTime|null
+         */
+        public function getDateTime()
+        {
+            return $this->getVariable(self::DATETIME_VAR_NAME);
         }
     }

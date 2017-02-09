@@ -1,13 +1,8 @@
 <?php
-    /**
-     * Created by Conpago-Cli.
-     * User: Bartosz Gołek
-     * Date: 29.10.13
-     * Time: 08:43
-     */
+{{ include('header.tpl') }}
 
-    namespace TestCompany\TestApp\Business\Contract\Dao;
+    namespace {{ company }}\{{ project }}\Business\Contract\Dao;
 
-    interface ITestDao
+    interface I{{ name }}Dao
     {
     }

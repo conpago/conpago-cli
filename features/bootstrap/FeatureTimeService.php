@@ -58,6 +58,6 @@
             $month = $dateParts[1];
             $day = $dateParts[2];
 
-            $this->date->setTime($year, $month, $day);
+            $this->date->setDate($year, $month, $day);
         }
     }

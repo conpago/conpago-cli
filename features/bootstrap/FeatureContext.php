@@ -161,7 +161,7 @@
             $expected = file_get_contents($referenceFile);
             $generated = file_get_contents($targetFile);
 
-            assertEquals($expected, $generated);
+            assertEquals($expected, $generated, $file . ': Failed asserting that two strings are equal.');
         }
 
             /**
