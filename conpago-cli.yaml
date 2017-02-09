@@ -1,0 +1,5 @@
+author: "Author Name"
+company: "SimpleCompany"
+project: "SimpleApp"
+sources: "tmp/src"
+tests: "tmp/tests"
