@@ -1,0 +1,43 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Author Name
+     * Date: 19.11.2014
+     * Time: 10:13
+     */
+
+    namespace SimpleCompany\SimpleApp\Presentation\Presenter;
+
+
+    use Conpago\Presentation\Contract\IJsonPresenter;
+    use SimpleCompany\SimpleApp\Business\Contract\Presenter\ISimplePresenter;
+
+    class SimplePresenter implements ISimplePresenter
+    {
+        const FAIL_MEESAGE = '?FAIL_MEESAGE?';
+        const SUCCEED_MEESAGE = "?SUCCEED_MEESAGE?";
+
+        /**
+         * @var IJsonPresenter
+         */
+        private $jsonPresenter;
+
+        function __construct(IJsonPresenter $jsonPresenter)
+        {
+            $this->jsonPresenter = $jsonPresenter;
+        }
+
+        public function showSimpleSucceed()
+        {
+            $jsonData['success'] = true;
+            $jsonData['message'] = self::SUCCEED_MEESAGE;
+            $this->jsonPresenter->showJson($jsonData);
+        }
+
+        public function showFailed($message)
+        {
+            $data['success'] = false;
+            $data['message'] =  $message . ' ' . self::FAIL_MEESAGE;
+            $this->jsonPresenter->showJson($data);
+        }
+    }

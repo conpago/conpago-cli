@@ -1,0 +1,24 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Contract\Presenter;
+
+{% if PresenterModel or RequestDataValidator %}
+{% if PresenterModel %}
+    use {{ company }}\{{ project }}\Business\Contract\PresenterModel\I{{ name }}PresenterModel;
+{% endif %}
+{% if RequestDataValidator %}
+    use {{ company }}\{{ project }}\Business\Contract\PresenterModel\I{{ name }}ValidationResult;
+{% endif %}
+
+{% endif %}
+    interface I{{ name }}Presenter
+    {
+{% if RequestDataValidator %}
+        public function showValidationFailed(I{{ name }}ValidationResult $validationResult);
+
+{% endif %}
+        public function show{{ name }}Succeed({% if PresenterModel %}I{{ name }}PresenterModel $data{% endif %});
+
+        public function showFailed($message);
+    }

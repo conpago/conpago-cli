@@ -1,0 +1,55 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Modules;
+
+    use Conpago\DI\IContainerBuilder;
+    use Conpago\DI\Parameter;
+    use Conpago\DI\IModule;
+
+    class {{ name }}Module implements IModule
+    {
+
+        /**
+         * @param IContainerBuilder $builder
+         *
+         * @SuppressWarnings(PHPMD.StaticAccess)
+         */
+        public function build(IContainerBuilder $builder)
+        {
+            $builder->registerType('{{ company }}\{{ project }}\Presentation\Controller\{{ name }}Controller')
+                    ->asA('Conpago\IController')
+                    ->asA('{{ company }}\{{ project }}\Presentation\Contract\Controller\I{{ name }}Controller')
+                    ->keyed('{{ name }}Controller')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Business\Interactor\{{ name }}')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }}')
+                    ->named('{{ name }}')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Business\Interactor\{{ name }}AccessRight')
+                    ->withParams(Parameter::def(), Parameter::def(), Parameter::named('{{ name }}'))
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }}')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Presentation\Presenter\{{ name }}Presenter')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Presenter\I{{ name }}Presenter')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Dao\Business\{{ name }}Dao')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Dao\I{{ name }}Dao')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Business\Validators\{{ name }}RequestDataValidator')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Validators\I{{ name }}RequestDataValidator');
+
+            $builder->registerType('{{ company }}\{{ project }}\Business\Logger\{{ name }}Logger')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}Logger')
+                    ->singleInstance();
+
+            $builder->registerType('{{ company }}\{{ project }}\Business\Logger\{{ name }}AccessRightLogger')
+                    ->asA('{{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger')
+                    ->singleInstance();
+        }
+    }

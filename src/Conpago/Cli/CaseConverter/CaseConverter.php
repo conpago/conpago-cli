@@ -42,4 +42,33 @@
             }
             return $result;
         }
+
+        /**
+         * @param string $string
+         *
+         * @return string
+         */
+        public function toCamelCase($string)
+        {
+            $in = fopen('php://memory', 'w');
+            fwrite($in, $string);
+            fseek($in, 0);
+
+            $result = "";
+            $char = null;
+            $last_char = null;
+            while (!feof($in)) {
+                $char = fread($in, 1);
+
+                if ($char !== '_') {
+                    if ($last_char === '_' or (ctype_lower($last_char) && ctype_upper($char))) {
+                        $result .= strtoupper($char);
+                    } else {
+                        $result .= strtolower($char);
+                    }
+                }
+                $last_char = $char;
+            }
+            return $result;
+        }
     }

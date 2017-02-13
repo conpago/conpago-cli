@@ -8,7 +8,6 @@
 
     namespace TestCompany\TestApp\Presentation\Controller;
 
-
     use Conpago\Exceptions\Http400BadRequestException;
     use Conpago\Helpers\Contract\IRequestData;
     use TestCompany\TestApp\Presentation\Contract\Controller\ITestController;
@@ -20,11 +19,11 @@
         /**
          * @var ITest
          */
-        private $createUser;
+        private $test;
 
-        function __construct(ITest $createUser)
+        function __construct(ITest $test)
         {
-            $this->createUser = $createUser;
+            $this->test = $test;
         }
 
         function execute(IRequestData $data)
@@ -44,6 +43,6 @@
                 //TODO: set request data fields as below
                 //$parameters['?entity?']['?field?']
             );
-            $this->createUser->run($requestData);
+            $this->test->run($requestData);
         }
     }

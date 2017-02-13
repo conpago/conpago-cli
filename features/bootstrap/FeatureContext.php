@@ -161,7 +161,12 @@
             $expected = file_get_contents($referenceFile);
             $generated = file_get_contents($targetFile);
 
-            assertEquals($expected, $generated, $file . ': Failed asserting that two strings are equal.');
+            try {
+                assertEquals($expected, $generated, $file . ': Failed asserting that two strings are equal.');
+            } catch (Exception $e) {
+                echo $e;
+                throw $e;
+            }
         }
 
             /**
@@ -194,8 +199,16 @@
         /**
          * @Given I will answer :answer to question :question
          */
-        public function iAnswerToQuestion($answer, $question)
+        public function iWillAnswerToQuestion($answer, $question)
         {
             $this->questionResponseHandler->addAnswer($question, $answer);
+        }
+
+        /**
+         * @Then /^All questions was asked$/
+         */
+        public function allQuestionsWasAsked()
+        {
+            assertEquals(0,$this->questionResponseHandler->getAnswersCount());
         }
     }

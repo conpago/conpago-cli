@@ -89,25 +89,30 @@
         {
             $context->setVariable(
                 InteractorParts::ACCESS_RIGHT,
-                    $this->askAboutCreating("Create access right for interactor?") == self::YES_ANSWER);
+                $this->askAboutCreating("Create access right for interactor?") == self::YES_ANSWER);
+            $createRequestData = $this->askAboutCreating("Create request data object for interactor?") == self::YES_ANSWER;
             $context->setVariable(
-                    InteractorParts::REQUEST_DATA,
-                    $this->askAboutCreating("Create request data object for interactor?") == self::YES_ANSWER);
-            $context->setVariable(
-                InteractorParts::REQUEST_DATA_VALIDATOR,
+                InteractorParts::REQUEST_DATA,
+                $createRequestData);
+            if ($createRequestData) {
+                $context->setVariable(
+                    InteractorParts::REQUEST_DATA_VALIDATOR,
                     $this->askAboutCreating("Create request data validator?") == self::YES_ANSWER);
+            } else {
+                $context->setVariable(InteractorParts::REQUEST_DATA_VALIDATOR, false);
+            }
             $context->setVariable(
                 InteractorParts::DAO,
-                    $this->askAboutCreating("Create dao for interactor?") == self::YES_ANSWER);
+                $this->askAboutCreating("Create dao for interactor?") == self::YES_ANSWER);
             $context->setVariable(
                 InteractorParts::LOGGER,
-                    $this->askAboutCreating("Create logger for interactor?") == self::YES_ANSWER);
+                $this->askAboutCreating("Create logger for interactor?") == self::YES_ANSWER);
             $context->setVariable(
                 InteractorParts::PRESENTER_MODEL,
-                    $this->askAboutCreating("Create presenter model for interactor?") == self::YES_ANSWER);
+                $this->askAboutCreating("Create presenter model for interactor?") == self::YES_ANSWER);
             $context->setVariable(
                 InteractorParts::DI_MODULE,
-                    $this->askAboutCreating("Create Conpago/DI module for interactor?") == self::YES_ANSWER);
+                $this->askAboutCreating("Create Conpago/DI module for interactor?") == self::YES_ANSWER);
         }
 
         /**

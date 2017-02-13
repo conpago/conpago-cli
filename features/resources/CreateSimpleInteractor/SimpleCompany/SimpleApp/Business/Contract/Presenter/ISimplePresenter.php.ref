@@ -1,0 +1,16 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Author Name
+     * Date: 19.11.2014
+     * Time: 10:13
+     */
+
+    namespace SimpleCompany\SimpleApp\Business\Contract\Presenter;
+
+    interface ISimplePresenter
+    {
+        public function showSimpleSucceed();
+
+        public function showFailed($message);
+    }

@@ -92,7 +92,12 @@
         protected function createTemplateProcessor()
         {
             return new TemplateProcessor(
-                new TwigFactory(new PathBuilder(), 'resources', 'tmp/twig-cache')
+                new TwigFactory(
+                    new PathBuilder(),
+                    new CaseConverter(),
+                    'resources',
+                    'tmp/twig-cache'
+                )
             );
         }
 

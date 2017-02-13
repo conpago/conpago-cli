@@ -1,0 +1,18 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Contract\Validators;
+
+
+    use {{ company }}\{{ project }}\Business\Contract\PresenterModel\I{{ name }}ValidationResult;
+    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+
+    interface I{{ name }}RequestDataValidator {
+
+        /**
+         * @param I{{ name }}RequestData $requestData
+         *
+         * @return I{{ name }}ValidationResult
+         */
+        function validate(I{{ name }}RequestData $requestData);
+    }

@@ -1,0 +1,16 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Author Name
+     * Date: 19.11.2014
+     * Time: 10:13
+     */
+
+    namespace SimpleCompany\SimpleApp\Presentation\Contract\Controller;
+
+    use Conpago\Presentation\Contract\IController;
+
+    interface ISimpleController extends IController
+    {
+        function execute();
+    }

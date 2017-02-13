@@ -111,12 +111,12 @@ Feature: interactor
       """
     Given I will answer 'no' to question 'Create access right for interactor? [yes/no] (yes):'
     Given I will answer 'no' to question 'Create request data object for interactor? [yes/no] (yes):'
-    Given I will answer 'no' to question 'Create request data validator? [yes/no] (yes):'
     Given I will answer 'no' to question 'Create dao for interactor? [yes/no] (yes):'
     Given I will answer 'no' to question 'Create logger for interactor? [yes/no] (yes):'
     Given I will answer 'no' to question 'Create presenter model for interactor? [yes/no] (yes):'
     Given I will answer 'no' to question 'Create Conpago/DI module for interactor? [yes/no] (yes):'
     When I run 'interactor' cli command with 'Simple'
+    Then All questions was asked
     Then The files are still not exists:
       """
       SimpleCompany/SimpleApp/Business/Contract/Dao/ISimpleDao.php

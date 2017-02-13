@@ -1,0 +1,18 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Contract\Interactor;
+
+{% if RequestData %}
+    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+
+{% endif %}
+    interface I{{ name }}
+    {
+{% if RequestData %}
+        /**
+         * @param I{{ name}}RequestData $data
+         */
+{% endif %}
+        public function run({% if RequestData %}I{{ name }}RequestData $data{% endif %});
+    }

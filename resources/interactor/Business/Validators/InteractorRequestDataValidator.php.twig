@@ -1,0 +1,36 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Validators;
+
+
+    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+    use {{ company }}\{{ project }}\Business\Contract\Validators\I{{ name }}RequestDataValidator;
+    use {{ company }}\{{ project }}\Business\PresenterModel\{{ name }}ValidationResult;
+
+    class {{ name }}RequestDataValidator implements I{{ name }}RequestDataValidator
+    {
+        //TODO: create validation result messages as below
+        //const ??_FIELD_IS_REQUIRED = "?? field is required";
+
+        function validate(I{{ name }}RequestData $requestData)
+        {
+            return new {{ name }}ValidationResult(
+                //TODO: add result messages as below
+                //$this->checkFieldRequired($requestData->getField()),
+            );
+        }
+
+        //TODO: create cecking methods as below
+        //private function checkFieldRequired($password)
+        //{
+        //    return !$this->isNotEmpty($password)
+        //        ? self::??_FIELD_IS_REQUIRED
+        //        : "";
+        //}
+
+        private function isNotEmpty($string)
+        {
+            return $string != null && $string != "";
+        }
+    }

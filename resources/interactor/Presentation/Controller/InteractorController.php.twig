@@ -1,0 +1,49 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Presentation\Controller;
+
+{%  if RequestData %}
+    use Conpago\Exceptions\Http400BadRequestException;
+    use Conpago\Helpers\Contract\IRequestData;
+{%  endif %}
+    use {{ company }}\{{ project }}\Presentation\Contract\Controller\I{{ name }}Controller;
+    use {{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }};
+{%  if RequestData %}
+    use {{ company }}\{{ project }}\Presentation\RequestData\{{ name }}RequestData;
+{% endif %}
+
+    class {{ name }}Controller implements I{{ name }}Controller
+    {
+        /**
+         * @var I{{ name }}
+         */
+        private ${{ name|to_camel_case }};
+
+        function __construct(I{{ name }} ${{ name|to_camel_case }})
+        {
+            $this->{{ name|to_camel_case }} = ${{ name|to_camel_case }};
+        }
+
+        function execute({%  if RequestData %}IRequestData $data{% endif %})
+        {
+{%  if RequestData %}
+            $parameters = $data->getParameters();
+
+            if ($parameters == null) {
+                throw new Http400BadRequestException("");
+            }
+
+            //TODO: Repalce ?entity? with right name
+            if (!array_key_exists('?entity?', $parameters) {
+                throw new Http400BadRequestException("");
+            }
+
+            $requestData = new {{ name }}RequestData(
+                //TODO: set request data fields as below
+                //$parameters['?entity?']['?field?']
+            );
+{% endif %}
+            $this->{{ name|to_camel_case }}->run({%  if RequestData %}$requestData{% endif %});
+        }
+    }

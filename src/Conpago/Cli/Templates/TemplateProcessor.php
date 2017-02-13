@@ -47,6 +47,6 @@ use Twig_Loader_Filesystem;
         public function processTemplate($namespace, $templateFile, ITemplateContext $context)
         {
             $twigEnv = $this->twigFactory->create($namespace);
-            return $twigEnv->render($templateFile . '.tpl', $context->getVariables());
+            return $twigEnv->render($templateFile . '.twig', $context->getVariables());
         }
     }

@@ -10,11 +10,9 @@
 
     use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
     use Conpago\Exceptions\Exception;
-    use Conpago\Helpers\Contract\IPasswordHasher;
     use TestCompany\TestApp\Business\Contract\Dao\ITestDao;
     use TestCompany\TestApp\Business\Contract\Interactor\ITest;
     use TestCompany\TestApp\Business\Contract\Logger\ITestLogger;
-    use TestCompany\TestApp\Business\Contract\Model\IUser;
     use TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter;
     use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
     use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
@@ -39,7 +37,8 @@
             ITestDao $dao,
             ITestPresenter $presenter,
             ITestRequestDataValidator $userValidator,
-            ITestLogger $logger)
+            ITestLogger $logger
+        )
         {
             $this->dao = $dao;
             $this->presenter = $presenter;
@@ -87,12 +86,13 @@
         /**
         * @param ITestRequestData $data
         */
-        private function trySaveUser(ITestRequestData $data)
+        private function doTest(ITestRequestData $data)
         {
             try
             {
-                //TODO: do things and create request model
-                $this->presenter->showTestSucceed(?entity?);
+                $presenterModel = new TestPresenterModel();
+                //TODO: do things to handle request and create $presenterModel
+                $this->presenter->showTestSucceed($presenterModel);
             }
             catch (ColumnUniqueConstraintException $e)
             {

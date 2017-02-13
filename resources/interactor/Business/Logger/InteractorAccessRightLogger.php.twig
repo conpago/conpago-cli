@@ -1,0 +1,25 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Logger;
+
+
+    use {{ company }}\{{ project }}\Business\Contract\Logger\IAccessRightDeniedLogger;
+    use {{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger;
+    use {{ company }}\{{ project }}\Business\Interactor\{{ name }}AccessRight;
+
+    class {{ name }}AccessRightLogger implements I{{ name }}AccessRightLogger
+    {
+        /**
+         * @var IAccessRightDeniedLogger
+         */
+        private $logger;
+
+        function __construct(IAccessRightDeniedLogger $logger) {
+            $this->logger = $logger;
+        }
+
+        public function logAccessDenied() {
+            $this->logger->log({{ name }}AccessRight::TEST_INTERACTOR_ACCESS_RIGHT);
+        }
+    }

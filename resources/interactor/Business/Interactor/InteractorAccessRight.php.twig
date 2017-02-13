@@ -1,0 +1,61 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Interactor;
+
+
+    use Conpago\AccessRight\Contract\IAccessRightDao;
+    use Conpago\AccessRight\Contract\IAccessRightPresenter;
+    use {{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }};
+    use {{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger;
+    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+
+    class {{ name }}AccessRight implements I{{ name }}
+    {
+        const TEST_ACCESS_RIGHT = "{{ name }}AccessRight";
+
+        /**
+         * @var IAccessRightDao
+         */
+        private $dao;
+        /**
+         * @var IAccessRightPresenter
+         */
+        private $presenter;
+        /**
+         * @var \{{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }}
+         */
+        private $interactor;
+        /**
+         * @var I{{ name }}AccessRightLogger
+         */
+        private $logger;
+
+        function __construct(
+            IAccessRightDao $dao,
+            IAccessRightPresenter $presenter,
+            I{{ name }} $interactor,
+            I{{ name }}AccessRightLogger $logger
+        )
+        {
+            $this->dao = $dao;
+            $this->presenter = $presenter;
+            $this->interactor = $interactor;
+            $this->logger = $logger;
+        }
+
+        function run(I{{ name }}RequestData $data)
+        {
+            $hasAccessRight = $this->dao->hasAccessRight(self::TEST_ACCESS_RIGHT);
+            if (!$hasAccessRight) {
+                $this->showAccessDenied();
+            } else {
+                $this->interactor->run($data);
+            }
+        }
+
+        protected function showAccessDenied() {
+            $this->logger->logAccessDenied();
+            $this->presenter->showAccessDenied();
+        }
+    }

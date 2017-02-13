@@ -12,61 +12,106 @@
     use Conpago\Cli\Interactor\Contract\ICreateInteractorContextBuilderConfig;
     use Conpago\Time\Contract\ITimeService;
     use DateTime;
-    use PHPUnit_Framework_MockObject_MockObject as MockObject;
+    use Phake;
+    use Phake_IMock as Mock;
 
     class CreateInteractorContextBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /** @var CreateInteractorContextBuilder */
     protected $createInteractorContextBuilder;
 
-    /** @var IQuestion | MockObject */
+    /** @var Mock */
     protected $question;
 
-    /** @var ICreateInteractorContextBuilderConfig | MockObject */
+    /** @var Mock */
     protected $config;
 
-    /** @var ITimeService | MockObject */
+    /** @var Mock */
     protected $timeService;
 
     public function test_WillAskForContextData()
     {
-        $this->question->expects($this->exactly(7))
-                ->method("ask")
-                ->withConsecutive(
-                    [$this->equalTo("Create access right for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create request data object for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create request data validator?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create dao for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create logger for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create presenter model for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")],
-                    [$this->equalTo("Create Conpago/DI module for interactor?"),
-                        $this->equalTo(["yes", "no"]),
-                        $this->equalTo("yes")]
-                );
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+            ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
         $this->createInteractorContextBuilder->build("");
+
+        Phake::inOrder(
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create access right for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create request data object for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create request data validator?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create dao for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create logger for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create presenter model for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            ),
+            Phake::verify($this->question, Phake::times(1))->ask(
+                $this->equalTo("Create Conpago/DI module for interactor?"),
+                $this->equalTo(["yes", "no"]),
+                $this->equalTo("yes")
+            )
+        );
+    }
+
+    public function test_WillNotAskForDataValidatorWhenThereIsNoDataContextData()
+    {
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('no');
+
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        $this->createInteractorContextBuilder->build("");
+
+        Phake::verify($this->question, Phake::times(0))->ask(
+            $this->equalTo("Create request data validator?"),
+            $this->anything(),
+            $this->anything()
+        );
+    }
+
+    public function test_WillSetDataValidatorToFalseWhenThereIsNoDataContextData()
+    {
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('no');
+
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        $context = $this->createInteractorContextBuilder->build("");
+
+        $this->assertFalse($context->getVariable(InteractorParts::REQUEST_DATA_VALIDATOR));
     }
 
     public function test_WillBuildContextWithGatheredData()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals(
                 [
@@ -91,72 +136,77 @@
 
     public function test_WillSetAuthorFromConfig()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
-        $this->config->expects($this->once())->method("getAuthor")->willReturn("Authorrr");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        Phake::when($this->config)->getAuthor()->thenReturn("Authorrr");
+
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getAuthor(), "Authorrr");
     }
 
     public function test_WillSetCompanyFromConfig()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
-        $this->config->expects($this->once())->method("getCompany")->willReturn("Company");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        Phake::when($this->config)->getCompany()->thenReturn("Company");
+
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getCompany(), "Company");
     }
 
     public function test_WillSetProjectFromConfig()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
-        $this->config->expects($this->once())->method("getProject")->willReturn("Project");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        Phake::when($this->config)->getProject()->thenReturn("Project");
+
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getProject(), "Project");
     }
 
     public function test_WillSetSourcesFromConfig()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
-        $this->config->expects($this->once())->method("getSources")->willReturn("Sources");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        Phake::when($this->config)->getSources()->thenReturn("Sources");
+
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getSources(), "Sources");
     }
 
     public function test_WillSetTestsFromConfig()
     {
-        $this->question->expects($this->any())
-                    ->method("ask")
-                    ->willReturn("yes");
-        $this->config->expects($this->once())->method("getTests")->willReturn("Tests");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+        Phake::when($this->config)->getTests()->thenReturn("Tests");
+
         $context = $this->createInteractorContextBuilder->build("");
         $this->assertEquals($context->getTests(), "Tests");
     }
 
-    public function test_WillSetInteractorNameFromConfig()
+    public function test_WillSetInteractorNameFromParameter()
     {
-        $this->question->expects($this->any())
-                           ->method("ask")
-                           ->willReturn("yes");
-        $this->config->expects($this->once())->method("getTests")->willReturn("Tests");
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
 
-        $this->timeService->method('getCurrentTime')->willReturn(new DateTime());
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn(new DateTime());
+
         $context = $this->createInteractorContextBuilder->build("asd");
         $this->assertEquals($context->getInteractorName(), "asd");
     }
@@ -164,7 +214,11 @@
     public function test_WillSetDateFromTimeService()
     {
         $dateTime = new DateTime();
-        $this->timeService->method('getCurrentTime')->willReturn($dateTime);
+        Phake::when($this->question)
+             ->ask($this->anything(), $this->anything(), $this->anything())
+             ->thenReturn('yes');
+
+        Phake::when($this->timeService)->getCurrentTime()->thenReturn($dateTime);
 
         $context = $this->createInteractorContextBuilder->build("asd");
         $this->assertEquals($dateTime, $context->getDateTime());
@@ -172,9 +226,10 @@
 
     protected function setUp()
     {
-        $this->question = $this->createMock(IQuestion::class);
-        $this->config = $this->createMock(ICreateInteractorContextBuilderConfig::class);
-        $this->timeService = $this->createMock(ITimeService::class);
+        $this->question = Phake::mock(IQuestion::class);
+        $this->config = Phake::mock(ICreateInteractorContextBuilderConfig::class);
+        $this->timeService = Phake::mock(ITimeService::class);
+
         $this->createInteractorContextBuilder = new CreateInteractorContextBuilder($this->question, $this->config, $this->timeService);
     }
 }

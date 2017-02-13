@@ -8,8 +8,10 @@
 
     namespace Conpago\Cli\Templates\Twig;
 
+    use Conpago\Cli\CaseConverter\CaseConverter;
     use Conpago\File\Contract\IPathBuilder;
     use Twig_Environment;
+    use Twig_Filter;
     use Twig_Loader_Filesystem;
 
 
@@ -21,6 +23,9 @@
      **/
     class TwigFactory
     {
+        /** @var CaseConverter */
+        private $caseConverter;
+
         /** @var string */
         private $path;
 
@@ -34,14 +39,16 @@
          * TwigFactory constructor.
          *
          * @param IPathBuilder $pathBuilder
+         * @param CaseConverter $caseConverter
          * @param $path
          * @param $cache
          */
-        public function __construct($pathBuilder, $path, $cache)
+        public function __construct($pathBuilder, $caseConverter, $path, $cache)
         {
             $this->path = $path;
             $this->cache = $cache;
             $this->pathBuilder = $pathBuilder;
+            $this->caseConverter = $caseConverter;
         }
 
         /**
@@ -54,8 +61,16 @@
             $templatePath = $this->pathBuilder->createPath([$this->path, $subPath]);
 
             $loader = new Twig_Loader_Filesystem($templatePath);
-            return new Twig_Environment($loader, array(
+            $twigEnvironment = new Twig_Environment($loader, array(
                 'cache' => $this->cache,
             ));
+
+            $filter = new Twig_Filter('to_camel_case', function ($string) {
+                return $this->caseConverter->toCamelCase($string);
+            });
+
+            $twigEnvironment->addFilter($filter);
+
+            return $twigEnvironment;
         }
     }

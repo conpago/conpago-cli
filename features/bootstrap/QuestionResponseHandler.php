@@ -40,11 +40,20 @@
 
         public function readLine()
         {
-            if (isset($this->answers[$this->lastLine])){
-                return $this->answers[$this->lastLine];
+            $question = $this->lastLine;
+            if (isset($this->answers[0][$question])) {
+                $answer = $this->answers[0][$question];
+                array_shift($this->answers);
+
+                return $answer;
             }
 
-            return null;
+            $message = sprintf("Unexpected question '%s'.", $question);
+            if (count($this->answers) > 0) {
+                $message .= PHP_EOL . sprintf("Currently expected question is: '%s'.", array_keys($this->answers[0])[0]);
+            }
+
+            throw new Exception($message);
         }
 
         public function write($format = null, array $args = null)
@@ -66,7 +75,7 @@
 
         public function addAnswer($question, $answer)
         {
-            $this->answers[$question] = $answer;
+            $this->answers[] = [$question => $answer];
         }
 
         /**
@@ -88,5 +97,10 @@
         private function trim($value)
         {
             return trim(trim($value, PHP_EOL));
+        }
+
+        public function getAnswersCount()
+        {
+            return count($this->answers);
         }
     }

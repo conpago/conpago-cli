@@ -1,0 +1,13 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Contract\PresenterModel;
+
+    use Conpago\Contract\IValidationResult;
+
+    interface I{{ name }}ValidationResult extends IValidationResult
+    {
+        //TODO: create message getters as bellow
+        /** @return string */
+        //function getFieldMessage();
+    }

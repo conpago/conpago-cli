@@ -1,0 +1,138 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Business\Interactor;
+
+    use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
+    use Conpago\Exceptions\Exception;
+{% if Dao %}
+    use {{ company }}\{{ project }}\Business\Contract\Dao\I{{ name }}Dao;
+{% endif %}
+    use {{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }};
+{% if Logger %}
+    use {{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}Logger;
+{% endif %}
+    use {{ company }}\{{ project }}\Business\Contract\Presenter\I{{ name }}Presenter;
+{% if PresenterModel %}
+    use {{ company }}\{{ project }}\Business\Contract\PresenterModel\I{{ name }}PresenterModel;
+{% endif %}
+{% if RequestData %}
+    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+{% if RequestDataValidator %}
+    use {{ company }}\{{ project }}\Business\Contract\Validators\I{{ name }}RequestDataValidator;
+{% endif %}
+{% endif %}
+{% if PresenterModel %}
+    use {{ company }}\{{ project }}\Business\PresenterModel\{{ name }}PresenterModel;
+{% endif %}
+
+    class {{ name }} implements I{{ name }}
+    {
+{% if Dao %}
+        /** @var I{{ name }}Dao */
+        private $dao;
+
+{% endif %}
+{% if RequestDataValidator %}
+        /** @var I{{ name }}RequestDataValidator */
+        private $userValidator;
+
+{% endif %}
+        /** @var I{{ name }}Presenter */
+        private $presenter;
+
+{% if Logger %}
+        /** @var I{{ name }}Logger */
+        private $logger;
+
+{% endif %}
+        function __construct(
+{% if Dao %}
+            I{{ name }}Dao $dao,
+{% endif %}
+            I{{ name }}Presenter $presenter{% if (RequestDataValidator or Logger) %},{%  endif %}
+
+{% if RequestDataValidator %}
+            I{{ name }}RequestDataValidator $userValidator{% if (RequestDataValidator or Logger) %},
+{% endif %}{% endif %}
+{% if Logger %}
+            I{{ name }}Logger $logger
+{% endif %}
+        )
+        {
+{% if Dao %}
+            $this->dao = $dao;
+{% endif %}
+            $this->presenter = $presenter;
+{% if RequestDataValidator %}
+            $this->userValidator = $userValidator;
+{% endif %}
+{% if Logger %}
+            $this->logger = $logger;
+{% endif %}
+        }
+
+{% if RequestDataValidator %}
+        /**
+        * @param I{{ name }}RequestData $data
+        */
+{% endif %}
+        public function run({% if RequestDataValidator %}I{{ name }}RequestData $data{% endif %})
+        {
+{% if RequestDataValidator %}
+            $validationResult = $this->validate($data);
+
+            if (!$validationResult->isValidationPassed()) {
+                $this->presenter->showValidationFailed($validationResult);
+            } else {
+                $this->do{{ name }}($data);
+            }
+{% else %}
+            $this->presenter->showSimpleSucceed();
+{% endif %}
+        }
+{% if RequestDataValidator %}
+
+        /**
+        * @param ColumnUniqueConstraintException $exception
+        *
+        * @return string
+        * @throws Exception
+        */
+        protected function getMessageFromUniqueException(ColumnUniqueConstraintException $exception)
+        {
+            switch ($exception->columnName)
+            {
+                //TODO: handle columns with propper messages as below
+                //case '?field_name?':
+                //    return self::?FIELD_??_HAVE_TO_BE_UNIQUE?;
+                default :
+                    throw new Exception(self::CANNOT_HANDLE_UNIQUE_EXCEPTION_FOR_COLUMN . $exception->columnName);
+            }
+        }
+
+        private function validate($data)
+        {
+            return $this->userValidator->validate($data);
+        }
+
+        /**
+        * @param I{{ name }}RequestData $data
+        */
+        private function do{{ name }}(I{{ name }}RequestData $data)
+        {
+            try
+            {
+{% if PresenterModel %}
+                $presenterModel = new {{ name }}PresenterModel();
+{% endif %}
+                //TODO: do things to handle request and create $presenterModel
+                $this->presenter->show{{ name }}Succeed({% if PresenterModel %}$presenterModel{% endif %});
+            }
+            catch (ColumnUniqueConstraintException $e)
+            {
+                $this->presenter->showFailed($this->getMessageFromUniqueException($e));
+            }
+        }
+{% endif %}
+    }

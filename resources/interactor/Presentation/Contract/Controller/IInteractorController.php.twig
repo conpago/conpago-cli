@@ -1,0 +1,14 @@
+<?php
+{{ include('header.twig') }}
+
+    namespace {{ company }}\{{ project }}\Presentation\Contract\Controller;
+
+{%  if RequestData %}
+    use Conpago\Helpers\Contract\IRequestData;
+{%  endif %}
+    use Conpago\Presentation\Contract\IController;
+
+    interface I{{ name }}Controller extends IController
+    {
+        function execute({%  if RequestData %}IRequestData $data{%  endif %});
+    }

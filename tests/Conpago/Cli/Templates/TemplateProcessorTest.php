@@ -66,7 +66,7 @@
 
             $this->twigEnvironment->expects($this->once())
                                   ->method('render')
-                                  ->with($templateFile. ".tpl", $this->anything());
+                                  ->with($templateFile. ".twig", $this->anything());
 
             $this->templateProcessor->processTemplate('', $templateFile, $this->templateContext);
         }

@@ -8,6 +8,7 @@
 
     namespace Conpago\Cli\Templates\Twig;
 
+    use Conpago\Cli\CaseConverter\CaseConverter;
     use PHPUnit_Framework_MockObject_MockObject as MockObject;
     use Conpago\File\Contract\IPathBuilder;
 
@@ -15,6 +16,9 @@
     {
         /** @var  IPathBuilder | MockObject */
         protected $pathBuilder;
+
+        /** @var  CaseConverter | MockObject */
+        protected $caseConverter;
 
         /** @var TwigFactory */
         private $twigFactory;
@@ -30,6 +34,7 @@
         public function setUp()
         {
             $this->pathBuilder = $this->createMock(IPathBuilder::class);
-            $this->twigFactory = new TwigFactory($this->pathBuilder, '', '');
+            $this->caseConverter = $this->createMock(CaseConverter::class);
+            $this->twigFactory = new TwigFactory($this->pathBuilder, $this->caseConverter, '', '');
         }
     }
