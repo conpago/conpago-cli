@@ -1,0 +1,96 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Interactor;
+
+    use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
+    use Conpago\Exceptions\Exception;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Dao\IWithoutLoggerDao;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor\IWithoutLogger;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Presenter\IWithoutLoggerPresenter;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerPresenterModel;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\RequestData\IWithoutLoggerRequestData;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Validators\IWithoutLoggerRequestDataValidator;
+    use NoLoggerCompany\NoLoggerAppl\Business\PresenterModel\WithoutLoggerPresenterModel;
+
+    class WithoutLogger implements IWithoutLogger
+    {
+        /** @var IWithoutLoggerDao */
+        private $dao;
+
+        /** @var IWithoutLoggerRequestDataValidator */
+        private $userValidator;
+
+        /** @var IWithoutLoggerPresenter */
+        private $presenter;
+
+        function __construct(
+            IWithoutLoggerDao $dao,
+            IWithoutLoggerPresenter $presenter,
+            IWithoutLoggerRequestDataValidator $userValidator
+        )
+        {
+            $this->dao = $dao;
+            $this->presenter = $presenter;
+            $this->userValidator = $userValidator;
+        }
+
+        /**
+        * @param IWithoutLoggerRequestData $data
+        */
+        public function run(IWithoutLoggerRequestData $data)
+        {
+            $validationResult = $this->validate($data);
+
+            if (!$validationResult->isValidationPassed()) {
+                $this->presenter->showValidationFailed($validationResult);
+            } else {
+                $this->doWithoutLogger($data);
+            }
+        }
+
+        /**
+        * @param ColumnUniqueConstraintException $exception
+        *
+        * @return string
+        * @throws Exception
+        */
+        protected function getMessageFromUniqueException(ColumnUniqueConstraintException $exception)
+        {
+            switch ($exception->columnName)
+            {
+                //TODO: handle columns with propper messages as below
+                //case '?field_name?':
+                //    return self::?FIELD_??_HAVE_TO_BE_UNIQUE?;
+                default :
+                    throw new Exception(self::CANNOT_HANDLE_UNIQUE_EXCEPTION_FOR_COLUMN . $exception->columnName);
+            }
+        }
+
+        private function validate($data)
+        {
+            return $this->userValidator->validate($data);
+        }
+
+        /**
+        * @param IWithoutLoggerRequestData $data
+        */
+        private function doWithoutLogger(IWithoutLoggerRequestData $data)
+        {
+            try
+            {
+                $presenterModel = new WithoutLoggerPresenterModel();
+                //TODO: do things to handle request and create $presenterModel
+                $this->presenter->showWithoutLoggerSucceed($presenterModel);
+            }
+            catch (ColumnUniqueConstraintException $e)
+            {
+                $this->presenter->showFailed($this->getMessageFromUniqueException($e));
+            }
+        }
+    }

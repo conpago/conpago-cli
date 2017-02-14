@@ -1,0 +1,16 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel;
+
+    interface IWithoutLoggerPresenterModel
+    {
+        //TODO: create getters as bellow
+        /** @return string */
+        //function getField();
+    }

@@ -16,9 +16,7 @@
 
     class TestController implements ITestController
     {
-        /**
-         * @var ITest
-         */
+        /** @var ITest */
         private $test;
 
         function __construct(ITest $test)

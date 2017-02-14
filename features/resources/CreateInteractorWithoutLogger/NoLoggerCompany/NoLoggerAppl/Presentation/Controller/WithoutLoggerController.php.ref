@@ -1,0 +1,46 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Presentation\Controller;
+
+    use Conpago\Exceptions\Http400BadRequestException;
+    use Conpago\Helpers\Contract\IRequestData;
+    use NoLoggerCompany\NoLoggerAppl\Presentation\Contract\Controller\IWithoutLoggerController;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor\IWithoutLogger;
+    use NoLoggerCompany\NoLoggerAppl\Presentation\RequestData\WithoutLoggerRequestData;
+
+    class WithoutLoggerController implements IWithoutLoggerController
+    {
+        /** @var IWithoutLogger */
+        private $withoutLogger;
+
+        function __construct(IWithoutLogger $withoutLogger)
+        {
+            $this->withoutLogger = $withoutLogger;
+        }
+
+        function execute(IRequestData $data)
+        {
+            $parameters = $data->getParameters();
+
+            if ($parameters == null) {
+                throw new Http400BadRequestException("");
+            }
+
+            //TODO: Repalce ?entity? with right name
+            if (!array_key_exists('?entity?', $parameters) {
+                throw new Http400BadRequestException("");
+            }
+
+            $requestData = new WithoutLoggerRequestData(
+                //TODO: set request data fields as below
+                //$parameters['?entity?']['?field?']
+            );
+            $this->withoutLogger->run($requestData);
+        }
+    }

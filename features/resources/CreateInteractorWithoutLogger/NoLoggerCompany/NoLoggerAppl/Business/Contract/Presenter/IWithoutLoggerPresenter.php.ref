@@ -1,0 +1,21 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Contract\Presenter;
+
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerPresenterModel;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerValidationResult;
+
+    interface IWithoutLoggerPresenter
+    {
+        public function showValidationFailed(IWithoutLoggerValidationResult $validationResult);
+
+        public function showWithoutLoggerSucceed(IWithoutLoggerPresenterModel $data);
+
+        public function showFailed($message);
+    }

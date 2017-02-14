@@ -19,21 +19,16 @@
     {
         const TEST_ACCESS_RIGHT = "TestAccessRight";
 
-        /**
-         * @var IAccessRightDao
-         */
+        /** @var IAccessRightDao */
         private $dao;
-        /**
-         * @var IAccessRightPresenter
-         */
+
+        /** @var IAccessRightPresenter */
         private $presenter;
-        /**
-         * @var \TestCompany\TestApp\Business\Contract\Interactor\ITest
-         */
+
+        /** @var ITest */
         private $interactor;
-        /**
-         * @var ITestAccessRightLogger
-         */
+
+        /** @var ITestAccessRightLogger */
         private $logger;
 
         function __construct(

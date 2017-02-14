@@ -15,9 +15,7 @@
 
     class TestAccessRightLogger implements ITestAccessRightLogger
     {
-        /**
-         * @var IAccessRightDeniedLogger
-         */
+        /** @var IAccessRightDeniedLogger */
         private $logger;
 
         function __construct(IAccessRightDeniedLogger $logger) {

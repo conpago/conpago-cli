@@ -1,20 +1,20 @@
 <?php
     /**
      * Created by Conpago-Cli.
-     * User: Bartosz Gołek
-     * Date: 29.10.2013
-     * Time: 08:43
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
      */
 
-    namespace TestCompany\TestApp\Presentation\Presenter;
+    namespace NoLoggerCompany\NoLoggerAppl\Presentation\Presenter;
 
 
     use Conpago\Presentation\Contract\IJsonPresenter;
-    use TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter;
-    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
-    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestValidationResult;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Presenter\IWithoutLoggerPresenter;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerPresenterModel;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerValidationResult;
 
-    class TestPresenter implements ITestPresenter
+    class WithoutLoggerPresenter implements IWithoutLoggerPresenter
     {
         const FAIL_MEESAGE = '?FAIL_MEESAGE?';
         const SUCCEED_MEESAGE = "?SUCCEED_MEESAGE?";
@@ -27,7 +27,7 @@
             $this->jsonPresenter = $jsonPresenter;
         }
 
-        public function showValidationFailed(ITestValidationResult $validationResult)
+        public function showValidationFailed(IWithoutLoggerValidationResult $validationResult)
         {
             $data['success'] = false;
             //TODO: set validation output as bellow
@@ -36,7 +36,7 @@
             $this->jsonPresenter->showJson($data);
         }
 
-        public function showTestSucceed(ITestPresenterModel $data)
+        public function showWithoutLoggerSucceed(IWithoutLoggerPresenterModel $data)
         {
             $jsonData['success'] = true;
             $jsonData['message'] = self::SUCCEED_MEESAGE;

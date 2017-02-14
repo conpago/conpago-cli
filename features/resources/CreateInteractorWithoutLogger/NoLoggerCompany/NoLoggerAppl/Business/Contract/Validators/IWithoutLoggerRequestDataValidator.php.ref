@@ -1,0 +1,23 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Contract\Validators;
+
+
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerValidationResult;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\RequestData\IWithoutLoggerRequestData;
+
+    interface IWithoutLoggerRequestDataValidator {
+
+        /**
+         * @param IWithoutLoggerRequestData $requestData
+         *
+         * @return IWithoutLoggerValidationResult
+         */
+        function validate(IWithoutLoggerRequestData $requestData);
+    }

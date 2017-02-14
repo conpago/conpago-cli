@@ -1,0 +1,19 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor;
+
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\RequestData\IWithoutLoggerRequestData;
+
+    interface IWithoutLogger
+    {
+        /**
+         * @param IWithoutLoggerRequestData $data
+         */
+        public function run(IWithoutLoggerRequestData $data);
+    }

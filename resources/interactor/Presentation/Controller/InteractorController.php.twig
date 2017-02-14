@@ -15,9 +15,7 @@
 
     class {{ name }}Controller implements I{{ name }}Controller
     {
-        /**
-         * @var I{{ name }}
-         */
+        /** @var I{{ name }} */
         private ${{ name|to_camel_case }};
 
         function __construct(I{{ name }} ${{ name|to_camel_case }})

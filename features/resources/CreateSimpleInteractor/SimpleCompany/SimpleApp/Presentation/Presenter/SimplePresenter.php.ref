@@ -17,9 +17,7 @@
         const FAIL_MEESAGE = '?FAIL_MEESAGE?';
         const SUCCEED_MEESAGE = "?SUCCEED_MEESAGE?";
 
-        /**
-         * @var IJsonPresenter
-         */
+        /** @var IJsonPresenter */
         private $jsonPresenter;
 
         function __construct(IJsonPresenter $jsonPresenter)

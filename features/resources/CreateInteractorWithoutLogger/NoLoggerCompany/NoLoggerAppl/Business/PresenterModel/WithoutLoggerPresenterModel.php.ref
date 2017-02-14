@@ -1,0 +1,33 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\PresenterModel;
+
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\PresenterModel\IWithoutLoggerPresenterModel;
+
+    class WithoutLoggerPresenterModel implements IWithoutLoggerPresenterModel
+    {
+        //TODO: create fields as below
+        //private $field;
+
+        function __construct(
+            //TODO: create parameter for every field as below
+            //$field
+        )
+        {
+            //TODO: assign fields as below
+            //$this->field = $field;
+        }
+
+        //TODO: create getters as bellow
+        /** @return string */
+        //function getField()
+        //{
+        //    return $this->field;
+        //}
+    }

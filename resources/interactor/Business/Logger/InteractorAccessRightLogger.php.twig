@@ -10,9 +10,7 @@
 
     class {{ name }}AccessRightLogger implements I{{ name }}AccessRightLogger
     {
-        /**
-         * @var IAccessRightDeniedLogger
-         */
+        /** @var IAccessRightDeniedLogger */
         private $logger;
 
         function __construct(IAccessRightDeniedLogger $logger) {

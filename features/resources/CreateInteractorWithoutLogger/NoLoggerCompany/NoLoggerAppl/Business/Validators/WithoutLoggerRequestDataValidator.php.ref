@@ -1,0 +1,41 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Validators;
+
+
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\RequestData\IWithoutLoggerRequestData;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Validators\IWithoutLoggerRequestDataValidator;
+    use NoLoggerCompany\NoLoggerAppl\Business\PresenterModel\WithoutLoggerValidationResult;
+
+    class WithoutLoggerRequestDataValidator implements IWithoutLoggerRequestDataValidator
+    {
+        //TODO: create validation result messages as below
+        //const ??_FIELD_IS_REQUIRED = "?? field is required";
+
+        function validate(IWithoutLoggerRequestData $requestData)
+        {
+            return new WithoutLoggerValidationResult(
+                //TODO: add result messages as below
+                //$this->checkFieldRequired($requestData->getField()),
+            );
+        }
+
+        //TODO: create cecking methods as below
+        //private function checkFieldRequired($password)
+        //{
+        //    return !$this->isNotEmpty($password)
+        //        ? self::??_FIELD_IS_REQUIRED
+        //        : "";
+        //}
+
+        private function isNotEmpty($string)
+        {
+            return $string != null && $string != "";
+        }
+    }

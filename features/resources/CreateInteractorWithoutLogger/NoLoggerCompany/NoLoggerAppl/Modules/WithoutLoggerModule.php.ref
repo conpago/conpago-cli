@@ -1,0 +1,52 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
+
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Modules;
+
+    use Conpago\DI\IContainerBuilder;
+    use Conpago\DI\Parameter;
+    use Conpago\DI\IModule;
+
+    class WithoutLoggerModule implements IModule
+    {
+
+        /**
+         * @param IContainerBuilder $builder
+         *
+         * @SuppressWarnings(PHPMD.StaticAccess)
+         */
+        public function build(IContainerBuilder $builder)
+        {
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Presentation\Controller\WithoutLoggerController')
+                    ->asA('Conpago\IController')
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Presentation\Contract\Controller\IWithoutLoggerController')
+                    ->keyed('WithoutLoggerController')
+                    ->singleInstance();
+
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Business\Interactor\WithoutLogger')
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor\IWithoutLogger')
+                    ->named('WithoutLogger')
+                    ->singleInstance();
+
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Business\Interactor\WithoutLoggerAccessRight')
+                    ->withParams(Parameter::def(), Parameter::def(), Parameter::named('WithoutLogger'))
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor\IWithoutLogger')
+                    ->singleInstance();
+
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Presentation\Presenter\WithoutLoggerPresenter')
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Business\Contract\Presenter\IWithoutLoggerPresenter')
+                    ->singleInstance();
+
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Dao\Business\WithoutLoggerDao')
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Business\Contract\Dao\IWithoutLoggerDao')
+                    ->singleInstance();
+
+            $builder->registerType('NoLoggerCompany\NoLoggerAppl\Business\Validators\WithoutLoggerRequestDataValidator')
+                    ->asA('NoLoggerCompany\NoLoggerAppl\Business\Contract\Validators\IWithoutLoggerRequestDataValidator');
+        }
+    }

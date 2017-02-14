@@ -145,3 +145,77 @@ Feature: interactor
       SimpleCompany/SimpleApp/Presentation/Controller/SimpleController.php
       SimpleCompany/SimpleApp/Presentation/Presenter/SimplePresenter.php
       """
+
+  Scenario: Create interactor without logger
+    Given Current date is '2012-09-01'
+    Given Current time is '00:00'
+    Given Config file exists:
+      """
+      author: "Some Name"
+      company: "NoLoggerCompany"
+      project: "NoLoggerAppl"
+      sources: "tmp/src"
+      tests: "tmp/tests"
+      """
+    Given The files are not exists:
+      """
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Dao/IWithoutLoggerDao.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Interactor/IWithoutLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Logger/IWithoutLoggerAccessRightLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Logger/IWithoutLoggerLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Presenter/IWithoutLoggerPresenter.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/PresenterModel/IWithoutLoggerPresenterModel.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/PresenterModel/IWithoutLoggerValidationResult.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/RequestData/IWithoutLoggerRequestData.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Validators/IWithoutLoggerRequestDataValidator.php
+      NoLoggerCompany/NoLoggerAppl/Business/Interactor/WithoutLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Interactor/WithoutLoggerAccessRight.php
+      NoLoggerCompany/NoLoggerAppl/Business/Logger/WithoutLoggerAccessRightLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Logger/WithoutLoggerLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/PresenterModel/WithoutLoggerPresenterModel.php
+      NoLoggerCompany/NoLoggerAppl/Business/PresenterModel/WithoutLoggerValidationResult.php
+      NoLoggerCompany/NoLoggerAppl/Business/Validators/WithoutLoggerRequestDataValidator.php
+      NoLoggerCompany/NoLoggerAppl/Dao/Business/WithoutLoggerDao.php
+      NoLoggerCompany/NoLoggerAppl/Modules/WithoutLoggerModule.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Contract/Controller/IWithoutLoggerController.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Controller/WithoutLoggerController.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Presenter/WithoutLoggerPresenter.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/RequestData/WithoutLoggerRequestData.php
+      """
+    Given I will answer 'yes' to question 'Create access right for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create request data object for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create request data validator? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create dao for interactor? [yes/no] (yes):'
+    Given I will answer 'no' to question 'Create logger for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create presenter model for interactor? [yes/no] (yes):'
+    Given I will answer 'yes' to question 'Create Conpago/DI module for interactor? [yes/no] (yes):'
+    When I run 'interactor' cli command with 'WithoutLogger'
+    Then All questions was asked
+    Then The files are still not exists:
+      """
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Logger/IWithoutLoggerAccessRightLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Logger/IWithoutLoggerLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Logger/WithoutLoggerAccessRightLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Logger/WithoutLoggerLogger.php
+      """
+    Then The files exists with content equal to 'CreateInteractorWithoutLogger' reference file:
+      """
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Interactor/IWithoutLogger.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Presenter/IWithoutLoggerPresenter.php
+      NoLoggerCompany/NoLoggerAppl/Business/Interactor/WithoutLogger.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Contract/Controller/IWithoutLoggerController.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Controller/WithoutLoggerController.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/Presenter/WithoutLoggerPresenter.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Dao/IWithoutLoggerDao.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/PresenterModel/IWithoutLoggerPresenterModel.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/PresenterModel/IWithoutLoggerValidationResult.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/RequestData/IWithoutLoggerRequestData.php
+      NoLoggerCompany/NoLoggerAppl/Business/Contract/Validators/IWithoutLoggerRequestDataValidator.php
+      NoLoggerCompany/NoLoggerAppl/Business/Interactor/WithoutLoggerAccessRight.php
+      NoLoggerCompany/NoLoggerAppl/Business/PresenterModel/WithoutLoggerPresenterModel.php
+      NoLoggerCompany/NoLoggerAppl/Business/PresenterModel/WithoutLoggerValidationResult.php
+      NoLoggerCompany/NoLoggerAppl/Business/Validators/WithoutLoggerRequestDataValidator.php
+      NoLoggerCompany/NoLoggerAppl/Dao/Business/WithoutLoggerDao.php
+      NoLoggerCompany/NoLoggerAppl/Modules/WithoutLoggerModule.php
+      NoLoggerCompany/NoLoggerAppl/Presentation/RequestData/WithoutLoggerRequestData.php
+      """

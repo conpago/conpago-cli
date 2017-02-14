@@ -53,8 +53,9 @@
             I{{ name }}Presenter $presenter{% if (RequestDataValidator or Logger) %},{%  endif %}
 
 {% if RequestDataValidator %}
-            I{{ name }}RequestDataValidator $userValidator{% if (RequestDataValidator or Logger) %},
-{% endif %}{% endif %}
+            I{{ name }}RequestDataValidator $userValidator{% if (Logger) %},{% endif %}
+
+{% endif %}
 {% if Logger %}
             I{{ name }}Logger $logger
 {% endif %}

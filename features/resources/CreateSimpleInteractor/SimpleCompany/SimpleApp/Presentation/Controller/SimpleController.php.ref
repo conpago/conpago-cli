@@ -13,9 +13,7 @@
 
     class SimpleController implements ISimpleController
     {
-        /**
-         * @var ISimple
-         */
+        /** @var ISimple */
         private $simple;
 
         function __construct(ISimple $simple)

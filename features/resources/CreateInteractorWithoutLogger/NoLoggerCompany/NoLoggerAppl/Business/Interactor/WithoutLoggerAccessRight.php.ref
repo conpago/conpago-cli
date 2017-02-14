@@ -1,18 +1,22 @@
 <?php
-{{ include('header.twig') }}
+    /**
+     * Created by Conpago-Cli.
+     * User: Some Name
+     * Date: 01.09.2012
+     * Time: 00:00
+     */
 
-    namespace {{ company }}\{{ project }}\Business\Interactor;
+    namespace NoLoggerCompany\NoLoggerAppl\Business\Interactor;
 
 
     use Conpago\AccessRight\Contract\IAccessRightDao;
     use Conpago\AccessRight\Contract\IAccessRightPresenter;
-    use {{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }};
-    use {{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger;
-    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\Interactor\IWithoutLogger;
+    use NoLoggerCompany\NoLoggerAppl\Business\Contract\RequestData\IWithoutLoggerRequestData;
 
-    class {{ name }}AccessRight implements I{{ name }}
+    class WithoutLoggerAccessRight implements IWithoutLogger
     {
-        const TEST_ACCESS_RIGHT = "{{ name }}AccessRight";
+        const TEST_ACCESS_RIGHT = "WithoutLoggerAccessRight";
 
         /** @var IAccessRightDao */
         private $dao;
@@ -20,26 +24,21 @@
         /** @var IAccessRightPresenter */
         private $presenter;
 
-        /** @var I{{ name }} */
+        /** @var IWithoutLogger */
         private $interactor;
-
-        /** @var I{{ name }}AccessRightLogger */
-        private $logger;
 
         function __construct(
             IAccessRightDao $dao,
             IAccessRightPresenter $presenter,
-            I{{ name }} $interactor,
-            I{{ name }}AccessRightLogger $logger
+            IWithoutLogger $interactor
         )
         {
             $this->dao = $dao;
             $this->presenter = $presenter;
             $this->interactor = $interactor;
-            $this->logger = $logger;
         }
 
-        function run(I{{ name }}RequestData $data)
+        function run(IWithoutLoggerRequestData $data)
         {
             $hasAccessRight = $this->dao->hasAccessRight(self::TEST_ACCESS_RIGHT);
             if (!$hasAccessRight) {
@@ -50,7 +49,6 @@
         }
 
         protected function showAccessDenied() {
-            $this->logger->logAccessDenied();
             $this->presenter->showAccessDenied();
         }
     }
