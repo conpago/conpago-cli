@@ -1,0 +1,47 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Interactor;
+
+    use Conpago\Exceptions\Exception;
+    use TestCompany\TestApp\Business\Contract\Dao\ITestDao;
+    use TestCompany\TestApp\Business\Contract\Interactor\ITest;
+    use TestCompany\TestApp\Business\Contract\Logger\ITestLogger;
+    use TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter;
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
+    use TestCompany\TestApp\Business\PresenterModel\TestPresenterModel;
+
+    class Test implements ITest
+    {
+        /** @var ITestDao */
+        private $dao;
+
+        /** @var ITestPresenter */
+        private $presenter;
+
+        /** @var ITestLogger */
+        private $logger;
+
+        function __construct(
+            ITestDao $dao,
+            ITestPresenter $presenter,
+            ITestLogger $logger
+        )
+        {
+            $this->dao = $dao;
+            $this->presenter = $presenter;
+            $this->logger = $logger;
+        }
+
+        public function run()
+        {
+            $presenterModel = new TestPresenterModel();
+            //TODO: do things to handle request and create $presenterModel
+            $this->presenter->showTestSucceed($presenterModel);
+        }
+    }

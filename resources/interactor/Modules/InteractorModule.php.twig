@@ -27,11 +27,13 @@
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }}')
                     ->named('{{ name }}')
                     ->singleInstance();
+{%  if AccessRight %}
 
             $builder->registerType('{{ company }}\{{ project }}\Business\Interactor\{{ name }}AccessRight')
                     ->withParams(Parameter::def(), Parameter::def(), Parameter::named('{{ name }}'))
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }}')
                     ->singleInstance();
+{% endif %}
 
             $builder->registerType('{{ company }}\{{ project }}\Presentation\Presenter\{{ name }}Presenter')
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Presenter\I{{ name }}Presenter')
@@ -43,13 +45,17 @@
 
             $builder->registerType('{{ company }}\{{ project }}\Business\Validators\{{ name }}RequestDataValidator')
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Validators\I{{ name }}RequestDataValidator');
+{% if Logger %}
 
             $builder->registerType('{{ company }}\{{ project }}\Business\Logger\{{ name }}Logger')
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}Logger')
                     ->singleInstance();
+{%  if AccessRight %}
 
             $builder->registerType('{{ company }}\{{ project }}\Business\Logger\{{ name }}AccessRightLogger')
                     ->asA('{{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger')
                     ->singleInstance();
+{%  endif %}
+{%  endif %}
         }
     }

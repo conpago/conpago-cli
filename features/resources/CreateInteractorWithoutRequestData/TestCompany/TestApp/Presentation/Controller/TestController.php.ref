@@ -1,0 +1,31 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Presentation\Controller;
+
+    use Conpago\Exceptions\Http400BadRequestException;
+    use Conpago\Helpers\Contract\IRequestData;
+    use TestCompany\TestApp\Presentation\Contract\Controller\ITestController;
+    use TestCompany\TestApp\Business\Contract\Interactor\ITest;
+    use TestCompany\TestApp\Presentation\RequestData\TestRequestData;
+
+    class TestController implements ITestController
+    {
+        /** @var ITest */
+        private $test;
+
+        function __construct(ITest $test)
+        {
+            $this->test = $test;
+        }
+
+        function execute()
+        {
+            $this->test->run();
+        }
+    }

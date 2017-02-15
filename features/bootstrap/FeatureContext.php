@@ -2,8 +2,8 @@
 
     use Behat\Behat\Context\Context;
     use Behat\Behat\Hook\Scope\AfterFeatureScope;
+    use Behat\Behat\Hook\Scope\AfterScenarioScope;
     use Behat\Gherkin\Node\PyStringNode;
-    use Conpago\Cli\Application;
 
     // Require 3rd-party libraries here:
     require_once "vendor/autoload.php";
@@ -14,7 +14,6 @@
      */
     class FeatureContext implements Context
     {
-        const TARGET_DIR = './tmp/src';
         const REFERENCE_DIR = './features/resources';
 
         /** @var FeatureTimeService */
@@ -27,11 +26,11 @@
         protected $testApplicationFactory;
 
         /**
-         * @AfterFeature
+         * @AfterScenario
          *
-         * @param AfterFeatureScope $scope
+         * @param AfterScenarioScope $scope
          */
-        public static function clearTmpSrc(AfterFeatureScope $scope)
+        public static function clearTmpSrc(AfterScenarioScope $scope)
         {
             $dir = '.' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'src';
 
@@ -87,24 +86,24 @@
         }
 
         /**
-         * @Given The files are not exists:
+         * @Given The files are not exists in :targetDir:
          */
-        public function theFilesAreNotExists(PyStringNode $files)
+        public function theFilesAreNotExists($targetDir, PyStringNode $files)
         {
             foreach ($files->getStrings() as $file) {
-                $targetFile = realpath(self::TARGET_DIR) . DIRECTORY_SEPARATOR . $file;
+                $targetFile = realpath($targetDir) . DIRECTORY_SEPARATOR . $file;
                 if (file_exists($targetFile)) {
                     throw new Exception(sprintf("File '%s' exists!", $targetFile));
                 }
             }
         }
         /**
-         * @Then The files are still not exists:
+         * @Then The files are still not exists in :targetDir:
          */
-        public function theFilesAreStillNotExists(PyStringNode $files)
+        public function theFilesAreStillNotExists($targetDir, PyStringNode $files)
         {
             foreach ($files->getStrings() as $file) {
-                $targetFile = realpath(self::TARGET_DIR) . DIRECTORY_SEPARATOR . $file;
+                $targetFile = realpath($targetDir) . DIRECTORY_SEPARATOR . $file;
                 if (file_exists($targetFile)) {
                     throw new Exception(sprintf("File '%s' exists!", $targetFile));
                 }
@@ -137,21 +136,21 @@
         }
 
         /**
-         * @When The files exists with content equal to :scenarioName reference file:
+         * @When The files exists in :targetDir with content equal to :scenarioName reference file:
          */
-        public function theFilesExistsWithContentEqualToReference($scenarioName, PyStringNode $files)
+        public function theFilesExistsWithContentEqualToReference($targetDir, $scenarioName, PyStringNode $files)
         {
             foreach ($files->getStrings() as $file) {
-                $this->fileExistsWithContentEqualToReference($file, $scenarioName);
+                $this->fileExistsWithContentEqualToReference($targetDir, $file, $scenarioName);
             }
         }
 
         /**
-         * @Then File :file exists with content equal to :scenarioName reference file:
+         * @Then File :file exists in :targetDir with content equal to :scenarioName reference file:
          */
-        public function fileExistsWithContentEqualToReference($file, $scenarioName)
+        public function fileExistsWithContentEqualToReference($targetDir, $file, $scenarioName)
         {
-            $targetFile = realpath(self::TARGET_DIR) . DIRECTORY_SEPARATOR . $file;
+            $targetFile = realpath($targetDir) . DIRECTORY_SEPARATOR . $file;
             $referenceFile = realpath(self::REFERENCE_DIR) . DIRECTORY_SEPARATOR . $scenarioName . DIRECTORY_SEPARATOR . $file . '.ref';
 
             if (!file_exists($targetFile) || !is_file($targetFile)) {
@@ -162,7 +161,7 @@
             $generated = file_get_contents($targetFile);
 
             try {
-                assertEquals($expected, $generated, $file . ': Failed asserting that two strings are equal.');
+                assertEquals($expected, $generated, $file);
             } catch (Exception $e) {
                 echo $e;
                 throw $e;

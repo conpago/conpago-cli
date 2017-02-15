@@ -1,5 +1,5 @@
-author: "Some Name"
-company: "NoLoggerCompany"
-project: "NoLoggerAppl"
+author: "Bartosz Gołek"
+company: "TestCompany"
+project: "TestApp"
 sources: "tmp/src"
 tests: "tmp/tests"

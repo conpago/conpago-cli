@@ -1,0 +1,33 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Presentation\RequestData;
+
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
+
+    class TestRequestData implements ITestRequestData
+    {
+        //TODO: create fields as below
+        //private $field;
+
+        function __construct(
+            //TODO: create parameter for every field as below
+            //$field
+        )
+        {
+            //TODO: assign fields as below
+            //$this->field = $field;
+        }
+
+        //TODO: create getters as bellow
+        /** @return string */
+        //function getField()
+        //{
+        //    return $this->field;
+        //}
+    }

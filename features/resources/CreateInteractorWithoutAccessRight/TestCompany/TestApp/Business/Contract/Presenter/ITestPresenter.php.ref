@@ -1,0 +1,21 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Contract\Presenter;
+
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestValidationResult;
+
+    interface ITestPresenter
+    {
+        public function showValidationFailed(ITestValidationResult $validationResult);
+
+        public function showTestSucceed(ITestPresenterModel $data);
+
+        public function showFailed($message);
+    }

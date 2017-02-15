@@ -1,0 +1,28 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Logger;
+
+
+    use TestCompany\TestApp\Business\Contract\Logger\IAccessRightDeniedLogger;
+    use TestCompany\TestApp\Business\Contract\Logger\ITestAccessRightLogger;
+    use TestCompany\TestApp\Business\Interactor\TestAccessRight;
+
+    class TestAccessRightLogger implements ITestAccessRightLogger
+    {
+        /** @var IAccessRightDeniedLogger */
+        private $logger;
+
+        function __construct(IAccessRightDeniedLogger $logger) {
+            $this->logger = $logger;
+        }
+
+        public function logAccessDenied() {
+            $this->logger->log(TestAccessRight::TEST_INTERACTOR_ACCESS_RIGHT);
+        }
+    }

@@ -1,20 +1,23 @@
 <?php
-{{ include('header.twig') }}
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
 
-    namespace {{ company }}\{{ project }}\Business\Interactor;
+    namespace TestCompany\TestApp\Business\Interactor;
 
 
     use Conpago\AccessRight\Contract\IAccessRightDao;
     use Conpago\AccessRight\Contract\IAccessRightPresenter;
-    use {{ company }}\{{ project }}\Business\Contract\Interactor\I{{ name }};
-{% if Logger %}
-    use {{ company }}\{{ project }}\Business\Contract\Logger\I{{ name }}AccessRightLogger;
-{%  endif %}
-    use {{ company }}\{{ project }}\Business\Contract\RequestData\I{{ name }}RequestData;
+    use TestCompany\TestApp\Business\Contract\Interactor\ITest;
+    use TestCompany\TestApp\Business\Contract\Logger\ITestAccessRightLogger;
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
 
-    class {{ name }}AccessRight implements I{{ name }}
+    class TestAccessRight implements ITest
     {
-        const TEST_ACCESS_RIGHT = "{{ name }}AccessRight";
+        const TEST_ACCESS_RIGHT = "TestAccessRight";
 
         /** @var IAccessRightDao */
         private $dao;
@@ -22,31 +25,26 @@
         /** @var IAccessRightPresenter */
         private $presenter;
 
-        /** @var I{{ name }} */
+        /** @var ITest */
         private $interactor;
 
-{% if Logger %}
-        /** @var I{{ name }}AccessRightLogger */
+        /** @var ITestAccessRightLogger */
         private $logger;
 
-{% endif %}
         function __construct(
             IAccessRightDao $dao,
             IAccessRightPresenter $presenter,
-            I{{ name }} $interactor{% if Logger %},
-            I{{ name }}AccessRightLogger $logger{% endif %}
-
+            ITest $interactor,
+            ITestAccessRightLogger $logger
         )
         {
             $this->dao = $dao;
             $this->presenter = $presenter;
             $this->interactor = $interactor;
-{% if Logger %}
             $this->logger = $logger;
-{% endif %}
         }
 
-        function run(I{{ name }}RequestData $data)
+        function run(ITestRequestData $data)
         {
             $hasAccessRight = $this->dao->hasAccessRight(self::TEST_ACCESS_RIGHT);
             if (!$hasAccessRight) {
@@ -57,9 +55,7 @@
         }
 
         protected function showAccessDenied() {
-{% if Logger %}
             $this->logger->logAccessDenied();
-{%  endif %}
             $this->presenter->showAccessDenied();
         }
     }

@@ -1,0 +1,54 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Presentation\Presenter;
+
+
+    use Conpago\Presentation\Contract\IJsonPresenter;
+    use TestCompany\TestApp\Business\Contract\Presenter\ITestPresenter;
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestPresenterModel;
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestValidationResult;
+
+    class TestPresenter implements ITestPresenter
+    {
+        const FAIL_MEESAGE = '?FAIL_MEESAGE?';
+        const SUCCEED_MEESAGE = "?SUCCEED_MEESAGE?";
+
+        /** @var IJsonPresenter */
+        private $jsonPresenter;
+
+        function __construct(IJsonPresenter $jsonPresenter)
+        {
+            $this->jsonPresenter = $jsonPresenter;
+        }
+
+        public function showValidationFailed(ITestValidationResult $validationResult)
+        {
+            $data['success'] = false;
+            //TODO: set validation output as bellow
+            //$data['validation']['field'] = $validationResult->getFieldMessage();
+            $data['message'] = self::FAIL_MEESAGE;
+            $this->jsonPresenter->showJson($data);
+        }
+
+        public function showTestSucceed(ITestPresenterModel $data)
+        {
+            $jsonData['success'] = true;
+            $jsonData['message'] = self::SUCCEED_MEESAGE;
+            //TODO: set output as bellow
+            $jsonData['entity']['field'] = $data->getField();
+            $this->jsonPresenter->showJson($jsonData);
+        }
+
+        public function showFailed($message)
+        {
+            $data['success'] = false;
+            $data['message'] =  $message . ' ' . self::FAIL_MEESAGE;
+            $this->jsonPresenter->showJson($data);
+        }
+    }

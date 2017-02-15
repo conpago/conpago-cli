@@ -1,0 +1,14 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Contract\Interactor;
+
+    interface ITest
+    {
+        public function run();
+    }

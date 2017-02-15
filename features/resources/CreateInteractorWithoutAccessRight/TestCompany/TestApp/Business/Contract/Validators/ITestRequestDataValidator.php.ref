@@ -1,0 +1,23 @@
+<?php
+    /**
+     * Created by Conpago-Cli.
+     * User: Bartosz Gołek
+     * Date: 29.10.2013
+     * Time: 08:43
+     */
+
+    namespace TestCompany\TestApp\Business\Contract\Validators;
+
+
+    use TestCompany\TestApp\Business\Contract\PresenterModel\ITestValidationResult;
+    use TestCompany\TestApp\Business\Contract\RequestData\ITestRequestData;
+
+    interface ITestRequestDataValidator {
+
+        /**
+         * @param ITestRequestData $requestData
+         *
+         * @return ITestValidationResult
+         */
+        function validate(ITestRequestData $requestData);
+    }

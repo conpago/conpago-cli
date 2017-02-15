@@ -24,7 +24,7 @@
         private $dao;
 
         /** @var IWithoutLoggerRequestDataValidator */
-        private $userValidator;
+        private $withoutLoggerRequestDataValidator;
 
         /** @var IWithoutLoggerPresenter */
         private $presenter;
@@ -32,12 +32,12 @@
         function __construct(
             IWithoutLoggerDao $dao,
             IWithoutLoggerPresenter $presenter,
-            IWithoutLoggerRequestDataValidator $userValidator
+            IWithoutLoggerRequestDataValidator $withoutLoggerRequestDataValidator
         )
         {
             $this->dao = $dao;
             $this->presenter = $presenter;
-            $this->userValidator = $userValidator;
+            $this->withoutLoggerRequestDataValidator = $withoutLoggerRequestDataValidator;
         }
 
         /**
@@ -74,7 +74,7 @@
 
         private function validate($data)
         {
-            return $this->userValidator->validate($data);
+            return $this->withoutLoggerRequestDataValidator->validate($data);
         }
 
         /**

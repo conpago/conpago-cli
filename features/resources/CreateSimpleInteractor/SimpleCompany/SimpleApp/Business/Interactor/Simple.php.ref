@@ -8,7 +8,6 @@
 
     namespace SimpleCompany\SimpleApp\Business\Interactor;
 
-    use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
     use Conpago\Exceptions\Exception;
     use SimpleCompany\SimpleApp\Business\Contract\Interactor\ISimple;
     use SimpleCompany\SimpleApp\Business\Contract\Presenter\ISimplePresenter;

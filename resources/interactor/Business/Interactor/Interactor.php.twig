@@ -3,7 +3,9 @@
 
     namespace {{ company }}\{{ project }}\Business\Interactor;
 
+{% if RequestDataValidator %}
     use Conpago\Database\Exceptions\ColumnUniqueConstraintException;
+{% endif %}
     use Conpago\Exceptions\Exception;
 {% if Dao %}
     use {{ company }}\{{ project }}\Business\Contract\Dao\I{{ name }}Dao;
@@ -35,7 +37,7 @@
 {% endif %}
 {% if RequestDataValidator %}
         /** @var I{{ name }}RequestDataValidator */
-        private $userValidator;
+        private ${{ name|to_camel_case }}RequestDataValidator;
 
 {% endif %}
         /** @var I{{ name }}Presenter */
@@ -53,7 +55,7 @@
             I{{ name }}Presenter $presenter{% if (RequestDataValidator or Logger) %},{%  endif %}
 
 {% if RequestDataValidator %}
-            I{{ name }}RequestDataValidator $userValidator{% if (Logger) %},{% endif %}
+            I{{ name }}RequestDataValidator ${{ name|to_camel_case }}RequestDataValidator{% if (Logger) %},{% endif %}
 
 {% endif %}
 {% if Logger %}
@@ -66,7 +68,7 @@
 {% endif %}
             $this->presenter = $presenter;
 {% if RequestDataValidator %}
-            $this->userValidator = $userValidator;
+            $this->{{ name|to_camel_case }}RequestDataValidator = ${{ name|to_camel_case }}RequestDataValidator;
 {% endif %}
 {% if Logger %}
             $this->logger = $logger;
@@ -89,7 +91,7 @@
                 $this->do{{ name }}($data);
             }
 {% else %}
-            $this->presenter->showSimpleSucceed();
+            $this->presenter->show{{ name }}Succeed();
 {% endif %}
         }
 {% if RequestDataValidator %}
@@ -114,7 +116,7 @@
 
         private function validate($data)
         {
-            return $this->userValidator->validate($data);
+            return $this->{{ name|to_camel_case }}RequestDataValidator->validate($data);
         }
 
         /**
